@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>now loading</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+
+    .loading-wrap {
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    .loading-wrap img {
+      width: 200px;
+      max-width: 60vw;
+      margin-bottom: 16px;
+    }
+
+    .loading-text {
+      font-size: 14px;
+      letter-spacing: 0.2em;
+      opacity: 0.8;
+    }
+
+    /* フェードイン */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* フェードアウト */
+    .fade-out {
+      animation: fadeOut 0.8s ease forwards;
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to   { opacity: 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="loading-wrap" id="loading">
+    <img src="assets/ferris wheel.png" alt="loading">
+    <div class="loading-text">now loading</div>
+  </div>
+
+  <script>
+    // 1秒後にフェードアウト開始 → さらに0.8秒後に main.html へ
+    setTimeout(() => {
+      const loading = document.getElementById("loading");
+      loading.classList.add("fade-out");
+
+      setTimeout(() => {
+        window.location.href = "main.html";
+      }, 800);
+
+    }, 1000);
+  </script>
+</body>
+</html>
