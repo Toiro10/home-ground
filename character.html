@@ -21,20 +21,23 @@
 
     body {
       margin: 0;
-      height: 100vh;
       background: var(--bg);
       color: var(--text-main);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      display: flex;
     }
+
+    .page {
+      min-height: 100vh;
+    }
+
+    /* 上部：キャラ画面レイアウト */
 
     .layout {
       display: flex;
       width: 100%;
-      height: 100%;
+      min-height: 70vh;
     }
 
-    /* 左の縦メニュー */
     .side-nav {
       width: 80px;
       background: linear-gradient(180deg, #111111, #050505);
@@ -79,7 +82,6 @@
       pointer-events: none;
     }
 
-    /* メインエリア */
     .main-panel {
       flex: 1;
       display: grid;
@@ -88,7 +90,6 @@
       padding: 24px 32px;
     }
 
-    /* キャラ表示エリア（中央） */
     .character-view {
       background: radial-gradient(circle at top, #202020, #050505);
       border-radius: 18px;
@@ -130,7 +131,6 @@
       display: block;
     }
 
-    /* 右側の情報エリア */
     .character-info {
       display: flex;
       flex-direction: column;
@@ -189,67 +189,187 @@
       text-decoration: underline;
     }
 
+    /* 下部：タイムライン（5ブロック） */
+
+    .timeline {
+      max-width: 880px;
+      margin: 32px auto 56px;
+      padding: 0 24px;
+    }
+
+    .timeline-title {
+      font-size: 16px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 16px;
+    }
+
+    .timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .timeline-block {
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background: rgba(255, 255, 255, 0.02);
+      padding: 16px 18px;
+    }
+
+    .timeline-label {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .timeline-heading {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .timeline-text {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-sub);
+    }
+
     @media (max-width: 900px) {
+      .layout {
+        flex-direction: column;
+      }
+
+      .side-nav {
+        flex-direction: row;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-soft);
+        justify-content: center;
+      }
+
+      .nav-item {
+        flex: 1;
+      }
+
       .main-panel {
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto;
+        padding: 16px;
       }
 
       .character-view {
         min-height: 320px;
       }
+
+      .timeline {
+        padding: 0 16px 32px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="layout">
-    <!-- 左の縦メニュー -->
-    <aside class="side-nav">
-      <a class="nav-item" href="index.html">TOP</a>
-      <a class="nav-item" href="main.html">メイン</a>
-      <button class="nav-item nav-item-disabled" type="button">世界観</button>
-      <button class="nav-item nav-item-disabled" type="button">ストーリー</button>
-      <button class="nav-item nav-item-active" type="button">キャラ</button>
-    </aside>
+  <div class="page">
+    <!-- 上：キャラ画面 -->
+    <div class="layout">
+      <aside class="side-nav">
+        <a class="nav-item" href="main.html">TOP</a>
+        <button class="nav-item nav-item-disabled" type="button">世界観</button>
+        <button class="nav-item nav-item-disabled" type="button">ストーリー</button>
+        <button class="nav-item nav-item-active" type="button">キャラ</button>
+      </aside>
 
-    <!-- メイン -->
-    <main class="main-panel">
-      <!-- キャラ画像エリア -->
-      <section class="character-view">
-        <div class="char-image-frame">
-          <!-- いまは ferris wheel を仮のキャラ画像として使用 -->
-          <img src="assets/ferris wheel.png" alt="キャラクター画像（仮）">
-        </div>
-      </section>
+      <main class="main-panel">
+        <section class="character-view">
+          <div class="char-image-frame">
+            <!-- いまは ferris wheel を仮のキャラ画像として使用 -->
+            <img src="assets/ferris wheel.png" alt="キャラクター画像（仮）">
+          </div>
+        </section>
 
-      <!-- 右側の情報エリア -->
-      <section class="character-info">
-        <div>
-          <div class="info-label-main">CHARACTER</div>
-          <div class="info-name">キャラ名をここに</div>
-        </div>
+        <section class="character-info">
+          <div>
+            <div class="info-label-main">CHARACTER</div>
+            <div class="info-name">キャラ名をここに</div>
+          </div>
 
-        <div class="info-block">
-          <div class="info-title">MOTIF</div>
-          <p class="info-body">モチーフやイメージ（例：観覧車・終末・黄の残光 など）を書いてください。</p>
-        </div>
+          <div class="info-block">
+            <div class="info-title">MOTIF</div>
+            <p class="info-body">モチーフやイメージ（例：観覧車・終末・黄の残光 など）を書いてください。</p>
+          </div>
 
-        <div class="info-block">
-          <div class="info-title">SEASON / TIME</div>
-          <p class="info-body">季節・時間帯・場所など（例：冬の遊園地・閉園後の夜）。</p>
-        </div>
+          <div class="info-block">
+            <div class="info-title">SEASON / TIME</div>
+            <p class="info-body">季節・時間帯・場所など（例：冬の遊園地・閉園後の夜）。</p>
+          </div>
 
-        <div class="info-block">
-          <div class="info-title">PROFILE</div>
-          <p class="info-body-small">
-            ここにキャラクターの設定・説明テキストを入れてください。<br>
-            行を分けたいときは &lt;br&gt; を入れれば改行できます。
+          <div class="info-block">
+            <div class="info-title">PROFILE</div>
+            <p class="info-body-small">
+              ここにキャラクターの設定・説明テキストを入れてください。<br>
+              行を分けたいときは &lt;br&gt; を入れれば改行できます。
+            </p>
+          </div>
+
+          <a class="back-link" href="main.html">← main に戻る</a>
+        </section>
+      </main>
+    </div>
+
+    <!-- 下：タイムライン 5ブロック（ひな形） -->
+    <section class="timeline">
+      <h2 class="timeline-title">TIMELINE / BACKBONE</h2>
+
+      <div class="timeline-list">
+        <!-- Block 1 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 1</div>
+          <h3 class="timeline-heading">ここに見出し（年齢や年代）</h3>
+          <p class="timeline-text">
+            ここにブロック1のテキストを書きます。<br>
+            例えば「10歳 / 小学校時代」の出来事など。
           </p>
-        </div>
+        </section>
 
-       <a class="back-link" href="main.html">← main に戻る</a>
-      </section>
-    </main>
+        <!-- Block 2 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 2</div>
+          <h3 class="timeline-heading">ここに見出し</h3>
+          <p class="timeline-text">
+            ここにブロック2のテキストを書きます。
+          </p>
+        </section>
+
+        <!-- Block 3 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 3</div>
+          <h3 class="timeline-heading">ここに見出し</h3>
+          <p class="timeline-text">
+            ここにブロック3のテキストを書きます。
+          </p>
+        </section>
+
+        <!-- Block 4 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 4</div>
+          <h3 class="timeline-heading">ここに見出し</h3>
+          <p class="timeline-text">
+            ここにブロック4のテキストを書きます。
+          </p>
+        </section>
+
+        <!-- Block 5 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 5</div>
+          <h3 class="timeline-heading">ここに見出し</h3>
+          <p class="timeline-text">
+            ここにブロック5のテキストを書きます。
+          </p>
+        </section>
+      </div>
+    </section>
   </div>
 </body>
 </html>
