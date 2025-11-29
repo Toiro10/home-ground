@@ -4,45 +4,252 @@
   <meta charset="UTF-8">
   <title>character</title>
   <style>
+    :root {
+      --bg: #050505;
+      --panel: #101010;
+      --accent: #f2d200;
+      --text-main: #f5f5f5;
+      --text-sub: #aaaaaa;
+      --border-soft: rgba(255, 255, 255, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       margin: 0;
-      background: black;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       height: 100vh;
-      font-family: sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      display: flex;
     }
 
-    .wrap {
-      text-align: center;
+    .layout {
+      display: flex;
+      width: 100%;
+      height: 100%;
     }
 
-    h1 {
-      font-size: 28px;
+    /* 左の縦メニュー */
+    .side-nav {
+      width: 80px;
+      background: linear-gradient(180deg, #111111, #050505);
+      border-right: 1px solid var(--border-soft);
+      padding: 16px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      border-radius: 12px;
+      font-size: 11px;
+      text-decoration: none;
+      color: var(--text-sub);
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-item:hover {
+      border-color: var(--border-soft);
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .nav-item-active {
+      border-color: var(--accent);
+      color: #000;
+      background: var(--accent);
+      font-weight: 600;
+    }
+
+    .nav-item-disabled {
+      opacity: 0.35;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* メインエリア */
+    .main-panel {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.3fr);
+      gap: 16px;
+      padding: 24px 32px;
+    }
+
+    /* キャラ表示エリア（中央） */
+    .character-view {
+      background: radial-gradient(circle at top, #202020, #050505);
+      border-radius: 18px;
+      border: 1px solid var(--border-soft);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .character-view::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(242, 210, 0, 0.18), transparent 55%),
+        linear-gradient(-135deg, rgba(255, 255, 255, 0.04), transparent 50%);
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .char-image-frame {
+      position: relative;
+      max-width: 420px;
+      width: 80%;
+      aspect-ratio: 3 / 4;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: #000;
+    }
+
+    .char-image-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* 右側の情報エリア */
+    .character-info {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .info-label-main {
+      font-size: 18px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+    }
+
+    .info-name {
+      font-size: 26px;
+      margin-top: 6px;
       margin-bottom: 16px;
     }
 
-    a {
-      display: inline-block;
-      margin-top: 24px;
-      color: #aaa;
-      font-size: 14px;
-      text-decoration: none;
+    .info-block {
+      border-radius: 14px;
+      border: 1px solid var(--border-soft);
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.02);
     }
 
-    a:hover {
-      color: white;
+    .info-title {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 4px;
+    }
+
+    .info-body {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .info-body-small {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--text-sub);
+    }
+
+    .back-link {
+      margin-top: auto;
+      font-size: 12px;
+      color: var(--text-sub);
+      text-decoration: none;
+      align-self: flex-start;
+    }
+
+    .back-link:hover {
+      color: var(--text-main);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 900px) {
+      .main-panel {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+      }
+
+      .character-view {
+        min-height: 320px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>character page</h1>
-    <p>ここがキャラクターのページになります。</p>
+  <div class="layout">
+    <!-- 左の縦メニュー -->
+    <aside class="side-nav">
+      <a class="nav-item" href="index.html">TOP</a>
+      <a class="nav-item" href="next.html">中間</a>
+      <button class="nav-item nav-item-disabled" type="button">世界観</button>
+      <button class="nav-item nav-item-disabled" type="button">ストーリー</button>
+      <button class="nav-item nav-item-active" type="button">キャラ</button>
+    </aside>
 
-    <p><a href="next.html">← next に戻る</a></p>
+    <!-- メイン -->
+    <main class="main-panel">
+      <!-- キャラ画像エリア -->
+      <section class="character-view">
+        <div class="char-image-frame">
+          <!-- いまは ferris wheel を仮のキャラ画像として使用 -->
+          <img src="assets/ferris wheel.png" alt="キャラクター画像（仮）">
+        </div>
+      </section>
+
+      <!-- 右側の情報エリア -->
+      <section class="character-info">
+        <div>
+          <div class="info-label-main">CHARACTER</div>
+          <div class="info-name">キャラ名をここに</div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-title">MOTIF</div>
+          <p class="info-body">モチーフやイメージ（例：観覧車・終末・黄の残光 など）を書いてください。</p>
+        </div>
+
+        <div class="info-block">
+          <div class="info-title">SEASON / TIME</div>
+          <p class="info-body">季節・時間帯・場所など（例：冬の遊園地・閉園後の夜）。</p>
+        </div>
+
+        <div class="info-block">
+          <div class="info-title">PROFILE</div>
+          <p class="info-body-small">
+            ここにキャラクターの設定・説明テキストを入れてください。<br>
+            行を分けたいときは &lt;br&gt; を入れれば改行できます。
+          </p>
+        </div>
+
+        <a class="back-link" href="next.html">← next に戻る</a>
+      </section>
+    </main>
   </div>
 </body>
 </html>
