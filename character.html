@@ -32,7 +32,7 @@
       flex-direction: column;
     }
 
-    /* ===== 上部：もとのキャラ画面 ===== */
+    /* ===== 上部：メニューバー＋メインビジュアル ===== */
 
     .layout {
       display: flex;
@@ -40,7 +40,7 @@
       min-height: 70vh;
     }
 
-    /* 左の縦メニュー（前と同じ幅 80px） */
+    /* 左の縦メニュー（幅 80px は前と同じ） */
     .side-nav {
       width: 70px;
       background: linear-gradient(180deg, #111111, #050505);
@@ -85,109 +85,78 @@
       pointer-events: none;
     }
 
-    /* メインエリア */
+    /* 右側メインビジュアルコンテナ */
     .main-panel {
       flex: 1;
-      display: grid;
-      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.3fr);
-      gap: 16px;
       padding: 24px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
 
-    /* キャラ表示エリア（中央） */
-    .character-view {
-      background: radial-gradient(circle at top, #202020, #050505);
+    .hero-visual {
+      position: relative;
       border-radius: 18px;
       border: 1px solid var(--border-soft);
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
       overflow: hidden;
+      min-height: 360px;
+      background: radial-gradient(circle at top, #202020, #050505);
     }
 
-    .character-view::before {
-      content: "";
+    .hero-image-layer {
       position: absolute;
       inset: 0;
-      background:
-        linear-gradient(135deg, rgba(242, 210, 0, 0.18), transparent 55%),
-        linear-gradient(-135deg, rgba(255, 255, 255, 0.04), transparent 50%);
-      mix-blend-mode: screen;
-      pointer-events: none;
     }
 
-    .char-image-frame {
-      position: relative;
-      max-width: 420px;
-      width: 80%;
-      aspect-ratio: 3 / 4;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      background: #000;
-    }
-
-    .char-image-frame img {
+    .hero-image-layer img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
+      opacity: 0.95;
     }
 
-    /* 右側の情報エリア */
-    .character-info {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    .hero-overlay {
+      position: absolute;
+      color: var(--text-main);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
     }
 
-    .info-label-main {
-      font-size: 18px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-sub);
+    /* 「心とは、」 部分 */
+    .hero-quote {
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 24px;
+      letter-spacing: 0.18em;
     }
 
-    .info-name {
-      font-size: 26px;
-      margin-top: 6px;
-      margin-bottom: 16px;
+    /* キャラクター名＋説明 部分（右下） */
+    .hero-meta {
+      right: 10%;
+      bottom: 12%;
+      text-align: left;
     }
 
-    .info-block {
-      border-radius: 14px;
-      border: 1px solid var(--border-soft);
-      padding: 10px 12px;
-      background: rgba(255, 255, 255, 0.02);
+    .hero-name {
+      font-size: 20px;
+      margin-bottom: 8px;
+      letter-spacing: 0.18em;
     }
 
-    .info-title {
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-sub);
-      margin-bottom: 4px;
-    }
-
-    .info-body {
+    .hero-desc {
       font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .info-body-small {
-      font-size: 12px;
-      line-height: 1.5;
+      line-height: 1.7;
+      max-width: 260px;
       color: var(--text-sub);
     }
 
     .back-link {
-      margin-top: auto;
       font-size: 12px;
       color: var(--text-sub);
       text-decoration: none;
       align-self: flex-start;
+      margin-top: 8px;
     }
 
     .back-link:hover {
@@ -244,10 +213,6 @@
     }
 
     @media (max-width: 900px) {
-      .page {
-        min-height: 100vh;
-      }
-
       .layout {
         flex-direction: column;
       }
@@ -266,13 +231,15 @@
       }
 
       .main-panel {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto;
         padding: 16px;
       }
 
-      .character-view {
+      .hero-visual {
         min-height: 320px;
+      }
+
+      .hero-quote {
+        font-size: 20px;
       }
 
       .timeline {
@@ -283,9 +250,9 @@
 </head>
 <body>
   <div class="page">
-    <!-- 上：キャラ画面（元のレイアウトそのまま） -->
+    <!-- 上：メニューバー＋メインビジュアル -->
     <div class="layout">
-      <!-- 左の縦メニュー -->
+      <!-- 左メニュー -->
       <aside class="side-nav">
         <a class="nav-item" href="index.html">TOP</a>
         <a class="nav-item" href="main.html">メイン</a>
@@ -294,47 +261,32 @@
         <button class="nav-item nav-item-active" type="button">キャラ</button>
       </aside>
 
-      <!-- メイン -->
+      <!-- 右：キャラ1メインビジュアル -->
       <main class="main-panel">
-        <!-- キャラ画像エリア -->
-        <section class="character-view">
-          <div class="char-image-frame">
-            <!-- いまは ferris wheel を仮のキャラ画像として使用 -->
+        <section class="hero-visual">
+          <div class="hero-image-layer">
+            <!-- いまは ferris wheel を仮の背景画像として使用 -->
             <img src="assets/ferris wheel.png" alt="キャラクター画像（仮）">
           </div>
-        </section>
 
-        <!-- 右側の情報エリア -->
-        <section class="character-info">
-          <div>
-            <div class="info-label-main">CHARACTER</div>
-            <div class="info-name">キャラ名をここに</div>
-          </div>
+          <!-- 上部のコピー -->
+          <div class="hero-overlay hero-quote">「心とは、」</div>
 
-          <div class="info-block">
-            <div class="info-title">MOTIF</div>
-            <p class="info-body">モチーフやイメージ（例：観覧車・終末・黄の残光 など）を書いてください。</p>
-          </div>
-
-          <div class="info-block">
-            <div class="info-title">SEASON / TIME</div>
-            <p class="info-body">季節・時間帯・場所など（例：冬の遊園地・閉園後の夜）。</p>
-          </div>
-
-          <div class="info-block">
-            <div class="info-title">PROFILE</div>
-            <p class="info-body-small">
-              ここにキャラクターの設定・説明テキストを入れてください。<br>
-              行を分けたいときは &lt;br&gt; を入れれば改行できます。
+          <!-- 右下のキャラ名＋説明 -->
+          <div class="hero-overlay hero-meta">
+            <div class="hero-name">【キャラクター名】</div>
+            <p class="hero-desc">
+              ここにキャラクターの短い説明テキストを入れてください。<br>
+              2〜3行程度を想定しています。
             </p>
           </div>
-
-          <a class="back-link" href="main.html">← main に戻る</a>
         </section>
+
+        <a class="back-link" href="main.html">← main に戻る</a>
       </main>
     </div>
 
-    <!-- 下：バックボーン 5ブロック -->
+    <!-- 下：バックボーン 5ブロック（ひな形） -->
     <section class="timeline">
       <h2 class="timeline-title">TIMELINE / BACKBONE</h2>
 
