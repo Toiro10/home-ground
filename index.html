@@ -60,14 +60,14 @@
   </div>
 
   <script>
-    // 3秒後にフェードアウト開始 → さらに2秒後に main.html へ
+    // 3秒後にフェードアウト開始 → さらに1秒後に main.html へ
     setTimeout(() => {
       const loading = document.getElementById("loading");
       loading.classList.add("fade-out");
 
       setTimeout(() => {
         window.location.href = "main.html";
-      }, 2000);
+      }, 1000);
 
     }, 3000);
   </script>
