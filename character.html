@@ -122,13 +122,16 @@
 }
 
     /* 「心とは、」 部分 */
-    .hero-quote {
-      top: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 60px;
-      letter-spacing: 0.18em;
-    }
+.hero-quote {
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, 0);      /* X,Y 両方指定に変更 */
+  font-size: 24px;
+  letter-spacing: 0.18em;
+  opacity: 0;                         /* 最初は透明 */
+  animation: quoteFloatIn 1.2s ease-out 0.3s forwards;
+  /*           名前      時間      イージング 遅延  最後の状態を保持 */
+}
 
     /* キャラクター名＋説明 部分（右下） */
     .hero-meta {
@@ -210,7 +213,16 @@
       line-height: 1.7;
       color: var(--text-sub);
     }
-
+@keyframes floatInQuote {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
     @media (max-width: 900px) {
       .layout {
         flex-direction: column;
