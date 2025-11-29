@@ -28,9 +28,11 @@
 
     .page {
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* 上部：キャラ画面レイアウト */
+    /* ===== 上部：もとのキャラ画面 ===== */
 
     .layout {
       display: flex;
@@ -38,6 +40,7 @@
       min-height: 70vh;
     }
 
+    /* 左の縦メニュー（前と同じ幅 80px） */
     .side-nav {
       width: 80px;
       background: linear-gradient(180deg, #111111, #050505);
@@ -82,6 +85,7 @@
       pointer-events: none;
     }
 
+    /* メインエリア */
     .main-panel {
       flex: 1;
       display: grid;
@@ -90,6 +94,7 @@
       padding: 24px 32px;
     }
 
+    /* キャラ表示エリア（中央） */
     .character-view {
       background: radial-gradient(circle at top, #202020, #050505);
       border-radius: 18px;
@@ -131,6 +136,7 @@
       display: block;
     }
 
+    /* 右側の情報エリア */
     .character-info {
       display: flex;
       flex-direction: column;
@@ -189,7 +195,7 @@
       text-decoration: underline;
     }
 
-    /* 下部：タイムライン（5ブロック） */
+    /* ===== 下部：バックボーン 5ブロック ===== */
 
     .timeline {
       max-width: 880px;
@@ -238,6 +244,10 @@
     }
 
     @media (max-width: 900px) {
+      .page {
+        min-height: 100vh;
+      }
+
       .layout {
         flex-direction: column;
       }
@@ -257,6 +267,7 @@
 
       .main-panel {
         grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
         padding: 16px;
       }
 
@@ -272,16 +283,20 @@
 </head>
 <body>
   <div class="page">
-    <!-- 上：キャラ画面 -->
+    <!-- 上：キャラ画面（元のレイアウトそのまま） -->
     <div class="layout">
+      <!-- 左の縦メニュー -->
       <aside class="side-nav">
-        <a class="nav-item" href="main.html">TOP</a>
+        <a class="nav-item" href="index.html">TOP</a>
+        <a class="nav-item" href="main.html">メイン</a>
         <button class="nav-item nav-item-disabled" type="button">世界観</button>
         <button class="nav-item nav-item-disabled" type="button">ストーリー</button>
         <button class="nav-item nav-item-active" type="button">キャラ</button>
       </aside>
 
+      <!-- メイン -->
       <main class="main-panel">
+        <!-- キャラ画像エリア -->
         <section class="character-view">
           <div class="char-image-frame">
             <!-- いまは ferris wheel を仮のキャラ画像として使用 -->
@@ -289,6 +304,7 @@
           </div>
         </section>
 
+        <!-- 右側の情報エリア -->
         <section class="character-info">
           <div>
             <div class="info-label-main">CHARACTER</div>
@@ -318,7 +334,7 @@
       </main>
     </div>
 
-    <!-- 下：タイムライン 5ブロック（ひな形） -->
+    <!-- 下：バックボーン 5ブロック -->
     <section class="timeline">
       <h2 class="timeline-title">TIMELINE / BACKBONE</h2>
 
