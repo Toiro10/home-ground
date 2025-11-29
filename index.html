@@ -14,13 +14,46 @@
       height: 100vh;
       font-family: sans-serif;
     }
+
+    .container {
+      max-width: 640px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      font-size: 32px;
+      letter-spacing: 0.08em;
+    }
+
+    p {
+      margin: 4px 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .hero-image {
+      display: block;
+      margin: 24px auto 0;
+      max-width: min(80vw, 400px);
+      height: auto;
+      border-radius: 8px;
+    }
   </style>
 </head>
 <body>
-  <div>
+  <div class="container">
     <h1>home ground,</h1>
     <p>exist err!</p>
     <p>この作品は理解も共感もされない人生たちの、現実にいても生きられない登場人物たちを描くモンタージュSF群像劇です。</p>
+
+    <!-- ここで画像を表示する -->
+    <img
+      class="hero-image"
+      src="assets/ferris wheel.png"
+      alt="Ferris wheel sketch"
+    >
   </div>
 </body>
 </html>
