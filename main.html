@@ -66,6 +66,16 @@
     .nav-link:hover {
       color: #ffffff;
     }
+    /* ===== ページ全体フェードイン ===== */
+body {
+  opacity: 0;
+  animation: mainFadeIn 1.0s ease forwards;
+}
+
+@keyframes mainFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
   </style>
 </head>
 <body>
