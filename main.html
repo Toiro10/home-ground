@@ -2,61 +2,120 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>home ground,</title>
+  <title>home ground, / main</title>
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       margin: 0;
       background: black;
       color: white;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      font-family: sans-serif;
-    }
-
-    .container {
-      max-width: 640px;
-      padding: 24px;
       text-align: center;
     }
 
-    h1 {
-      margin-bottom: 8px;
-      font-size: 32px;
-      letter-spacing: 0.08em;
+    .container {
+      padding: 32px 16px 40px;
+      max-width: 720px;
+      width: 100%;
     }
 
-    p {
-      margin: 4px 0;
-      font-size: 14px;
-      line-height: 1.6;
+    h1 {
+      font-size: 36px;
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
+    }
+
+    .sub {
+      font-size: 12px;
+      opacity: 0.8;
+      margin-bottom: 16px;
+    }
+
+    .lead {
+      font-size: 13px;
+      line-height: 1.8;
+      opacity: 0.9;
+    }
+
+    .catch {
+      margin-top: 32px;
+      margin-bottom: 24px;
+      font-size: 24px;
+      letter-spacing: 0.18em;
+    }
+
+    .hero-link {
+      display: inline-block;
+      margin-bottom: 24px;
+      cursor: pointer;
     }
 
     .hero-image {
       display: block;
-      margin: 24px auto 0;
-      max-width: min(80vw, 400px);
+      margin: 0 auto;
+      max-width: min(60vw, 320px);
       height: auto;
-      border-radius: 8px;
+    }
+
+    .nav-row {
+      display: flex;
+      justify-content: center;
+      gap: 80px;
+      margin-top: 8px;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: #666;
+      transition: color 0.15s ease, transform 0.15s ease;
+    }
+
+    .nav-link:hover {
+      color: #ffffff;
+      transform: translateY(-1px);
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>home ground,</h1>
-    <p>exist err!</p>
-    <p>この作品は理解も共感もされない人生たちの、
-    <p>現実にいても生きられない登場人物たちを描くモンタージュSF群像劇です。</p>
+    <div class="sub">exist err!</div>
 
-    <!-- ここで画像を表示する（クリックで次のページへ） -->
-    <a href="next.html">
+    <p class="lead">
+      この作品は理解も共感もされない人生たちの、<br>
+      現実にいても生きられない登場人物たちを描くモンタージュSF群像劇です。
+    </p>
+
+    <div class="catch">愉快な脱走劇へ！</div>
+
+    <!-- 観覧車：クリックでキャラページへ -->
+    <a class="hero-link" href="character.html">
       <img
         class="hero-image"
         src="assets/ferris wheel.png"
-        alt="Ferris wheel sketch"
+        alt="home ground entrance image"
       >
     </a>
+
+    <!-- 下部の BACK / START ナビ -->
+    <div class="nav-row">
+      <!-- BACK：ブラウザの「戻る」と同じ動き -->
+      <a class="nav-link" href="javascript:history.back()">← BACK</a>
+
+      <!-- START：キャラページへ -->
+      <a class="nav-link" href="character.html">START →</a>
+    </div>
   </div>
 </body>
 </html>
