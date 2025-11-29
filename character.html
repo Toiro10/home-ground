@@ -39,7 +39,7 @@
       min-height: 70vh;
     }
 
-    /* 左の縦メニュー（幅 80px は前と同じ） */
+    /* 左の縦メニュー（幅 70px は前と同じ） */
     .side-nav {
       width: 70px;
       background: linear-gradient(180deg, #111111, #050505);
@@ -100,6 +100,7 @@
       overflow: hidden;
       min-height: 830px;
       background: radial-gradient(circle at top, #202020, #050505);
+      perspective: 800px;
     }
 
     .hero-image-layer {
@@ -215,11 +216,11 @@
 @keyframes floatInQuote {
   0% {
     opacity: 0;
-    transform: translate(-50%, 20px);
+    transform: translate(-50%, 0) translateZ(-200px);
   }
   100% {
     opacity: 1;
-    transform: translate(-50%, 0);
+    transform: translate(-50%, 0) translateZ(0px);
   }
 }
     @media (max-width: 900px) {
