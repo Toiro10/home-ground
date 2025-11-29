@@ -2,70 +2,50 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>home ground, / main</title>
+  <title>home ground,</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
       margin: 0;
       background: black;
       color: white;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: flex-start; /* 画面の少し上寄せ */
+      align-items: center;
+      height: 100vh;
+      font-family: sans-serif;
     }
 
     .container {
-      width: 100%;
-      max-width: 760px;
-      padding: 40px 16px 48px;
+      max-width: 640px;
+      padding: 24px;
       text-align: center;
     }
 
     h1 {
-      font-size: 40px;
-      letter-spacing: 0.16em;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      font-size: 32px;
+      letter-spacing: 0.08em;
     }
 
-    .sub-title {
-      font-size: 12px;
-      margin-bottom: 18px;
-    }
-
-    .lead-line {
-      font-size: 13px;
-      line-height: 1.8;
-      opacity: 0.9;
-    }
-
-    .lead-line + .lead-line {
-      margin-top: 2px;
-    }
-
-    .catch {
-      margin-top: 36px;
-      margin-bottom: 22px;
-      font-size: 26px;
-      letter-spacing: 0.25em;
-    }
-
-    .hero-link {
-      display: inline-block;
-      cursor: pointer;
+    p {
+      margin: 4px 0;
+      font-size: 14px;
+      line-height: 1.6;
     }
 
     .hero-image {
       display: block;
-      margin: 0 auto;
-      max-width: min(60vw, 320px);
+      margin: 24px auto 0;
+      max-width: min(80vw, 400px);
       height: auto;
+      border-radius: 8px;
+    }
+
+    /* 追加：キャッチコピーと BACK / START 用 */
+    .catch {
+      margin-top: 24px;
+      font-size: 22px;
+      letter-spacing: 0.18em;
     }
 
     .nav-row {
@@ -74,46 +54,42 @@
       justify-content: center;
       gap: 80px;
       font-size: 13px;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.2em;
     }
 
     .nav-link {
       text-decoration: none;
       color: #666666;
-      transition: color 0.15s ease, transform 0.15s ease;
+      transition: color 0.15s ease;
     }
 
     .nav-link:hover {
       color: #ffffff;
-      transform: translateY(-1px);
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>home ground,</h1>
-    <div class="sub-title">exist err!</div>
+    <p>exist err!</p>
+    <p>この作品は理解も共感もされない人生たちの、
+    <p>現実にいても生きられない登場人物たちを描くモンタージュSF群像劇です。</p>
 
-    <p class="lead-line">この作品は理解も共感もされない人生たちの、</p>
-    <p class="lead-line">現実にいても生きられない登場人物たちを描くモンタージュSF群像劇です。</p>
-
+    <!-- 追加：キャッチコピー -->
     <p class="catch">愉快な脱走劇へ！</p>
 
     <!-- 観覧車：クリックでキャラページへ -->
-    <a class="hero-link" href="character.html">
+    <a href="character.html">
       <img
         class="hero-image"
         src="assets/ferris wheel.png"
-        alt="home ground entrance image"
+        alt="Ferris wheel sketch"
       >
     </a>
 
-    <!-- 下部の BACK / START -->
+    <!-- 追加：BACK / START 行 -->
     <div class="nav-row">
-      <!-- BACK：ブラウザの「戻る」 -->
       <a class="nav-link" href="javascript:history.back()">← BACK</a>
-
-      <!-- START：キャラページへ（観覧車クリックと同じ遷移先） -->
       <a class="nav-link" href="character.html">START →</a>
     </div>
   </div>
