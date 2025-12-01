@@ -351,5 +351,36 @@
       </div>
     </section>
   </div>
+      </section>
+  </div>
+
+  <!-- スマホで左フリックしたらキャラBへ -->
+  <script>
+    (function () {
+      let startX = null;
+      const threshold = 50;
+
+      window.addEventListener("touchstart", function (e) {
+        if (e.touches.length > 1) return;
+        startX = e.touches[0].clientX;
+      });
+
+      window.addEventListener("touchend", function (e) {
+        if (startX === null) return;
+
+        const endX = e.changedTouches[0].clientX;
+        const diffX = endX - startX;
+
+        if (diffX < -threshold) {
+          window.location.href = "character_b.html";
+        }
+
+        startX = null;
+      });
+    })();
+  </script>
+
+</body>
+</html>
 </body>
 </html>
