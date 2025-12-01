@@ -211,12 +211,11 @@
       gap: 16px;
     }
 
-    .timeline-block {
-      border-radius: 16px;
-      border: 1px solid var(--border-soft);
-      background: rgba(255, 255, 255, 0.02);
-      padding: 16px 18px;
-    }
+   .timeline-block:first-child {
+  min-height: 400px;              /* 高さを強制的に大きく */
+  padding: 48px 56px;
+  font-size: 1.1em;
+}
 
     .timeline-label {
       font-size: 12px;
