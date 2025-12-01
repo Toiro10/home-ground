@@ -126,7 +126,7 @@
     /* 縦書きタイピング用カラム */
     .type-column {
       writing-mode: vertical-rl;   /* 縦書き */
-      font-size: 18px;
+      font-size: 24px;
       letter-spacing: 0.2em;
       line-height: 1.8;
       opacity: 0;                  /* JSで1にする */
@@ -418,12 +418,12 @@
 
       // 左右の開始タイミングを少しずらす（ms）
       setTimeout(() => {
-        typeVertical(leftEl, leftText, 120, 1500);
+        typeVertical(leftEl, leftText, 60, 1500);
       }, 500);
 
       setTimeout(() => {
-        typeVertical(rightEl, rightText, 120, 1500);
-      }, 1000);
+        typeVertical(rightEl, rightText, 120, 1000);
+      }, 500);
     });
   </script>
 
