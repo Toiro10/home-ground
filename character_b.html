@@ -347,9 +347,34 @@
           <p class="timeline-text">
             ここにブロック5のテキストを書きます。
           </p>
-        </section>
-      </div>
-    </section>
+  </section>
   </div>
+
+  <!-- スマホ・タブレットで右フリックしたらキャラAへ遷移 -->
+  <script>
+    (function () {
+      let startX = null;
+      const threshold = 50; // 何px以上動いたら「フリック」とみなすか
+
+      window.addEventListener("touchstart", function (e) {
+        if (e.touches.length > 1) return;
+        startX = e.touches[0].clientX;
+      });
+
+      window.addEventListener("touchend", function (e) {
+        if (startX === null) return;
+
+        const endX = e.changedTouches[0].clientX;
+        const diffX = endX - startX;
+
+        // 右方向に一定以上動いたらキャラAへ
+        if (diffX > threshold) {
+          window.location.href = "character.html";
+        }
+
+        startX = null;
+      });
+    })();
+  </script>
 </body>
 </html>
