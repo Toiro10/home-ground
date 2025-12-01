@@ -189,11 +189,16 @@
     }
 
     .timeline-block {
-      border-radius: 16px;
-      border: 1px solid var(--border-soft);
-      background: rgba(255, 255, 255, 0.02);
-      padding: 16px 18px;
-    }
+  border-radius: 16px;
+  border: 1px solid var(--border-soft);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 24px 24px;
+
+  min-height: 480px;        /* ← 全ブロック共通の高さ */
+  display: flex;           /* 中身を縦レイアウトにする */
+  flex-direction: column;
+  gap: 16px;
+}
 
     .timeline-label {
       font-size: 12px;
