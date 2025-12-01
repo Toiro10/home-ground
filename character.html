@@ -4,14 +4,15 @@
   <meta charset="UTF-8">
   <title>character</title>
   <style>
- :root {
-  --bg: #ffffff;
-  --panel: #ffffff;
-  --accent: #000000;
-  --text-main: #000000;
-  --text-sub: #444444;
-  --border-soft: rgba(0, 0, 0, 0.15);
-}
+    :root {
+      --bg: #ffffff;
+      --panel: #ffffff;
+      --accent: #000000;
+      --text-main: #000000;
+      --text-sub: #444444;
+      --border-soft: rgba(0, 0, 0, 0.15);
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -39,7 +40,7 @@
       min-height: 70vh;
     }
 
-    /* 左の縦メニュー（幅 70px は前と同じ） */
+    /* 左の縦メニュー */
     .side-nav {
       width: 70px;
       background: linear-gradient(180deg, #111111, #050505);
@@ -116,22 +117,43 @@
       opacity: 0.95;
     }
 
-  .hero-overlay {
-  position: absolute;
-  color: var(--text-main);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
+    .hero-overlay {
+      position: absolute;
+      color: var(--text-main);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 縦書きタイピング用カラム */
+    .type-column {
+      writing-mode: vertical-rl;   /* 縦書き */
+      font-size: 18px;
+      letter-spacing: 0.2em;
+      line-height: 1.8;
+      opacity: 0;                  /* JSで1にする */
+    }
+
+    /* 左の縦カラムの位置（あとで数値調整OK） */
+    .type-left {
+      top: 12%;
+      left: 8%;
+    }
+
+    /* 右の縦カラムの位置 */
+    .type-right {
+      top: 12%;
+      right: 8%;
+    }
 
     /* 「心とは、」 部分 */
-.hero-quote {
-  top: 20%;
-  left: 55%;
-  transform: translate(-50%, 0);
-  font-size: 58px;
-  letter-spacing: 0.18em;
-  opacity: 0;
-  animation: floatInQuote 1.5s ease-out 0.8s forwards;
-}
+    .hero-quote {
+      top: 20%;
+      left: 55%;
+      transform: translate(-50%, 0);
+      font-size: 58px;
+      letter-spacing: 0.18em;
+      opacity: 0;
+      animation: floatInQuote 1.5s ease-out 0.8s forwards;
+    }
 
     /* キャラクター名＋説明 部分（右下） */
     .hero-meta {
@@ -213,14 +235,12 @@
       line-height: 1.7;
       color: var(--text-sub);
     }
-@keyframes floatInQuote {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
+
+    @keyframes floatInQuote {
+      0%   { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
     @media (max-width: 900px) {
       .layout {
         flex-direction: column;
@@ -274,9 +294,12 @@
       <main class="main-panel">
         <section class="hero-visual">
           <div class="hero-image-layer">
-            <!-- いまは ferris wheel を仮の背景画像として使用 -->
             <img src="assets/DummyHuman.png" alt="キャラクター画像（仮）">
           </div>
+
+          <!-- 縦書きタイピング用カラム -->
+          <div class="hero-overlay type-column type-left" id="typeLeft"></div>
+          <div class="hero-overlay type-column type-right" id="typeRight"></div>
 
           <!-- 上部のコピー -->
           <div class="hero-overlay hero-quote">「心とは、」</div>
@@ -286,11 +309,10 @@
             <div class="hero-name">【エウメル・ダーヴィン】</div>
             <p class="hero-desc">
               天才。構造心性論を提唱し、ホムンクルスを創造した歴史上最大の倫理犯罪者。<br>
-<p>
-出身：イギリス　ダーリントン<br>
-身分：貴族<br>
-肩書：発明家
-</p>
+              出身：イギリス　ダーリントン<br>
+              身分：貴族<br>
+              肩書：発明家
+            </p>
           </div>
         </section>
 
@@ -348,74 +370,112 @@
             ここにブロック5のテキストを書きます。
           </p>
         </section>
-      </main>
-    </div>
-
-    <section class="timeline">
-      <h2 class="timeline-title">TIMELINE / BACKBONE</h2>
-
-      <div class="timeline-list">
-        <section class="timeline-block">
-          <div class="timeline-label">BLOCK 1</div>
-          <h3 class="timeline-heading">ここに見出し</h3>
-          <p class="timeline-text">ここにテキスト</p>
-        </section>
       </div>
     </section>
   </div>
 
-  <!-- ✅ スマホで左フリックしたらキャラBへ -->
-<script>
-(function () {
-  let startX = null;
-  const threshold = 60;
+  <!-- 縦書きタイピング演出 -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const leftEl  = document.getElementById("typeLeft");
+      const rightEl = document.getElementById("typeRight");
 
-  /* ===== スマホ（タッチ） ===== */
-  window.addEventListener("touchstart", function (e) {
-    if (e.touches.length > 1) return;
-    startX = e.touches[0].clientX;
-  });
+      // 表示したい文章（ここは好きな文章に差し替えてOK）
+      const leftText  = "犬には犬の心があり、人には人の心がある。
+心は宿るものではなく、構造から生まれる。
+したがって、機械が心を持ったとしても、それは“機械の心”であって、“人の心”ではない。
+人間の心を再現したければ、人間の構造を再現しなければならない。";
+      const rightText = "「なぜ、人間の心をあなたは求めたの?」";
 
-  window.addEventListener("touchend", function (e) {
-    if (startX === null) return;
+      function typeVertical(el, text, speed, clearDelay) {
+        if (!el) return;
+        let index = 0;
+        el.style.opacity = 1; // 表示開始
 
-    const endX = e.changedTouches[0].clientX;
-    const diffX = endX - startX;
+        const timer = setInterval(() => {
+          el.textContent = text.slice(0, index + 1);
+          index++;
 
-    if (diffX < -threshold) {
-      window.location.href = "character_b.html";
-    }
+          if (index >= text.length) {
+            clearInterval(timer);
 
-    startX = null;
-  });
+            if (clearDelay) {
+              setTimeout(() => {
+                el.style.transition = "opacity 0.8s ease";
+                el.style.opacity = 0;
 
-  /* ===== PC（マウスドラッグ） ===== */
-  window.addEventListener("mousedown", function (e) {
-    startX = e.clientX;
-  });
+                setTimeout(() => {
+                  el.textContent = "";
+                }, 900);
+              }, clearDelay);
+            }
+          }
+        }, speed);
+      }
 
-  window.addEventListener("mouseup", function (e) {
-    if (startX === null) return;
+      // 左右の開始タイミングを少しずらす（ms）
+      setTimeout(() => {
+        typeVertical(leftEl, leftText, 120, 1500);
+      }, 500);
 
-    const endX = e.clientX;
-    const diffX = endX - startX;
+      setTimeout(() => {
+        typeVertical(rightEl, rightText, 120, 1500);
+      }, 1000);
+    });
+  </script>
 
-    if (diffX < -threshold) {
-      window.location.href = "character_b.html";
-    }
+  <!-- フリック／ドラッグ／キーでキャラBへ -->
+  <script>
+  (function () {
+    let startX = null;
+    const threshold = 60;
 
-    startX = null;
-  });
+    /* ===== スマホ（タッチ） ===== */
+    window.addEventListener("touchstart", function (e) {
+      if (e.touches.length > 1) return;
+      startX = e.touches[0].clientX;
+    });
 
-  /* ===== PC（キーボード → キー） ===== */
-  window.addEventListener("keydown", function (e) {
-    if (e.key === "ArrowRight") {
-      window.location.href = "character_b.html";
-    }
-  });
+    window.addEventListener("touchend", function (e) {
+      if (startX === null) return;
 
-})();
-</script>
+      const endX = e.changedTouches[0].clientX;
+      const diffX = endX - startX;
+
+      if (diffX < -threshold) {
+        window.location.href = "character_b.html";
+      }
+
+      startX = null;
+    });
+
+    /* ===== PC（マウスドラッグ） ===== */
+    window.addEventListener("mousedown", function (e) {
+      startX = e.clientX;
+    });
+
+    window.addEventListener("mouseup", function (e) {
+      if (startX === null) return;
+
+      const endX = e.clientX;
+      const diffX = endX - startX;
+
+      if (diffX < -threshold) {
+        window.location.href = "character_b.html";
+      }
+
+      startX = null;
+    });
+
+    /* ===== PC（キーボード → キー） ===== */
+    window.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") {
+        window.location.href = "character_b.html";
+      }
+    });
+
+  })();
+  </script>
 
 </body>
 </html>
