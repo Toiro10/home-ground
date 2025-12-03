@@ -356,57 +356,75 @@
   </section>
   </div>
 
-  <!-- スマホ・タブレットで右フリックしたらキャラAへ遷移 -->
-<script>
-(function () {
-  let startX = null;
-  const threshold = 60;
+   <!-- B：フリック／ドラッグ／キーで A / C に遷移 -->
+  <script>
+  (function () {
+    let startX = null;
+    const threshold = 60;
 
-  /* ===== スマホ（タッチ） ===== */
-  window.addEventListener("touchstart", function (e) {
-    if (e.touches.length > 1) return;
-    startX = e.touches[0].clientX;
-  });
-
-  window.addEventListener("touchend", function (e) {
-    if (startX === null) return;
-
-    const endX = e.changedTouches[0].clientX;
-    const diffX = endX - startX;
-
-    if (diffX > threshold) {
+    function goPrev() {
+      // ←側（右フリック / 左キー） → A
       window.location.href = "character.html";
     }
 
-    startX = null;
-  });
-
-  /* ===== PC（マウスドラッグ） ===== */
-  window.addEventListener("mousedown", function (e) {
-    startX = e.clientX;
-  });
-
-  window.addEventListener("mouseup", function (e) {
-    if (startX === null) return;
-
-    const endX = e.clientX;
-    const diffX = endX - startX;
-
-    if (diffX > threshold) {
-      window.location.href = "character.html";
+    function goNext() {
+      // →側（左フリック / 右キー） → C
+      window.location.href = "character_c.html";
     }
 
-    startX = null;
-  });
+    /* ===== スマホ（タッチ） ===== */
+    window.addEventListener("touchstart", function (e) {
+      if (e.touches.length > 1) return;
+      startX = e.touches[0].clientX;
+    });
 
-  /* ===== PC（キーボード ← キー） ===== */
-  window.addEventListener("keydown", function (e) {
-    if (e.key === "ArrowLeft") {
-      window.location.href = "character.html";
-    }
-  });
+    window.addEventListener("touchend", function (e) {
+      if (startX === null) return;
 
-})();
-</script>
+      const endX = e.changedTouches[0].clientX;
+      const diffX = endX - startX;
+
+      if (diffX > threshold) {
+        // 右方向 → A
+        goPrev();
+      } else if (diffX < -threshold) {
+        // 左方向 → C
+        goNext();
+      }
+
+      startX = null;
+    });
+
+    /* ===== PC（マウスドラッグ） ===== */
+    window.addEventListener("mousedown", function (e) {
+      startX = e.clientX;
+    });
+
+    window.addEventListener("mouseup", function (e) {
+      if (startX === null) return;
+
+      const endX = e.clientX;
+      const diffX = endX - startX;
+
+      if (diffX > threshold) {
+        goPrev();   // 右ドラッグ → A
+      } else if (diffX < -threshold) {
+        goNext();   // 左ドラッグ → C
+      }
+
+      startX = null;
+    });
+
+    /* ===== PC（キーボード） ===== */
+    window.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") {
+        goPrev();    // ←キー → A
+      } else if (e.key === "ArrowRight") {
+        goNext();    // →キー → C
+      }
+    });
+
+  })();
+  </script>
 </body>
 </html>
