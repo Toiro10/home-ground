@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>character</title>
+  <style>
+ :root {
+  --bg: #ffffff;
+  --panel: #ffffff;
+  --accent: #000000;
+  --text-main: #000000;
+  --text-sub: #444444;
+  --border-soft: rgba(0, 0, 0, 0.15);
+}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== 上部：メニューバー＋メインビジュアル ===== */
+
+    .layout {
+      display: flex;
+      width: 100%;
+      min-height: 70vh;
+    }
+
+    /* 左の縦メニュー（幅 70px は前と同じ） */
+    .side-nav {
+      width: 70px;
+      background: linear-gradient(180deg, #111111, #050505);
+      border-right: 1px solid var(--border-soft);
+      padding: 16px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      border-radius: 12px;
+      font-size: 11px;
+      text-decoration: none;
+      color: var(--text-sub);
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-item:hover {
+      border-color: var(--border-soft);
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .nav-item-active {
+      border-color: var(--accent);
+      color: #000;
+      background: var(--accent);
+      font-weight: 600;
+    }
+
+    .nav-item-disabled {
+      opacity: 0.35;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* 右側メインビジュアルコンテナ */
+    .main-panel {
+      flex: 1;
+      padding: 24px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .hero-visual {
+      position: relative;
+      border-radius: 18px;
+      border: 1px solid var(--border-soft);
+      overflow: hidden;
+      min-height: 830px;
+      background: radial-gradient(circle at top, #202020, #050505);
+      perspective: 800px;
+    }
+
+    .hero-image-layer {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-image-layer img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.95;
+    }
+
+  .hero-overlay {
+  position: absolute;
+  color: var(--text-main);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+    /* 「心とは、」 部分 */
+.hero-quote {
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-size: 58px;
+  letter-spacing: 0.18em;
+  opacity: 0;
+  animation: floatInQuote 1.5s ease-out 0.8s forwards;
+}
+
+    /* キャラクター名＋説明 部分（右下） */
+    .hero-meta {
+      right: 10%;
+      bottom: 12%;
+      text-align: left;
+    }
+
+    .hero-name {
+      font-size: 20px;
+      margin-bottom: 8px;
+      letter-spacing: 0.18em;
+    }
+
+    .hero-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      max-width: 260px;
+      color: var(--text-sub);
+    }
+
+    .back-link {
+      font-size: 12px;
+      color: var(--text-sub);
+      text-decoration: none;
+      align-self: flex-start;
+      margin-top: 8px;
+    }
+
+    .back-link:hover {
+      color: var(--text-main);
+      text-decoration: underline;
+    }
+
+    /* ===== 下部：バックボーン 5ブロック ===== */
+
+.timeline {
+  width: calc(100% - 70px);   /* ← side-nav 分を引く */
+  margin-left: 70px;         /* ← side-nav の幅と同じ */
+  padding: 32px 32px 56px;
+}
+
+    .timeline-title {
+      font-size: 16px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 16px;
+    }
+
+    .timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .timeline-block {
+  border-radius: 16px;
+  border: 1px solid var(--border-soft);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 24px 24px;
+
+  min-height: 480px;        /* ← 全ブロック共通の高さ */
+  display: flex;           /* 中身を縦レイアウトにする */
+  flex-direction: column;
+  gap: 16px;
+}
+
+    .timeline-label {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .timeline-heading {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .timeline-text {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-sub);
+    }
+@keyframes floatInQuote {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+    @media (max-width: 900px) {
+      .layout {
+        flex-direction: column;
+      }
+
+      .side-nav {
+        flex-direction: row;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-soft);
+        justify-content: center;
+      }
+
+      .nav-item {
+        flex: 1;
+      }
+
+      .main-panel {
+        padding: 16px;
+      }
+
+      .hero-visual {
+    min-height: 260px;       /* ← スマホでは少し低めに */
+  }
+
+      .hero-quote {
+        font-size: 20px;
+      }
+
+      .timeline {
+    margin: 16px auto 24px;  /* ← 余白を詰める */
+    padding: 0 12px 24px;
+  }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- 上：メニューバー＋メインビジュアル -->
+    <div class="layout">
+      <!-- 左メニュー -->
+      <aside class="side-nav">
+        <a class="nav-item" href="index.html">TOP</a>
+        <a class="nav-item" href="main.html">メイン</a>
+        <button class="nav-item nav-item-disabled" type="button">世界観</button>
+        <button class="nav-item nav-item-disabled" type="button">ストーリー</button>
+        <button class="nav-item nav-item-active" type="button">キャラ</button>
+      </aside>
+
+      <!-- 右：キャラ1メインビジュアル -->
+      <main class="main-panel">
+        <section class="hero-visual">
+          <div class="hero-image-layer">
+            <!-- いまは ferris wheel を仮の背景画像として使用 -->
+            <img src="assets/DummyHuman.png" alt="キャラクター画像（仮）">
+          </div>
+
+          <!-- 上部のコピー -->
+          <div class="hero-overlay hero-quote">「正義とは」</div>
+
+          <!-- 右下のキャラ名＋説明 -->
+          <div class="hero-overlay hero-meta">
+            <div class="hero-name">【D.black】</div>
+            <p class="hero-desc">
+              スラム出身の技術屋。不屈の努力家であり家族愛が強い青年。Dクラスに分類される亜機能障害者。<br>
+<p>
+出身：クルディスタン　地下アーコロジー<br>
+身分：非国籍スラム民<br>
+肩書：情報屋
+</p>
+          </div>
+        </section>
+
+        <a class="back-link" href="main.html">← main に戻る</a>
+      </main>
+    </div>
+
+    <!-- 下：バックボーン 5ブロック（ひな形） -->
+    <section class="timeline">
+      <h2 class="timeline-title">TIMELINE / BACKBONE</h2>
+
+      <div class="timeline-list">
+        <!-- Block 1 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 1</div>
+          <h3 class="timeline-heading">ここに見出し（年齢や年代）</h3>
+          <p class="timeline-text">
+            ここにブロック1のテキストを書きます。<br>
+            例えば「10歳 / 小学校時代」の出来事など。
+          </p>
+        </section>
+
+        <!-- Block 2 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 2</div>
+          <h3 class="timeline-heading">ここに見出し</h3>
+          <p class="timeline-text">
+            ここにブロック2のテキストを書きます。
+          </p>
+        </section>
+
+        <!-- Block 3 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 3</div>
+          <h3 class="timeline-heading">ここに見出し</h3>
+          <p class="timeline-text">
+            ここにブロック3のテキストを書きます。
+          </p>
+        </section>
+
+        <!-- Block 4 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 4</div>
+          <h3 class="timeline-heading">ここに見出し</h3>
+          <p class="timeline-text">
+            ここにブロック4のテキストを書きます。
+          </p>
+        </section>
+
+        <!-- Block 5 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 5</div>
+          <h3 class="timeline-heading">ここに見出し</h3>
+          <p class="timeline-text">
+            ここにブロック5のテキストを書きます。
+          </p>
+  </section>
+  </div>
+
+  <!-- スマホ・タブレットで右フリックしたらキャラAへ遷移 -->
+<script>
+(function () {
+  let startX = null;
+  const threshold = 60;
+
+  /* ===== スマホ（タッチ） ===== */
+  window.addEventListener("touchstart", function (e) {
+    if (e.touches.length > 1) return;
+    startX = e.touches[0].clientX;
+  });
+
+  window.addEventListener("touchend", function (e) {
+    if (startX === null) return;
+
+    const endX = e.changedTouches[0].clientX;
+    const diffX = endX - startX;
+
+    if (diffX > threshold) {
+      window.location.href = "character_b.html";
+    }
+
+    startX = null;
+  });
+
+  /* ===== PC（マウスドラッグ） ===== */
+  window.addEventListener("mousedown", function (e) {
+    startX = e.clientX;
+  });
+
+  window.addEventListener("mouseup", function (e) {
+    if (startX === null) return;
+
+    const endX = e.clientX;
+    const diffX = endX - startX;
+
+    if (diffX > threshold) {
+      window.location.href = "character_b.html";
+    }
+
+    startX = null;
+  });
+
+  /* ===== PC（キーボード ← キー） ===== */
+  window.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowLeft") {
+      window.location.href = character_b.html";
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
