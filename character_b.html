@@ -100,12 +100,13 @@
       overflow: hidden;
       min-height: 830px;
       background: radial-gradient(circle at top, #202020, #050505);
-      perspective: 800px;
+      perspective: 800px; /* Z軸演出用 */
     }
 
     .hero-image-layer {
       position: absolute;
       inset: 0;
+      z-index: 0;
     }
 
     .hero-image-layer img {
@@ -120,6 +121,7 @@
       position: absolute;
       color: var(--text-main);
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      z-index: 5;
     }
 
     /* 「道徳、とは」 部分 */
@@ -164,6 +166,115 @@
     .back-link:hover {
       color: var(--text-main);
       text-decoration: underline;
+    }
+
+    /* ===== hero 上のオレンジ縦書き & 青い横書き ===== */
+
+    @keyframes floatInOutZ {
+      0% {
+        opacity: 0;
+        transform: translateZ(-160px) scale(0.85);
+      }
+      20% {
+        opacity: 1;
+        transform: translateZ(0) scale(1);
+      }
+      80% {
+        opacity: 1;
+        transform: translateZ(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateZ(160px) scale(1.05);
+      }
+    }
+
+    @keyframes blueFloatInOut {
+      0% {
+        opacity: 0;
+        transform: translateZ(-160px) scale(0.85);
+      }
+      25% {
+        opacity: 1;
+        transform: translateZ(0) scale(1);
+      }
+      75% {
+        opacity: 1;
+        transform: translateZ(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateZ(120px) scale(1.05);
+      }
+    }
+
+    /* オレンジの縦長帯（共通） */
+    .hero-orange-block {
+      position: absolute;
+      top: 12%;
+      bottom: 18%;
+      width: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-origin: center center;
+      opacity: 0;
+      z-index: 2;
+    }
+
+    .hero-orange-1 {
+      left: 14%;
+      animation: floatInOutZ 4s ease-in-out 0.8s forwards;
+    }
+
+    .hero-orange-2 {
+      right: 18%;
+      animation: floatInOutZ 4s ease-in-out 2.6s forwards;
+    }
+
+    .hero-orange-bg {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 140, 0, 0.85);
+    }
+
+    .hero-orange-text {
+      position: relative;
+      writing-mode: vertical-rl;
+      font-size: 18px;
+      letter-spacing: 0.22em;
+      line-height: 1.9;
+      color: #111;
+    }
+
+    /* 青い横長帯 */
+    .hero-blue-strip {
+      position: absolute;
+      left: 18%;
+      right: 18%;
+      bottom: 18%;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-origin: center center;
+      opacity: 0;
+      z-index: 3;
+      animation: blueFloatInOut 4.5s ease-in-out 6.8s forwards; /* オレンジ2つの後に出て消える */
+    }
+
+    .hero-blue-bg {
+      position: absolute;
+      inset: 0;
+      background: rgba(90, 80, 255, 0.85);
+    }
+
+    .hero-blue-text {
+      position: relative;
+      font-size: 16px;
+      letter-spacing: 0.12em;
+      color: #ffffff;
+      text-align: center;
     }
 
     /* ===== 下部：バックボーン 5ブロック ===== */
@@ -216,34 +327,34 @@
       display: block;
     }
 
-   /* Block1：画像の上に縦書きテキスト（黒） */
-.block1-type {
-  position: absolute;
-  top: 8%;
-  right: 8%;              /* Block2 と同じく右側から出る位置 */
-  writing-mode: vertical-rl;
-  font-size: 18px;
-  letter-spacing: 0.2em;
-  line-height: 1.8;
-  color: #000000;         /* ★ 黒文字 */
-  text-shadow: none;      /* 影ナシ */
-  opacity: 0;
-  white-space: pre-wrap;  /* \n を改行として扱う */
-}
+    /* Block1：画像の上に縦書きテキスト（黒） */
+    .block1-type {
+      position: absolute;
+      top: 8%;
+      right: 8%;
+      writing-mode: vertical-rl;
+      font-size: 18px;
+      letter-spacing: 0.2em;
+      line-height: 1.8;
+      color: #000000;
+      text-shadow: none;
+      opacity: 0;
+      white-space: pre-wrap;
+    }
 
     /* Block2：画像上の縦書きテキスト（白） */
     .block2-type {
       position: absolute;
       top: 8%;
       right: 8%;
-      writing-mode: vertical-rl;     /* 縦書き（右→左） */
+      writing-mode: vertical-rl;
       font-size: 18px;
       letter-spacing: 0.2em;
       line-height: 1.8;
       color: #ffffff;
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
-      opacity: 0;                    /* 最初は見えない */
-      white-space: pre-wrap;         /* \n を改行として扱う */
+      opacity: 0;
+      white-space: pre-wrap;
     }
 
     .timeline-label {
@@ -297,7 +408,7 @@
       }
 
       .hero-visual {
-        min-height: 260px;       /* ← スマホでは少し低めに */
+        min-height: 260px;
       }
 
       .hero-quote {
@@ -305,7 +416,7 @@
       }
 
       .timeline {
-        margin: 16px auto 24px;  /* ← 余白を詰める */
+        margin: 16px auto 24px;
         padding: 0 12px 24px;
       }
     }
@@ -324,11 +435,43 @@
         <button class="nav-item nav-item-active" type="button">キャラ</button>
       </aside>
 
-      <!-- 右：キャラ1メインビジュアル -->
+      <!-- 右：キャラBメインビジュアル -->
       <main class="main-panel">
         <section class="hero-visual">
           <div class="hero-image-layer">
             <img src="assets/DummyHuman.png" alt="キャラクター画像（仮）">
+          </div>
+
+          <!-- オレンジ縦書き 1 -->
+          <div class="hero-orange-block hero-orange-1">
+            <div class="hero-orange-bg"></div>
+            <div class="hero-orange-text">
+              <br>
+              あいさつをちゃんとしましょう。
+              <br>
+              相手の立場に立って考えましょう。
+              <br>
+              規則ただしい生活を送りましょう。
+              <br>
+              落し物は持ち主に届けましょう。
+            </div>
+          </div>
+
+          <!-- オレンジ縦書き 2（少し遅れて） -->
+          <div class="hero-orange-block hero-orange-2">
+            <div class="hero-orange-bg"></div>
+            <div class="hero-orange-text">
+              公園の空き缶を拾ってゴミ箱に捨てているのを見た。遅刻したのは落とし物を交番に届けていたからだと知っている。<br>
+              誰に対しても優しくて、自然で普通の、善い人だと思う。
+            </div>
+          </div>
+
+          <!-- 青い横書き：オレンジが終わったあとに出てフェードアウト -->
+          <div class="hero-blue-strip">
+            <div class="hero-blue-bg"></div>
+            <div class="hero-blue-text">
+              彼の中で「道徳的行動」の式が成り立っているだけだった。
+            </div>
           </div>
 
           <!-- 上部のコピー -->
@@ -365,14 +508,11 @@
           <div class="timeline-label">BLOCK 1</div>
           <h3 class="timeline-heading">ここに見出し（年齢や年代）</h3>
 
-          <!-- 画像＋その上に縦書きテキスト（黒） -->
           <div class="timeline-image">
-            <!-- ★ あとで実際の画像に差し替えてOK -->
             <img src="assets/block1_dummy.png" alt="Block1 image">
             <div class="block1-type" id="block1Type"></div>
           </div>
 
-          <!-- 画像の下に通常の説明 -->
           <p class="timeline-text">
             ここにブロック1のテキストを書きます。<br>
             例えば「10歳 / 小学校時代」の出来事など。
@@ -431,8 +571,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const block1El = document.getElementById("block1Type");
   const block2El = document.getElementById("block2Type");
 
-  // ★ Block1 に流す文章（黒）
-  const block1Text = `「お困り、事、ハ、あ…ませんか？」
+  // Block1 に流す文章（黒）
+  const block1Text = `「お困り、ゴト、ハ、あ…ませんか？」
 通学路の帰り道。
 有料支援サービスエリアから少し離れたところに頭部や胴体を外的要因によって傷つけられ、故障しているノニュアルがいた。
 
@@ -452,10 +592,10 @@ document.addEventListener("DOMContentLoaded", function () {
 僕は黙って頷いてスマートデバイスを仕舞ってその場を立ち去った。
 
 自分が壊れていながら、相手に対して「困っていませんか」と力になろうとしていた。
-あのアンドロイドは「道徳的に良い」とされる行動をしていた。
+あのアンドロイドは道徳的に「善い」とされる行動をしていた。
 でも僕はアンドロイドを助けなかった。`;
 
-  // ★ Block2 に流す文章（白）
+  // Block2 に流す文章（白）
   const block2Text = `有料で手助けを行う支援サービスエリアにいるノニュアルがいつもと同じ言葉を繰り返している
 「困っていることはありませんか？」「お困りごとはありませんか？」
 困ってないよと僕は内心で答えて通り過ぎた。
@@ -474,19 +614,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (index >= text.length) {
         clearInterval(timer);
-        // ✅ ここで止まる → 文字は消えずに残り続ける
       }
     }, speed);
   }
 
-  // Block1：少し早めに開始（黒）
   if (block1El) {
     setTimeout(() => {
       typeVertical(block1El, block1Text, 60);
     }, 600);
   }
 
-  // Block2：少し遅らせて開始（白）
   if (block2El) {
     setTimeout(() => {
       typeVertical(block2El, block2Text, 60);
@@ -502,16 +639,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const threshold = 60;
 
     function goPrev() {
-      // ←側（右フリック / 左キー） → A
       window.location.href = "character.html";
     }
 
     function goNext() {
-      // →側（左フリック / 右キー） → C
       window.location.href = "character_c.html";
     }
 
-    /* ===== スマホ（タッチ） ===== */
+    /* スマホ（タッチ） */
     window.addEventListener("touchstart", function (e) {
       if (e.touches.length > 1) return;
       startX = e.touches[0].clientX;
@@ -524,17 +659,15 @@ document.addEventListener("DOMContentLoaded", function () {
       const diffX = endX - startX;
 
       if (diffX > threshold) {
-        // 右方向 → A
         goPrev();
       } else if (diffX < -threshold) {
-        // 左方向 → C
         goNext();
       }
 
       startX = null;
     });
 
-    /* ===== PC（マウスドラッグ） ===== */
+    /* PC（マウスドラッグ） */
     window.addEventListener("mousedown", function (e) {
       startX = e.clientX;
     });
@@ -546,20 +679,20 @@ document.addEventListener("DOMContentLoaded", function () {
       const diffX = endX - startX;
 
       if (diffX > threshold) {
-        goPrev();   // 右ドラッグ → A
+        goPrev();
       } else if (diffX < -threshold) {
-        goNext();   // 左ドラッグ → C
+        goNext();
       }
 
       startX = null;
     });
 
-    /* ===== PC（キーボード） ===== */
+    /* PC（キーボード） */
     window.addEventListener("keydown", function (e) {
       if (e.key === "ArrowLeft") {
-        goPrev();    // ←キー → A
+        goPrev();
       } else if (e.key === "ArrowRight") {
-        goNext();    // →キー → C
+        goNext();
       }
     });
 
