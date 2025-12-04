@@ -172,43 +172,38 @@
 
     /* オレンジ帯：手前に現れて、奥（-Z）へ引かれながらフェードアウト */
     @keyframes floatInOutZ {
-      0% {
-        opacity: 0;
-        transform: translateZ(0px) scale(0.9);
-      }
-      20% {
-        opacity: 1;
-        transform: translateZ(0px) scale(1);
-      }
-      80% {
-        opacity: 1;
-        transform: translateZ(-80px) scale(0.97);
-      }
-      100% {
-        opacity: 0;
-        transform: translateZ(-160px) scale(0.94);
-      }
-    }
+  /* まず少しだけフェードイン（位置はまだ動かさない） */
+  0% {
+    opacity: 0;
+    transform: translateZ(0px) scale(0.9);
+  }
+  15% {
+    opacity: 1;
+    transform: translateZ(0px) scale(1);
+  }
+
+  /* そこから一定速度で -Z 方向へ移動しつつフェードアウト */
+  100% {
+    opacity: 0;
+    transform: translateZ(-160px) scale(0.94);
+  }
+}
 
     /* 下の横書きテキスト：オレンジ終了後に出て、奥へ引かれて消える */
     @keyframes bottomTextFloat {
-      0% {
-        opacity: 0;
-        transform: translateZ(0px) scale(0.9);
-      }
-      25% {
-        opacity: 1;
-        transform: translateZ(0px) scale(1);
-      }
-      75% {
-        opacity: 1;
-        transform: translateZ(-60px) scale(0.97);
-      }
-      100% {
-        opacity: 0;
-        transform: translateZ(-120px) scale(0.94);
-      }
-    }
+  0% {
+    opacity: 0;
+    transform: translateZ(0px) scale(0.9);
+  }
+  20% {
+    opacity: 1;
+    transform: translateZ(0px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateZ(-120px) scale(0.94);
+  }
+}
 
     /* オレンジの縦長帯（共通） */
     .hero-orange-block {
@@ -225,29 +220,29 @@
     }
 
     .hero-orange-1 {
-      left: 14%;
-      animation: floatInOutZ 4s ease-in-out 0.8s forwards;
-    }
+  left: 14%;
+  animation: floatInOutZ 4s linear 0.8s forwards;
+}
 
-    .hero-orange-2 {
-      right: 18%;
-      animation: floatInOutZ 4s ease-in-out 2.6s forwards;
-    }
+.hero-orange-2 {
+  right: 18%;
+  animation: floatInOutZ 4s linear 2.6s forwards;
+}
 
-    .hero-orange-bg {
-      position: absolute;
-      inset: 0;
-      background: rgba(255, 140, 0, 0.85);
-    }
-
-    .hero-orange-text {
-      position: relative;
-      writing-mode: vertical-rl;
-      font-size: 18px;
-      letter-spacing: 0.22em;
-      line-height: 1.9;
-      color: #111;
-    }
+.hero-bottom-text {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 18%;
+  text-align: center;
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  color: #000000;
+  opacity: 0;
+  transform-origin: center center;
+  z-index: 3;
+  animation: bottomTextFloat 4.5s linear 6.8s forwards;
+}
 
     /* 下部の横書きテキスト（黒） */
     .hero-bottom-text {
@@ -561,9 +556,9 @@ document.addEventListener("DOMContentLoaded", function () {
 有料支援サービスエリアから少し離れたところに頭部や胴体を外的要因によって傷つけられ、故障しているノニュアルがいた。
 
 困ったな。
-人間が怪我をしていたら手を差し伸べ治療するべきと学校の道徳では習ったけれどノニュアルのようなアンドロイドに対しても『道徳』は適用されるべきなんだろうか。
+人間が怪我をしていたら手を差し伸べ治療するべきと学校の道徳では習ったけれどノニュアルのようなアンドロイドに対しても『道徳』は適用すべきなんだろうか。
 ノニュアルは社会を補助のための「道具」であり「物」だ。
-けれど最近ノニュアル社員というものも出来たとニュースで読んだ。
+けれど最近ノニュアル社員というものも出来たとニュースで見た。
 今の社会で、今現在取るべき道徳的正解はなんだろう。
 僕はこのパターンを習ってない。
 
