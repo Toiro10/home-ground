@@ -116,22 +116,22 @@
       opacity: 0.95;
     }
 
-  .hero-overlay {
-  position: absolute;
-  color: var(--text-main);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
+    .hero-overlay {
+      position: absolute;
+      color: var(--text-main);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
 
-    /* 「心とは、」 部分 */
-.hero-quote {
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, 0);
-  font-size: 58px;
-  letter-spacing: 0.18em;
-  opacity: 0;
-  animation: floatInQuote 1.5s ease-out 0.8s forwards;
-}
+    /* 「道徳、とは」 部分 */
+    .hero-quote {
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, 0);
+      font-size: 58px;
+      letter-spacing: 0.18em;
+      opacity: 0;
+      animation: floatInQuote 1.5s ease-out 0.8s forwards;
+    }
 
     /* キャラクター名＋説明 部分（右下） */
     .hero-meta {
@@ -168,11 +168,11 @@
 
     /* ===== 下部：バックボーン 5ブロック ===== */
 
-.timeline {
-  width: calc(100% - 70px);   /* ← side-nav 分を引く */
-  margin-left: 70px;         /* ← side-nav の幅と同じ */
-  padding: 32px 32px 56px;
-}
+    .timeline {
+      width: calc(100% - 70px);   /* ← side-nav 分を引く */
+      margin-left: 70px;          /* ← side-nav の幅と同じ */
+      padding: 32px 32px 56px;
+    }
 
     .timeline-title {
       font-size: 16px;
@@ -189,21 +189,21 @@
     }
 
     .timeline-block {
-  border-radius: 16px;
-  border: 1px solid var(--border-soft);
-  background: rgba(255, 255, 255, 0.02);
-  padding: 24px 24px;
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background: rgba(255, 255, 255, 0.02);
+      padding: 24px 24px;
+      min-height: 480px;        /* ← 全ブロック共通の高さ */
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-  min-height: 480px;        /* ← 全ブロック共通の高さ */
-  display: flex;           /* 中身を縦レイアウトにする */
-  flex-direction: column;
-  gap: 16px;
-}
-
-.timeline-image {
+    /* 画像枠（Block1, Block2 共通） */
+    .timeline-image {
       position: relative;
       width: 100%;
-      aspect-ratio: 16 / 9;          /* 横長の比率。好みで調整OK */
+      aspect-ratio: 16 / 9;
       border-radius: 12px;
       overflow: hidden;
       border: 1px solid var(--border-soft);
@@ -216,9 +216,25 @@
       display: block;
     }
 
+    /* Block1：画像上の縦書きテキスト（黒） */
+    .block1-type {
+      position: absolute;
+      top: 8%;
+      left: 8%;
+      writing-mode: vertical-rl;
+      font-size: 18px;
+      letter-spacing: 0.2em;
+      line-height: 1.8;
+      color: #000000;          /* 黒文字 */
+      text-shadow: none;
+      opacity: 0;
+      white-space: pre-wrap;
+    }
+
+    /* Block2：画像上の縦書きテキスト（白） */
     .block2-type {
       position: absolute;
-      top: 8%;                       /* 位置はあとで調整OK */
+      top: 8%;
       right: 8%;
       writing-mode: vertical-rl;     /* 縦書き（右→左） */
       font-size: 18px;
@@ -229,7 +245,7 @@
       opacity: 0;                    /* 最初は見えない */
       white-space: pre-wrap;         /* \n を改行として扱う */
     }
-    
+
     .timeline-label {
       font-size: 12px;
       letter-spacing: 0.16em;
@@ -248,14 +264,16 @@
       line-height: 1.7;
       color: var(--text-sub);
     }
-@keyframes floatInQuote {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
+
+    @keyframes floatInQuote {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
     @media (max-width: 900px) {
       .layout {
         flex-direction: column;
@@ -279,17 +297,17 @@
       }
 
       .hero-visual {
-    min-height: 260px;       /* ← スマホでは少し低めに */
-  }
+        min-height: 260px;       /* ← スマホでは少し低めに */
+      }
 
       .hero-quote {
         font-size: 20px;
       }
 
       .timeline {
-    margin: 16px auto 24px;  /* ← 余白を詰める */
-    padding: 0 12px 24px;
-  }
+        margin: 16px auto 24px;  /* ← 余白を詰める */
+        padding: 0 12px 24px;
+      }
     }
   </style>
 </head>
@@ -310,7 +328,6 @@
       <main class="main-panel">
         <section class="hero-visual">
           <div class="hero-image-layer">
-            <!-- いまは ferris wheel を仮の背景画像として使用 -->
             <img src="assets/DummyHuman.png" alt="キャラクター画像（仮）">
           </div>
 
@@ -320,18 +337,17 @@
           <!-- 右下のキャラ名＋説明 -->
           <div class="hero-overlay hero-meta">
             <div class="hero-name">
-  <ruby>
-    【美野 わたる】
-    <rt>Yoshino Wataru</rt>
-  </ruby>
-</div>
+              <ruby>
+                【美野 わたる】
+                <rt>Yoshino Wataru</rt>
+              </ruby>
+            </div>
             <p class="hero-desc">
-              心の起伏がほとんど平坦な青年。<br>
-<p>
-出身：日本<br>
-身分：一般市民<br>
-肩書：高校生
-</p>
+              心の起伏が極めて平坦な青年。共感や理解によるものではなく教科書的な道徳的な規範に則って行動する。<br>
+              出身：日本<br>
+              身分：一般市民<br>
+              肩書：高校生
+            </p>
           </div>
         </section>
 
@@ -339,34 +355,38 @@
       </main>
     </div>
 
-    <!-- 下：バックボーン 5ブロック（ひな形） -->
+    <!-- 下：バックボーン 5ブロック -->
     <section class="timeline">
       <h2 class="timeline-title">TIMELINE / BACKBONE</h2>
 
       <div class="timeline-list">
-        <!-- Block 1 -->
+        <!-- Block 1：画像＋黒い縦書きタイピング -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 1</div>
           <h3 class="timeline-heading">ここに見出し（年齢や年代）</h3>
+
+          <div class="timeline-image">
+            <!-- ★あとで本物の画像パスに差し替えてOK -->
+            <img src="assets/block1_dummy.png" alt="Block1 image">
+            <div class="block1-type" id="block1Type"></div>
+          </div>
+
           <p class="timeline-text">
             ここにブロック1のテキストを書きます。<br>
             例えば「10歳 / 小学校時代」の出来事など。
           </p>
         </section>
 
-         <!-- Block 2 -->
+        <!-- Block 2：画像＋白い縦書きタイピング -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 2</div>
           <h3 class="timeline-heading">ここに見出し</h3>
 
-          <!-- 画像＋その上に縦書きテキスト -->
           <div class="timeline-image">
-            <!-- ※あとで本物の画像パスに差し替えてOK -->
             <img src="assets/block2_dummy.png" alt="Block2 image">
             <div class="block2-type" id="block2Type"></div>
           </div>
 
-          <!-- 通常の説明テキスト（画像の下に表示） -->
           <p class="timeline-text">
             ここにブロック2のテキストを書きます。<br>
             画像の下に表示される説明用テキストです。
@@ -398,42 +418,90 @@
           <p class="timeline-text">
             ここにブロック5のテキストを書きます。
           </p>
-  </section>
+        </section>
+      </div>
+    </section>
   </div>
 
-<!-- Block2：縦書きタイピング演出 -->
+  <!-- Block1 & Block2：縦書きタイピング演出 -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const el = document.getElementById("block2Type");
-      if (!el) return;
+      const block1El = document.getElementById("block1Type");
+      const block2El = document.getElementById("block2Type");
 
-      // ★ ここに流したい文章を自由に書いてOK（長文も可）
-      const text = `有料で手助けを行う支援サービスエリアにいるノニュアルがいつもと同じ言葉を繰り返している\n「困っていることはありませんか？」「お困りごとはありませんか？」\n困ってないよと僕は内心で答えて通り過ぎた。\n時々、思う。\n「心とは、一体何なんだろう」`;
+      // ★ Block1 に流したい文章（黒文字）
+      const block1Text = `「お困り、事、ハ、あ…ませんか？」
+通学路の帰り道。
+有料支援サービスエリアから少し離れたところに頭部や胴体を外的要因によって傷つけられ、故障しているノニュアルがいた。
 
-      let index = 0;
-      const speed = 60;      // 1文字あたりの間隔(ms) 小さいほど速い
-      const clearDelay = 1500; // 打ち終わってから消すまでの待ち時間(ms)
+困ったな。
+人間が怪我をしていたら手を差し伸べ治療するべきと学校の道徳では習ったけれどノニュアルのようなアンドロイドに対しても『道徳』は適用されるべきなんだろうか。
+ノニュアルは社会を補助のための「道具」であり「物」だ。
+けれど最近ノニュアル社員というものも出来たとニュースで読んだ。
+今の社会で、今現在取るべき道徳的正解はなんだろう。
+僕はこのパターンを習ってない。
 
-      el.style.opacity = 1;  // フェードイン開始
+ビニール傘を左に持ち直しスマートデバイスを取り出してこの場に適した正解パターンを検索しようとした。
+僕が目の前のアンドロイドを助けようとしているように見えたのだろうか。
+赤い傘を差した中年の女性が僕に声をかけてきた。
 
-      const timer = setInterval(() => {
-        el.textContent = text.slice(0, index + 1);
-        index++;
+「その子を助けようとしてるの？最近の若い子って優しいのねぇ。放っておけばいいのよそんなの」
+「こんにちわ。そうなんですか？」
+「ええ。だって、そいつらのせいで私仕事の給料安くなっちゃったのよ。嫌いよ。全部スクラップになっちゃえばいいのに。あなたも放っておいたほうがいいわよ。将来のためにもね」
 
-        if (index >= text.length) {
-          clearInterval(timer);
+僕は黙って頷いてスマートデバイスを仕舞ってその場を立ち去った。
+自分が壊れていながら、相手に対して「困っていませんか」と力になろうとしていた。
+あのアンドロイドは「道徳的に良い」とされる行動をしていた。
+でも僕はアンドロイドを助けなかった。`;
 
-          // 一定時間たったらフェードアウト
-          setTimeout(() => {
-            el.style.transition = "opacity 1s ease";
-            el.style.opacity = 0;
-          }, clearDelay);
-        }
-      }, speed);
+      // ★ Block2 に流したい文章（白文字）
+      const block2Text = `有料で手助けを行う支援サービスエリアにいるノニュアルがいつもと同じ言葉を繰り返している。
+「困っていることはありませんか？」「お困りごとはありませんか？」
+困ってないよと僕は内心で答えて通り過ぎた。
+時々、思う。
+「心とは、一体何なんだろう」`;
+
+      function typeVertical(el, text, speed, clearDelay) {
+        if (!el) return;
+
+        let index = 0;
+        el.style.opacity = 1;
+
+        const timer = setInterval(() => {
+          el.textContent = text.slice(0, index + 1);
+          index++;
+
+          if (index >= text.length) {
+            clearInterval(timer);
+
+            if (clearDelay) {
+              setTimeout(() => {
+                el.style.transition = "opacity 1s ease, transform 1s ease";
+                el.style.opacity = 0;
+                el.style.transform = "translateX(-16px)";
+
+                setTimeout(() => {
+                  el.textContent = "";
+                }, 900);
+              }, clearDelay);
+            }
+          }
+        }, speed);
+      }
+
+      // Block1：少し早めに開始（黒文字）
+      setTimeout(() => {
+        typeVertical(block1El, block1Text, 60, 1500);
+      }, 600);
+
+      // Block2：少し遅らせて開始（白文字）
+      setTimeout(() => {
+        typeVertical(block2El, block2Text, 60, 1500);
+      }, 1200);
     });
   </script>
-      
-   <!-- B：フリック／ドラッグ／キーで A / C に遷移 -->
+
+  <!-- B：フリック／ドラッグ／キーで A / C に遷移 -->
   <script>
   (function () {
     let startX = null;
