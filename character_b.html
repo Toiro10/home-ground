@@ -425,13 +425,13 @@
     </section>
   </div>
 
- <!-- Block1 & Block2：縦書きタイピング演出 -->
+<!-- Block1 & Block2：縦書きタイピング（表示されたまま固定） -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const block1El = document.getElementById("block1Type");
   const block2El = document.getElementById("block2Type");
 
-  // ★ Block1 に流したい文章（黒文字）
+  // ★ Block1 に流す文章（黒）
   const block1Text = `「お困り、事、ハ、あ…ませんか？」
 通学路の帰り道。
 有料支援サービスエリアから少し離れたところに頭部や胴体を外的要因によって傷つけられ、故障しているノニュアルがいた。
@@ -453,16 +453,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 自分が壊れていながら、相手に対して「困っていませんか」と力になろうとしていた。
 あのアンドロイドは「道徳的に良い」とされる行動をしていた。
-でも僕はアンドロイドを助けなかった。`;
+でも僕はアンドロイドを助けなかった`;
 
-  // ★ Block2 に流したい文章（白文字）※今までの文をそのまま利用
+  // ★ Block2 に流す文章（白）
   const block2Text = `有料で手助けを行う支援サービスエリアにいるノニュアルがいつもと同じ言葉を繰り返している
 「困っていることはありませんか？」「お困りごとはありませんか？」
 困ってないよと僕は内心で答えて通り過ぎた。
 時々、思う。
 「心とは、一体何なんだろう」`;
 
-  function typeVertical(el, text, speed, clearDelay) {
+  function typeVertical(el, text, speed) {
     if (!el) return;
 
     let index = 0;
@@ -474,18 +474,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (index >= text.length) {
         clearInterval(timer);
-
-        if (clearDelay) {
-          setTimeout(() => {
-            el.style.transition = "opacity 1s ease, transform 1s ease";
-            el.style.opacity = 0;
-            el.style.transform = "translateX(-16px)"; // 少し左に流れながら消える
-
-            setTimeout(() => {
-              el.textContent = "";
-            }, 900);
-          }, clearDelay);
-        }
+        // ✅ ここで止まる → 文字は消えずに残り続ける
       }
     }, speed);
   }
@@ -493,14 +482,14 @@ document.addEventListener("DOMContentLoaded", function () {
   // Block1：少し早めに開始（黒）
   if (block1El) {
     setTimeout(() => {
-      typeVertical(block1El, block1Text, 60, 1500);
+      typeVertical(block1El, block1Text, 60);
     }, 600);
   }
 
   // Block2：少し遅らせて開始（白）
   if (block2El) {
     setTimeout(() => {
-      typeVertical(block2El, block2Text, 60, 1500);
+      typeVertical(block2El, block2Text, 60);
     }, 1200);
   }
 });
