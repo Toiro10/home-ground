@@ -200,6 +200,36 @@
   gap: 16px;
 }
 
+.timeline-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;          /* 横長の比率。好みで調整OK */
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-soft);
+    }
+
+    .timeline-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .block2-type {
+      position: absolute;
+      top: 8%;                       /* 位置はあとで調整OK */
+      right: 8%;
+      writing-mode: vertical-rl;     /* 縦書き（右→左） */
+      font-size: 18px;
+      letter-spacing: 0.2em;
+      line-height: 1.8;
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+      opacity: 0;                    /* 最初は見えない */
+      white-space: pre-wrap;         /* \n を改行として扱う */
+    }
+    
     .timeline-label {
       font-size: 12px;
       letter-spacing: 0.16em;
@@ -324,12 +354,22 @@
           </p>
         </section>
 
-        <!-- Block 2 -->
+         <!-- Block 2 -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 2</div>
           <h3 class="timeline-heading">ここに見出し</h3>
+
+          <!-- 画像＋その上に縦書きテキスト -->
+          <div class="timeline-image">
+            <!-- ※あとで本物の画像パスに差し替えてOK -->
+            <img src="assets/block2_dummy.png" alt="Block2 image">
+            <div class="block2-type" id="block2Type"></div>
+          </div>
+
+          <!-- 通常の説明テキスト（画像の下に表示） -->
           <p class="timeline-text">
-            ここにブロック2のテキストを書きます。
+            ここにブロック2のテキストを書きます。<br>
+            画像の下に表示される説明用テキストです。
           </p>
         </section>
 
@@ -361,6 +401,38 @@
   </section>
   </div>
 
+<!-- Block2：縦書きタイピング演出 -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const el = document.getElementById("block2Type");
+      if (!el) return;
+
+      // ★ ここに流したい文章を自由に書いてOK（長文も可）
+      const text = `有料で手助けを行う支援サービスエリアにいるノニュアが言う\n「困っていることはありませんか？」「お困りごとはありませんか？」\n「困ってないよ」と僕は通り過ぎた。\n時々、思う。\n「心とは、一体何なんだろう」`;
+
+      let index = 0;
+      const speed = 60;      // 1文字あたりの間隔(ms) 小さいほど速い
+      const clearDelay = 1500; // 打ち終わってから消すまでの待ち時間(ms)
+
+      el.style.opacity = 1;  // フェードイン開始
+
+      const timer = setInterval(() => {
+        el.textContent = text.slice(0, index + 1);
+        index++;
+
+        if (index >= text.length) {
+          clearInterval(timer);
+
+          // 一定時間たったらフェードアウト
+          setTimeout(() => {
+            el.style.transition = "opacity 1s ease";
+            el.style.opacity = 0;
+          }, clearDelay);
+        }
+      }, speed);
+    });
+  </script>
+      
    <!-- B：フリック／ドラッグ／キーで A / C に遷移 -->
   <script>
   (function () {
