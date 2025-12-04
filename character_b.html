@@ -168,43 +168,45 @@
       text-decoration: underline;
     }
 
-    /* ===== hero 上のオレンジ縦書き & 青い横書き ===== */
+    /* ===== hero 上のオレンジ縦書き & 下部テキスト ===== */
 
+    /* オレンジ帯：手前に現れて、奥（-Z）へ引かれながらフェードアウト */
     @keyframes floatInOutZ {
       0% {
         opacity: 0;
-        transform: translateZ(-160px) scale(0.85);
+        transform: translateZ(0px) scale(0.9);
       }
       20% {
         opacity: 1;
-        transform: translateZ(0) scale(1);
+        transform: translateZ(0px) scale(1);
       }
       80% {
         opacity: 1;
-        transform: translateZ(0) scale(1);
+        transform: translateZ(-80px) scale(0.97);
       }
       100% {
         opacity: 0;
-        transform: translateZ(160px) scale(1.05);
+        transform: translateZ(-160px) scale(0.94);
       }
     }
 
-    @keyframes blueFloatInOut {
+    /* 下の横書きテキスト：オレンジ終了後に出て、奥へ引かれて消える */
+    @keyframes bottomTextFloat {
       0% {
         opacity: 0;
-        transform: translateZ(-160px) scale(0.85);
+        transform: translateZ(0px) scale(0.9);
       }
       25% {
         opacity: 1;
-        transform: translateZ(0) scale(1);
+        transform: translateZ(0px) scale(1);
       }
       75% {
         opacity: 1;
-        transform: translateZ(0) scale(1);
+        transform: translateZ(-60px) scale(0.97);
       }
       100% {
         opacity: 0;
-        transform: translateZ(120px) scale(1.05);
+        transform: translateZ(-120px) scale(0.94);
       }
     }
 
@@ -247,34 +249,20 @@
       color: #111;
     }
 
-    /* 青い横長帯 */
-    .hero-blue-strip {
+    /* 下部の横書きテキスト（黒） */
+    .hero-bottom-text {
       position: absolute;
       left: 18%;
       right: 18%;
       bottom: 18%;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transform-origin: center center;
-      opacity: 0;
-      z-index: 3;
-      animation: blueFloatInOut 4.5s ease-in-out 6.8s forwards; /* オレンジ2つの後に出て消える */
-    }
-
-    .hero-blue-bg {
-      position: absolute;
-      inset: 0;
-      background: rgba(90, 80, 255, 0.85);
-    }
-
-    .hero-blue-text {
-      position: relative;
+      text-align: center;
       font-size: 16px;
       letter-spacing: 0.12em;
-      color: #ffffff;
-      text-align: center;
+      color: #000000;   /* ★ 黒文字 */
+      opacity: 0;
+      transform-origin: center center;
+      z-index: 3;
+      animation: bottomTextFloat 4.5s ease-in-out 6.8s forwards; /* オレンジ2つの後 */
     }
 
     /* ===== 下部：バックボーン 5ブロック ===== */
@@ -304,7 +292,7 @@
       border: 1px solid var(--border-soft);
       background: rgba(255, 255, 255, 0.02);
       padding: 24px 24px;
-      min-height: 480px;        /* ← 全ブロック共通の高さ */
+      min-height: 480px;
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -466,12 +454,9 @@
             </div>
           </div>
 
-          <!-- 青い横書き：オレンジが終わったあとに出てフェードアウト -->
-          <div class="hero-blue-strip">
-            <div class="hero-blue-bg"></div>
-            <div class="hero-blue-text">
-              彼の中で「道徳的行動」の式が成り立っているだけだった。
-            </div>
+          <!-- 黒文字の横書きテキスト（青帯の文章だけ抽出） -->
+          <div class="hero-bottom-text">
+            彼の中で「道徳的行動」の式が成り立っているだけだった。
           </div>
 
           <!-- 上部のコピー -->
@@ -503,7 +488,7 @@
       <h2 class="timeline-title">TIMELINE / BACKBONE</h2>
 
       <div class="timeline-list">
-        <!-- Block 1：画像の上に縦書きテキスト（黒） -->
+        <!-- Block 1 -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 1</div>
           <h3 class="timeline-heading">ここに見出し（年齢や年代）</h3>
@@ -519,7 +504,7 @@
           </p>
         </section>
 
-        <!-- Block 2：画像＋白い縦書きタイピング -->
+        <!-- Block 2 -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 2</div>
           <h3 class="timeline-heading">ここに見出し</h3>
@@ -571,7 +556,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const block1El = document.getElementById("block1Type");
   const block2El = document.getElementById("block2Type");
 
-  // Block1 に流す文章（黒）
   const block1Text = `「お困り、ゴト、ハ、あ…ませんか？」
 通学路の帰り道。
 有料支援サービスエリアから少し離れたところに頭部や胴体を外的要因によって傷つけられ、故障しているノニュアルがいた。
@@ -595,7 +579,6 @@ document.addEventListener("DOMContentLoaded", function () {
 あのアンドロイドは道徳的に「善い」とされる行動をしていた。
 でも僕はアンドロイドを助けなかった。`;
 
-  // Block2 に流す文章（白）
   const block2Text = `有料で手助けを行う支援サービスエリアにいるノニュアルがいつもと同じ言葉を繰り返している
 「困っていることはありませんか？」「お困りごとはありませんか？」
 困ってないよと僕は内心で答えて通り過ぎた。
@@ -646,7 +629,7 @@ document.addEventListener("DOMContentLoaded", function () {
       window.location.href = "character_c.html";
     }
 
-    /* スマホ（タッチ） */
+    // スマホ（タッチ）
     window.addEventListener("touchstart", function (e) {
       if (e.touches.length > 1) return;
       startX = e.touches[0].clientX;
@@ -667,7 +650,7 @@ document.addEventListener("DOMContentLoaded", function () {
       startX = null;
     });
 
-    /* PC（マウスドラッグ） */
+    // PC（マウスドラッグ）
     window.addEventListener("mousedown", function (e) {
       startX = e.clientX;
     });
@@ -687,7 +670,7 @@ document.addEventListener("DOMContentLoaded", function () {
       startX = null;
     });
 
-    /* PC（キーボード） */
+    // PC（キーボード）
     window.addEventListener("keydown", function (e) {
       if (e.key === "ArrowLeft") {
         goPrev();
