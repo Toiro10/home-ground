@@ -313,24 +313,33 @@
     }
 
     .timeline-text {
-      font-size: 13px;
-      line-height: 1.7;
-      color: var(--text-sub);
-    }
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-sub);
+}
 
-    @keyframes floatInQuote {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
+@keyframes floatInQuote {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
 
-    @media (max-width: 900px) {
-      .layout {
-        flex-direction: column;
-      }
+/* ▼ ここへ追加（縦書きステップ用） */
+.vertical-step {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  white-space: pre-wrap;
+  font-size: 20px;
+  letter-spacing: 0.2em;
+  line-height: 2.2;
+}
+/* ▲ 追加ここまで */
+
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+  }
+  …
+}
 
       .side-nav {
         flex-direction: row;
@@ -508,12 +517,18 @@ document.addEventListener("DOMContentLoaded", function () {
     // ★ ここに表示したい問い / テキストを好きに並べてOK
     const steps = [
   "「善い行い」とは、誰の基準で決まるのだろうか。",
-  `（）にあてはまる番号を選びなさい。
-問1.困っているひとがいたら（　　　　）する。　1.声をかける　2.通り過ぎる　3.手を振る`,
-  `（）にあてはまる番号を選びなさい。
-問2.落とし物を見つけたら（　　　　）する。　1.自分のものにする　2.交番にとどける　3.地面にうめる`,
-  `問3.空欄をうめなさい。
-友達が笑っていると私も（　　）しい気持ちになる。`,
+
+  `<div class="vertical-step">（）にあてはまる番号を選びなさい。
+問1.困っているひとがいたら（　　　　）する。
+1.声をかける　2.通り過ぎる　3.手を振る</div>`,
+
+  `<div class="vertical-step">（）にあてはまる番号を選びなさい。
+問2.落とし物を見つけたら（　　　　）する。
+1.自分のものにする　2.交番にとどける　3.地面にうめる</div>`,
+
+  `<div class="vertical-step">問3.空欄をうめなさい。
+友達が笑っていると私も（　　）しい気持ちになる。</div>`,
+
   "彼の善良さは、空欄を埋めるだけで生まれている。"
 ];
 
@@ -532,7 +547,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // テキスト差し替え
-      overlayInner.textContent = steps[i];
+      overlayInner.innerHTML = steps[i];
 
       // フェードイン
       requestAnimationFrame(() => {
