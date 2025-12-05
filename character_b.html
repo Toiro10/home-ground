@@ -39,7 +39,7 @@
       min-height: 70vh;
     }
 
-    /* 左の縦メニュー（幅 70px は前と同じ） */
+    /* 左の縦メニュー */
     .side-nav {
       width: 70px;
       background: linear-gradient(180deg, #111111, #050505);
@@ -258,18 +258,18 @@
       text-align: center;
       font-size: 16px;
       letter-spacing: 0.12em;
-      color: #000000;   /* ★ 黒文字 */
+      color: #000000;
       opacity: 0;
       transform-origin: center center;
       z-index: 3;
-      animation: bottomTextFloat 4.5s ease-in-out 6.8s forwards; /* オレンジ2つの後 */
+      animation: bottomTextFloat 4.5s ease-in-out 6.8s forwards;
     }
 
     /* ===== 下部：バックボーン 5ブロック ===== */
 
     .timeline {
-      width: calc(100% - 70px);   /* ← side-nav 分を引く */
-      margin-left: 70px;          /* ← side-nav の幅と同じ */
+      width: calc(100% - 70px);
+      margin-left: 70px;
       padding: 32px 32px 56px;
     }
 
@@ -315,8 +315,35 @@
       display: block;
     }
 
-    /* Block1：画像の上に縦書きテキスト（黒） */
+    /* Block1：横書き・中央揃え、左からスッと出る（黒） */
     .block1-type {
+      position: absolute;
+      top: 12%;
+      left: 50%;
+      transform: translate(-50%, 0) translateX(-80px);
+      max-width: 80%;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.9;
+      color: #000000;
+      opacity: 0;
+      white-space: pre-wrap;
+      animation: block1FloatIn 1.4s ease-out 0.5s forwards;
+    }
+
+    @keyframes block1FloatIn {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 0) translateX(-120px);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, 0) translateX(0);
+      }
+    }
+
+    /* Block2：画像上の縦書きタイピング（黒） */
+    .block2-type {
       position: absolute;
       top: 8%;
       right: 8%;
@@ -326,21 +353,6 @@
       line-height: 1.8;
       color: #000000;
       text-shadow: none;
-      opacity: 0;
-      white-space: pre-wrap;
-    }
-
-    /* Block2：画像上の縦書きテキスト（白） */
-    .block2-type {
-      position: absolute;
-      top: 8%;
-      right: 8%;
-      writing-mode: vertical-rl;
-      font-size: 18px;
-      letter-spacing: 0.2em;
-      line-height: 1.8;
-      color: #ffffff;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
       opacity: 0;
       white-space: pre-wrap;
     }
@@ -445,7 +457,7 @@
             </div>
           </div>
 
-          <!-- オレンジ縦書き 2（少し遅れて） -->
+          <!-- オレンジ縦書き 2 -->
           <div class="hero-orange-block hero-orange-2">
             <div class="hero-orange-bg"></div>
             <div class="hero-orange-text">
@@ -454,7 +466,7 @@
             </div>
           </div>
 
-          <!-- 黒文字の横書きテキスト（青帯の文章だけ抽出） -->
+          <!-- 下部の横書きテキスト（青帯から抜き出した文章・黒文字） -->
           <div class="hero-bottom-text">
             彼の中で「道徳的行動」の式が成り立っているだけだった。
           </div>
@@ -471,7 +483,7 @@
               </ruby>
             </div>
             <p class="hero-desc">
-              心の起伏が極めて平坦な青年。共感や理解によるものではなく教科書的な道徳的規範に則って模範的に行動する。<br>
+              情動の振れ幅がきわめて小さい青年。他者への共感ではなく、学校で学んだ”道徳の正解”だけを基準に行動するため周囲からは模範的で優しい人間とみなされている。<br>
               出身：日本<br>
               身分：一般市民<br>
               肩書：高校生
@@ -488,23 +500,27 @@
       <h2 class="timeline-title">TIMELINE / BACKBONE</h2>
 
       <div class="timeline-list">
-        <!-- Block 1 -->
+        <!-- Block 1：横書き・中央揃え、左からスッと出る -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 1</div>
           <h3 class="timeline-heading">ここに見出し（年齢や年代）</h3>
 
           <div class="timeline-image">
             <img src="assets/block1_dummy.png" alt="Block1 image">
-            <div class="block1-type" id="block1Type"></div>
+            <div class="block1-type">
+僕は道徳のテストの点数が良かった。
+けれど、心や道徳がなんであるかはいまも分からないままだ。
+
+それでも、僕のしていることは正解なんだと思う。なぜなら道徳のテストで○を貰えるから。
+            </div>
           </div>
 
           <p class="timeline-text">
-            ここにブロック1のテキストを書きます。<br>
-            例えば「10歳 / 小学校時代」の出来事など。
+            <!-- 必要があればここに補足テキストを追加してOK -->
           </p>
         </section>
 
-        <!-- Block 2 -->
+        <!-- Block 2：縦書きタイピング（黒） -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 2</div>
           <h3 class="timeline-heading">ここに見出し</h3>
@@ -515,8 +531,7 @@
           </div>
 
           <p class="timeline-text">
-            ここにブロック2のテキストを書きます。<br>
-            画像の下に表示される説明用テキストです。
+            <!-- ここは必要ならダイジェストなどを書く -->
           </p>
         </section>
 
@@ -525,7 +540,11 @@
           <div class="timeline-label">BLOCK 3</div>
           <h3 class="timeline-heading">ここに見出し</h3>
           <p class="timeline-text">
-            ここにブロック3のテキストを書きます。
+            有料で手助けを行う支援サービスエリアにいるノニュアがいつもと同じ言葉を繰り返していた。<br>
+            「お手伝いできることはありませんか？」「お困りごとはありませんか？」<br>
+            困ってないよと僕は内心で答えて通り過ぎた。<br>
+            時々、思う。<br>
+            「心とは、一体何なんだろう」
           </p>
         </section>
 
@@ -534,7 +553,24 @@
           <div class="timeline-label">BLOCK 4</div>
           <h3 class="timeline-heading">ここに見出し</h3>
           <p class="timeline-text">
-            ここにブロック4のテキストを書きます。
+            掃除の時間、隣の席の女の子が話しかけてきた。<br><br>
+
+            「わたるくんって優しいよね」<br>
+            「そうかな」<br>
+            「そうだって！今日とかも遅刻したのって交番に落とし物届けてたからでしょ？…私、あれ見て見ぬふりしちゃったから。わたるくんって優しいすごい人だなぁって思った」<br><br>
+
+            僕は三度瞬きをして小学校で習った道徳の一文を思い出した。<br>
+            『落とし物は交番に届けましょう』<br><br>
+
+            「そうかな。普通のことをしただけだよ」<br>
+            「それがすごいんだよ！」<br><br>
+
+            優しいね、と彼女は笑った。<br>
+            僕も笑った。どう返せば良いのか分からない時は微笑むのが一番安全に場を落ち着かせる手段だと知っていた。<br><br>
+
+            ノニュアルが僕と同じ事をしても誰も「優しい」と言わないのに僕は言われる。<br><br>
+
+            僕にはその違いをまだ上手く説明できなかった。
           </p>
         </section>
 
@@ -543,22 +579,38 @@
           <div class="timeline-label">BLOCK 5</div>
           <h3 class="timeline-heading">ここに見出し</h3>
           <p class="timeline-text">
-            ここにブロック5のテキストを書きます。
+            僕には何が「良くて」何が「悪い」ことなのかの区別がつかなかった。<br>
+            「自分のしたいことをしていいのよ」「好きなものを選びなさい」<br>
+            言われると困る言葉たち。僕には比較するための基準がなかったから。幼いころは静かすぎて家族を困らせていた。<br>
+            ノニュアル達AIは最初に基準や指標をプログラミングされている。<br>
+            でも僕は人間だから、そういう風にできていない。<br><br>
+
+            困った僕は、小学校で初めて明確な「基準」を知った。<br><br>
+
+            「あいてをこまらせてはいけません」<br>
+            「おじいちゃんに席を譲るのはいいことです」<br><br>
+
+            道徳には正解がある。○☓がある。○を並べることを僕は「良いこと」だと感じた。<br><br>
+
+            「人に優しくできる良い人になりましょうね」<br><br>
+
+            ーーそうしよう。
           </p>
         </section>
       </div>
     </section>
   </div>
 
-<!-- Block1 & Block2：縦書きタイピング（表示されたまま固定） -->
+<!-- Block2：縦書きタイピング（黒） -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  const block1El = document.getElementById("block1Type");
   const block2El = document.getElementById("block2Type");
 
-  const block1Text = `「お困り、ゴト、ハ、あ…ませんか？」
-通学路の帰り道。
-有料支援サービスエリアから少し離れたところに頭部や胴体を外的要因によって傷つけられ、故障しているノニュアルがいた。
+  const block2Text = `「お困り、ゴト、ハ、あ…ませんか？」
+
+学校の帰り道。
+有料支援サービスエリアから少し離れた道路脇で今朝見たものと同じ型のノニュアルが体のあちこちを傷つけられ故障して倒れていた。
+金属の棒のようなもので殴打したような凹みだ。オイルが漏れ、ぱちぱちとむき出しになったケーブルから火花が散っている。
 
 困ったな。
 人間が怪我をしていたら手を差し伸べ治療するべきと学校の道徳では習ったけれどノニュアルのようなアンドロイドに対しても『道徳』は適用すべきなんだろうか。
@@ -567,23 +619,24 @@ document.addEventListener("DOMContentLoaded", function () {
 今の社会で、今現在取るべき道徳的正解はなんだろう。
 僕はこのパターンを習ってない。
 
-ビニール傘を左に持ち直しスマートデバイスを取り出してこの場に適した正解パターンを検索しようとしたとき、赤い傘を差した中年の女性が僕に声をかけてきた。
+道徳には正解がある。僕は学校でそう習った。
+ビニール傘を左に持ち直しスマートデバイスを取り出してこの場に適した正解行動を検索しようとすると赤い傘を差した中年の女性が僕に声をかけてきた。
 
 「その子を助けようとしてるの？最近の若い子って優しいのねぇ。放っておけばいいのよそんなの」
-「こんにちわ。そうなんですか？」
-「ええ。だって、そいつらのせいで私仕事の給料安くなっちゃったのよ。嫌いよ。全部スクラップになっちゃえばいいのに。あなたも放っておいたほうがいいわよ。将来のためにもね」
+
+「こんにちわ」
+僕は挨拶を返した。
+挨拶を返すことは人間の基本的な作法だ。あと挨拶は時間に合わせて言うべきだと学校で習った。あと三分遅ければ「こんばんは」だった。
+
+「放っておいてもいいんでしょうか？」
+「だって、そいつらのせいで私仕事の給料安くなっちゃったのよ。嫌いだわ。全部スクラップになっちゃえばいいのに。あなたも放っておいたほうがいいわよ。将来のためにもね」
 
 僕は黙って頷いてスマートデバイスを仕舞ってその場を立ち去った。
 
 自分が壊れていながら、相手に対して「困っていませんか」と力になろうとしていた。
 あのアンドロイドは道徳的に「善い」とされる行動をしていた。
-でも僕はアンドロイドを助けなかった。`;
-
-  const block2Text = `有料で手助けを行う支援サービスエリアにいるノニュアルがいつもと同じ言葉を繰り返している
-「困っていることはありませんか？」「お困りごとはありませんか？」
-困ってないよと僕は内心で答えて通り過ぎた。
-時々、思う。
-「心とは、一体何なんだろう」`;
+でも僕はアンドロイドを助けなかった。
+ノニュアルは助ける必要がないらしい。`;
 
   function typeVertical(el, text, speed) {
     if (!el) return;
@@ -601,16 +654,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }, speed);
   }
 
-  if (block1El) {
-    setTimeout(() => {
-      typeVertical(block1El, block1Text, 60);
-    }, 600);
-  }
-
   if (block2El) {
     setTimeout(() => {
-      typeVertical(block2El, block2Text, 60);
-    }, 1200);
+      typeVertical(block2El, block2Text, 60); // 速度は好みで調整OK
+    }, 800);
   }
 });
 </script>
