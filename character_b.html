@@ -1,424 +1,424 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>character</title>
   <style>
-:root {
-  --bg: #ffffff;
-  --panel: #ffffff;
-  --accent: #000000;
-  --text-main: #000000;
-  --text-sub: #444444;
-  --border-soft: rgba(0, 0, 0, 0.15);
-}
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+    :root {
+      --bg: #ffffff;
+      --panel: #ffffff;
+      --accent: #000000;
+      --text-main: #000000;
+      --text-sub: #444444;
+      --border-soft: rgba(0, 0, 0, 0.15);
+    }
 
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text-main);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-.page {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-/* ===== 上部：メニューバー＋メインビジュアル ===== */
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-.layout {
-  display: flex;
-  width: 100%;
-  min-height: 70vh;
-}
+    /* ===== 上部：メニューバー＋メインビジュアル ===== */
 
-/* 左の縦メニュー */
-.side-nav {
-  width: 70px;
-  background: linear-gradient(180deg, #111111, #050505);
-  border-right: 1px solid var(--border-soft);
-  padding: 16px 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+    .layout {
+      display: flex;
+      width: 100%;
+      min-height: 70vh;
+    }
 
-.nav-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 48px;
-  border-radius: 12px;
-  font-size: 11px;
-  text-decoration: none;
-  color: var(--text-sub);
-  border: 1px solid transparent;
-  background: transparent;
-  cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-}
+    /* 左の縦メニュー */
+    .side-nav {
+      width: 70px;
+      background: linear-gradient(180deg, #111111, #050505);
+      border-right: 1px solid var(--border-soft);
+      padding: 16px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
-.nav-item:hover {
-  border-color: var(--border-soft);
-  color: var(--text-main);
-  background: rgba(255, 255, 255, 0.04);
-}
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      border-radius: 12px;
+      font-size: 11px;
+      text-decoration: none;
+      color: var(--text-sub);
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
 
-.nav-item-active {
-  border-color: var(--accent);
-  color: #000;
-  background: var(--accent);
-  font-weight: 600;
-}
+    .nav-item:hover {
+      border-color: var(--border-soft);
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
 
-.nav-item-disabled {
-  opacity: 0.35;
-  cursor: default;
-  pointer-events: none;
-}
+    .nav-item-active {
+      border-color: var(--accent);
+      color: #000;
+      background: var(--accent);
+      font-weight: 600;
+    }
 
-/* 右側メインビジュアルコンテナ */
-.main-panel {
-  flex: 1;
-  padding: 24px 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+    .nav-item-disabled {
+      opacity: 0.35;
+      cursor: default;
+      pointer-events: none;
+    }
 
-.hero-visual {
-  position: relative;
-  border-radius: 18px;
-  border: 1px solid var(--border-soft);
-  overflow: hidden;
-  min-height: 830px;
-  background: radial-gradient(circle at top, #202020, #050505);
-  perspective: 800px; /* 将来の Z 軸演出用 */
-}
+    /* 右側メインビジュアルコンテナ */
+    .main-panel {
+      flex: 1;
+      padding: 24px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-.hero-image-layer {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
+    .hero-visual {
+      position: relative;
+      border-radius: 18px;
+      border: 1px solid var(--border-soft);
+      overflow: hidden;
+      min-height: 830px;
+      background: radial-gradient(circle at top, #202020, #050505);
+      perspective: 800px;
+    }
 
-.hero-image-layer img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  opacity: 0.95;
-}
+    .hero-image-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
 
-.hero-overlay {
-  position: absolute;
-  color: var(--text-main);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  z-index: 5;
-}
+    .hero-image-layer img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.95;
+    }
 
-/* 「道徳、とは」 部分 */
-.hero-quote {
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, 0);
-  font-size: 58px;
-  letter-spacing: 0.18em;
-  opacity: 0;
-  animation: floatInQuote 1.5s ease-out 0.8s forwards;
-}
+    .hero-overlay {
+      position: absolute;
+      color: var(--text-main);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      z-index: 5;
+    }
 
-/* キャラクター名＋説明 部分（右下） */
-.hero-meta {
-  right: 10%;
-  bottom: 12%;
-  text-align: left;
-}
+    /* 「道徳、とは」 部分 */
+    .hero-quote {
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, 0);
+      font-size: 58px;
+      letter-spacing: 0.18em;
+      opacity: 0;
+      animation: floatInQuote 1.5s ease-out 0.8s forwards;
+    }
 
-.hero-name {
-  font-size: 20px;
-  margin-bottom: 8px;
-  letter-spacing: 0.18em;
-}
+    /* キャラクター名＋説明 部分（右下） */
+    .hero-meta {
+      right: 10%;
+      bottom: 12%;
+      text-align: left;
+    }
 
-.hero-desc {
-  font-size: 13px;
-  line-height: 1.7;
-  max-width: 260px;
-  color: var(--text-sub);
-}
+    .hero-name {
+      font-size: 20px;
+      margin-bottom: 8px;
+      letter-spacing: 0.18em;
+    }
 
-.back-link {
-  font-size: 12px;
-  color: var(--text-sub);
-  text-decoration: none;
-  align-self: flex-start;
-  margin-top: 8px;
-}
+    .hero-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      max-width: 260px;
+      color: var(--text-sub);
+    }
 
-.back-link:hover {
-  color: var(--text-main);
-  text-decoration: underline;
-}
+    .back-link {
+      font-size: 12px;
+      color: var(--text-sub);
+      text-decoration: none;
+      align-self: flex-start;
+      margin-top: 8px;
+    }
 
-/* ===== hero 全面ホワイトオーバーレイ ===== */
+    .back-link:hover {
+      color: var(--text-main);
+      text-decoration: underline;
+    }
 
-.hero-full-overlay {
-  position: absolute;
-  inset: 0;
-  background: #ffffff;               /* 画面全体を白で覆う */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;                       /* hero-quote / meta より上 */
-  opacity: 1;
-  pointer-events: none;
-  transition: opacity 1s ease;
-}
+    /* ===== hero 全面ホワイトオーバーレイ ===== */
 
-.hero-full-overlay.hidden {
-  opacity: 0;
-}
+    .hero-full-overlay {
+      position: absolute;
+      inset: 0;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      opacity: 1;
+      pointer-events: none;
+      transition: opacity 1s ease;
+    }
 
-.hero-full-overlay-inner {
-  max-width: 80%;
-  text-align: center;
-  font-size: 18px;
-  line-height: 1.9;
-  color: #000000;
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-  white-space: pre-wrap;
-}
+    .hero-full-overlay.hidden {
+      opacity: 0;
+    }
 
-.hero-full-overlay-inner.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+    .hero-full-overlay-inner {
+      max-width: 80%;
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.9;
+      color: #000000;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      white-space: pre-wrap;
+    }
 
-/* ▼ 問1 専用レイアウト（縦書き＆□） */
+    .hero-full-overlay-inner.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-.hero-q1-layout {
-  display: flex;
-  flex-direction: row-reverse;   /* 右：問1、中央：文、左：選択肢 の順 */
-  justify-content: center;
-  align-items: flex-start;
-  gap: 32px;
-}
+    /* ▼ 問1 専用レイアウト（オーダー画像寄せ） */
 
-.hero-q1-col,
-.hero-q1-options-col {
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  white-space: pre-wrap;
-  font-size: 16px;
-  line-height: 2.0;
-  letter-spacing: 0.18em;
-}
+    .hero-q1-layout {
+      display: flex;
+      flex-direction: row; /* 左：3,2,1 / 中央：文 / 右：問1 */
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+    }
 
-/* 左側の 1/2/3 選択肢を横に並べる */
-.hero-q1-options {
-  display: flex;
-  flex-direction: row-reverse;
-  gap: 24px;
-}
+    /* 右の「問□1〜」と中央の文、左の選択肢カラム共通の縦書き設定 */
+    .hero-q1-question,
+    .hero-q1-sentence,
+    .hero-q1-options-col {
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      white-space: pre-wrap;
+      font-size: 16px;
+      line-height: 2.0;
+      letter-spacing: 0.18em;
+    }
 
-/* □（小さい・縦長） */
-.hero-q1-box-small,
-.hero-q1-box-long {
-  display: inline-block;
-  border: 1px solid #000;
-  box-sizing: border-box;
-}
+    /* 左側：3・2・1 の縦カラムを横に3つ並べる */
+    .hero-q1-options {
+      display: flex;
+      flex-direction: row;
+      gap: 24px;
+    }
 
-.hero-q1-box-small {
-  width: 1.2em;
-  height: 1.2em;
-  margin: 0.2em 0;
-}
+    /* □（小さい・縦長） */
+    .hero-q1-box-small,
+    .hero-q1-box-long {
+      display: inline-block;
+      border: 1px solid #000;
+      box-sizing: border-box;
+    }
 
-.hero-q1-box-long {
-  width: 1.4em;
-  height: 5em;
-  margin: 0.4em 0;
-}
+    .hero-q1-box-small {
+      width: 1.2em;
+      height: 1.2em;
+      margin: 0.2em 0;
+    }
 
-/* ===== 下部：バックボーン 5ブロック ===== */
+    .hero-q1-box-long {
+      width: 1.4em;
+      height: 5em; /* 縦長長方形 */
+      margin: 0.4em 0;
+    }
 
-.timeline {
-  width: calc(100% - 70px);
-  margin-left: 70px;
-  padding: 32px 32px 56px;
-}
+    /* ===== 下部：バックボーン 5ブロック ===== */
 
-.timeline-title {
-  font-size: 16px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--text-sub);
-  margin-bottom: 16px;
-}
+    .timeline {
+      width: calc(100% - 70px);
+      margin-left: 70px;
+      padding: 32px 32px 56px;
+    }
 
-.timeline-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+    .timeline-title {
+      font-size: 16px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 16px;
+    }
 
-.timeline-block {
-  border-radius: 16px;
-  border: 1px solid var(--border-soft);
-  background: rgba(255, 255, 255, 0.02);
-  padding: 24px 24px;
-  min-height: 480px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+    .timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-/* 画像枠（2〜5で共通） */
-.timeline-image {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--border-soft);
-}
+    .timeline-block {
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background: rgba(255, 255, 255, 0.02);
+      padding: 24px 24px;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-.timeline-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+    .timeline-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-soft);
+    }
 
-/* Block1：横書き・中央揃え、左からスッと出る（黒） */
-.block1-type {
-  position: absolute;
-  top: 12%;
-  left: 50%;
-  transform: translate(-50%, 0) translateX(-80px);
-  max-width: 80%;
-  text-align: center;
-  font-size: 14px;
-  line-height: 1.9;
-  color: #000000;
-  opacity: 0;
-  white-space: pre-wrap;
-  animation: block1FloatIn 1.4s ease-out 0.5s forwards;
-}
+    .timeline-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
-@keyframes block1FloatIn {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 0) translateX(-120px);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, 0) translateX(0);
-  }
-}
+    /* Block1：横書き・中央揃え、左からスッと出る（黒） */
+    .block1-type {
+      position: absolute;
+      top: 12%;
+      left: 50%;
+      transform: translate(-50%, 0) translateX(-80px);
+      max-width: 80%;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.9;
+      color: #000000;
+      opacity: 0;
+      white-space: pre-wrap;
+      animation: block1FloatIn 1.4s ease-out 0.5s forwards;
+    }
 
-/* Block2〜5：画像上の縦書きタイピング（黒・共通スタイル） */
-.block2-type,
-.block3-type,
-.block4-type,
-.block5-type {
-  position: absolute;
-  top: 8%;
-  right: 8%;
-  writing-mode: vertical-rl;
-  font-size: 18px;
-  letter-spacing: 0.2em;
-  line-height: 1.8;
-  color: #000000;
-  text-shadow: none;
-  opacity: 0;
-  white-space: pre-wrap;
-}
+    @keyframes block1FloatIn {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 0) translateX(-120px);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, 0) translateX(0);
+      }
+    }
 
-.timeline-label {
-  font-size: 12px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 6px;
-}
+    /* Block2〜5：画像上の縦書きタイピング（黒・共通スタイル） */
+    .block2-type,
+    .block3-type,
+    .block4-type,
+    .block5-type {
+      position: absolute;
+      top: 8%;
+      right: 8%;
+      writing-mode: vertical-rl;
+      font-size: 18px;
+      letter-spacing: 0.2em;
+      line-height: 1.8;
+      color: #000000;
+      text-shadow: none;
+      opacity: 0;
+      white-space: pre-wrap;
+    }
 
-.timeline-heading {
-  font-size: 15px;
-  margin-bottom: 4px;
-}
+    .timeline-label {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
 
-.timeline-text {
-  font-size: 13px;
-  line-height: 1.7;
-  color: var(--text-sub);
-}
+    .timeline-heading {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
 
-@keyframes floatInQuote {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
+    .timeline-text {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-sub);
+    }
 
-/* レスポンシブ */
+    @keyframes floatInQuote {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
 
-@media (max-width: 900px) {
-  .layout {
-    flex-direction: column;
-  }
+    /* レスポンシブ */
 
-  .side-nav {
-    flex-direction: row;
-    width: 100%;
-    height: auto;
-    border-right: none;
-    border-bottom: 1px solid var(--border-soft);
-    justify-content: center;
-  }
+    @media (max-width: 900px) {
+      .layout {
+        flex-direction: column;
+      }
 
-  .nav-item {
-    flex: 1;
-  }
+      .side-nav {
+        flex-direction: row;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-soft);
+        justify-content: center;
+      }
 
-  .main-panel {
-    padding: 16px;
-  }
+      .nav-item {
+        flex: 1;
+      }
 
-  .hero-visual {
-    min-height: 260px;
-  }
+      .main-panel {
+        padding: 16px;
+      }
 
-  .hero-quote {
-    font-size: 20px;
-  }
+      .hero-visual {
+        min-height: 260px;
+      }
 
-  .hero-full-overlay-inner {
-    max-width: 90%;
-    font-size: 14px;
-  }
+      .hero-quote {
+        font-size: 20px;
+      }
 
-  .timeline {
-    margin: 16px auto 24px;
-    padding: 0 12px 24px;
-  }
-}
+      .hero-full-overlay-inner {
+        max-width: 90%;
+        font-size: 14px;
+      }
+
+      .timeline {
+        margin: 16px auto 24px;
+        padding: 0 12px 24px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="page">
-    <!-- 上：メニューバー＋メインビジュアル -->
     <div class="layout">
-      <!-- 左メニュー -->
       <aside class="side-nav">
         <a class="nav-item" href="index.html">TOP</a>
         <a class="nav-item" href="main.html">メイン</a>
@@ -427,22 +427,21 @@ body {
         <button class="nav-item nav-item-active" type="button">キャラ</button>
       </aside>
 
-      <!-- 右：キャラBメインビジュアル -->
       <main class="main-panel">
         <section class="hero-visual">
           <div class="hero-image-layer">
-            <img src="assets/DummyHuman.png" alt="キャラクター画像（仮）">
+            <img src="assets/DummyHuman.png" alt="キャラクター画像（仮）" />
           </div>
 
-          <!-- ★ 画面全体ホワイト＋問い演出用オーバーレイ -->
+          <!-- 白オーバーレイ -->
           <div class="hero-full-overlay" id="heroOverlay">
             <div class="hero-full-overlay-inner" id="heroOverlayInner"></div>
           </div>
 
-          <!-- 上部のコピー -->
+          <!-- 上部コピー -->
           <div class="hero-overlay hero-quote">「道徳、とは」</div>
 
-          <!-- 右下のキャラ名＋説明 -->
+          <!-- 右下 キャラ情報 -->
           <div class="hero-overlay hero-meta">
             <div class="hero-name">
               <ruby>
@@ -451,9 +450,9 @@ body {
               </ruby>
             </div>
             <p class="hero-desc">
-              情動の振れ幅が極めて小さい青年。  他者への共感ではなく学校で学んだ“道徳の正解”だけを基準に行動するため周囲からは模範的で優しい人間とみなされている。<br>
-              出身：日本<br>
-              身分：一般市民<br>
+              情動の振れ幅が極めて小さい青年。 他者への共感ではなく学校で学んだ“道徳の正解”だけを基準に行動するため周囲からは模範的で優しい人間とみなされている。<br />
+              出身：日本<br />
+              身分：一般市民<br />
               肩書：高校生
             </p>
           </div>
@@ -474,7 +473,7 @@ body {
           <h3 class="timeline-heading">ここに見出し（年齢や年代）</h3>
 
           <div class="timeline-image">
-            <img src="assets/block1_dummy.png" alt="Block1 image">
+            <img src="assets/block1_dummy.png" alt="Block1 image" />
             <div class="block1-type">
 僕は道徳のテストの点数が良かった。
 けれど、心や道徳がなんであるかはいまも分からないままだ。
@@ -492,7 +491,7 @@ body {
           <h3 class="timeline-heading">ここに見出し</h3>
 
           <div class="timeline-image">
-            <img src="assets/block2_dummy.png" alt="Block2 image">
+            <img src="assets/block2_dummy.png" alt="Block2 image" />
             <div class="block2-type" id="block2Type"></div>
           </div>
 
@@ -505,7 +504,7 @@ body {
           <h3 class="timeline-heading">ここに見出し</h3>
 
           <div class="timeline-image">
-            <img src="assets/block3_dummy.png" alt="Block3 image">
+            <img src="assets/block3_dummy.png" alt="Block3 image" />
             <div class="block3-type" id="block3Type"></div>
           </div>
 
@@ -518,7 +517,7 @@ body {
           <h3 class="timeline-heading">ここに見出し</h3>
 
           <div class="timeline-image">
-            <img src="assets/block4_dummy.png" alt="Block4 image">
+            <img src="assets/block4_dummy.png" alt="Block4 image" />
             <div class="block4-type" id="block4Type"></div>
           </div>
 
@@ -531,7 +530,7 @@ body {
           <h3 class="timeline-heading">ここに見出し</h3>
 
           <div class="timeline-image">
-            <img src="assets/block5_dummy.png" alt="Block5 image">
+            <img src="assets/block5_dummy.png" alt="Block5 image" />
             <div class="block5-type" id="block5Type"></div>
           </div>
 
@@ -551,31 +550,30 @@ document.addEventListener("DOMContentLoaded", function () {
     const steps = [
       "「善い行い」とは、誰の基準で決まるのだろうか。",
 
-      // ▼ 問1 レイアウト（サンプル画像寄せ）
-      `<div class="hero-q1-layout">
+      // 問1レイアウト
+      `
+      <div class="hero-q1-layout">
+        <!-- 左：３・２・１ -->
         <div class="hero-q1-options">
-          <div class="hero-q1-options-col">
-            １・\n声をかける
-          </div>
-          <div class="hero-q1-options-col">
-            ２・\n通り過ぎる
-          </div>
-          <div class="hero-q1-options-col">
-            ３・\n手を振る
-          </div>
+          <div class="hero-q1-options-col">３・手を振る</div>
+          <div class="hero-q1-options-col">２・通り過ぎる</div>
+          <div class="hero-q1-options-col">１・声をかける</div>
         </div>
 
-        <div class="hero-q1-col">
+        <!-- 中央：困っているひとがいたら □ する。 -->
+        <div class="hero-q1-sentence">
           困っているひとがいたら
           <span class="hero-q1-box-long"></span>
           する。
         </div>
 
-        <div class="hero-q1-col">
+        <!-- 右：問 □ 1 にあてはまる番号を選びなさい。 -->
+        <div class="hero-q1-question">
           問<span class="hero-q1-box-small"></span>１
           にあてはまる番号を選びなさい。
         </div>
-      </div>`,
+      </div>
+      `,
 
       "（）にあてはまる番号を選びなさい。\n問2.落とし物を見つけたら（　　　　）する。\n1.自分のものにする　2.交番にとどける　3.地面にうめる",
 
@@ -598,7 +596,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       overlayInner.classList.remove("visible");
-      // HTML をそのまま差し込む（問1用の div を含めるため）
       overlayInner.innerHTML = steps[i];
 
       requestAnimationFrame(() => {
@@ -784,16 +781,16 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("mouseup", function (e) {
     if (startX === null) return;
 
-    const endX = e.clientX;
-    const diffX = endX - startX;
+      const endX = e.clientX;
+      const diffX = endX - startX;
 
-    if (diffX > threshold) {
-      goPrev();
-    } else if (diffX < -threshold) {
-      goNext();
-    }
+      if (diffX > threshold) {
+        goPrev();
+      } else if (diffX < -threshold) {
+        goNext();
+      }
 
-    startX = null;
+      startX = null;
   });
 
   // PC（キーボード）
@@ -804,7 +801,6 @@ document.addEventListener("DOMContentLoaded", function () {
       goNext();
     }
   });
-
 })();
 </script>
 </body>
