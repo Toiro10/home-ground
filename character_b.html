@@ -100,7 +100,7 @@
       overflow: hidden;
       min-height: 830px;
       background: radial-gradient(circle at top, #202020, #050505);
-      perspective: 800px; /* Z軸演出用 */
+      perspective: 800px; /* Z軸演出用（今後拡張用にも残しておく） */
     }
 
     .hero-image-layer {
@@ -168,101 +168,40 @@
       text-decoration: underline;
     }
 
-    /* ===== hero 上のオレンジ縦書き & 下部テキスト ===== */
+    /* ===== hero 全面ホワイトオーバーレイ ===== */
 
-    /* オレンジ帯：手前に現れて、奥（-Z）へ引かれながらフェードアウト */
-    @keyframes floatInOutZ {
-      0% {
-        opacity: 0;
-        transform: translateZ(0px) scale(0.9);
-      }
-      20% {
-        opacity: 1;
-        transform: translateZ(0px) scale(1);
-      }
-      80% {
-        opacity: 1;
-        transform: translateZ(-80px) scale(0.97);
-      }
-      100% {
-        opacity: 0;
-        transform: translateZ(-160px) scale(0.94);
-      }
-    }
-
-    /* 下の横書きテキスト：オレンジ終了後に出て、奥へ引かれて消える */
-    @keyframes bottomTextFloat {
-      0% {
-        opacity: 0;
-        transform: translateZ(0px) scale(0.9);
-      }
-      25% {
-        opacity: 1;
-        transform: translateZ(0px) scale(1);
-      }
-      75% {
-        opacity: 1;
-        transform: translateZ(-60px) scale(0.97);
-      }
-      100% {
-        opacity: 0;
-        transform: translateZ(-120px) scale(0.94);
-      }
-    }
-
-    /* オレンジの縦長帯（共通） */
-    .hero-orange-block {
+    .hero-full-overlay {
       position: absolute;
-      top: 12%;
-      bottom: 18%;
-      width: 90px;
+      inset: 0;
+      background: #ffffff;               /* 画面全体を白で覆う */
       display: flex;
       align-items: center;
       justify-content: center;
-      transform-origin: center center;
+      z-index: 10;                       /* hero-quote / meta より上 */
+      opacity: 1;
+      pointer-events: none;             /* 演出中もクリック無視でOKなら */
+      transition: opacity 1s ease;
+    }
+
+    .hero-full-overlay.hidden {
       opacity: 0;
-      z-index: 2;
     }
 
-    .hero-orange-1 {
-      left: 14%;
-      animation: floatInOutZ 4s ease-in-out 0.8s forwards;
-    }
-
-    .hero-orange-2 {
-      right: 18%;
-      animation: floatInOutZ 4s ease-in-out 2.6s forwards;
-    }
-
-    .hero-orange-bg {
-      position: absolute;
-      inset: 0;
-      background: rgba(255, 140, 0, 0.85);
-    }
-
-    .hero-orange-text {
-      position: relative;
-      writing-mode: vertical-rl;
-      font-size: 18px;
-      letter-spacing: 0.22em;
-      line-height: 1.9;
-      color: #111;
-    }
-
-    /* 下部の横書きテキスト（黒） */
-    .hero-bottom-text {
-      position: absolute;
-      left: 18%;
-      right: 18%;
-      bottom: 18%;
+    .hero-full-overlay-inner {
+      max-width: 60%;
       text-align: center;
-      font-size: 16px;
-      letter-spacing: 0.12em;
+      font-size: 18px;
+      line-height: 1.9;
       color: #000000;
       opacity: 0;
-      transform-origin: center center;
-      z-index: 3;
-      animation: bottomTextFloat 4.5s ease-in-out 6.8s forwards;
+      transform: translateY(16px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      white-space: pre-wrap;            /* \n で改行可能 */
+    }
+
+    .hero-full-overlay-inner.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* ===== 下部：バックボーン 5ブロック ===== */
@@ -354,7 +293,7 @@
       font-size: 18px;
       letter-spacing: 0.2em;
       line-height: 1.8;
-      color: #000000;   /* ★ 黒で統一 */
+      color: #000000;
       text-shadow: none;
       opacity: 0;
       white-space: pre-wrap;
@@ -418,6 +357,11 @@
         font-size: 20px;
       }
 
+      .hero-full-overlay-inner {
+        max-width: 80%;
+        font-size: 14px;
+      }
+
       .timeline {
         margin: 16px auto 24px;
         padding: 0 12px 24px;
@@ -445,8 +389,10 @@
             <img src="assets/DummyHuman.png" alt="キャラクター画像（仮）">
           </div>
 
-         
-    
+          <!-- ★ 画面全体ホワイト＋問い演出用オーバーレイ -->
+          <div class="hero-full-overlay" id="heroOverlay">
+            <div class="hero-full-overlay-inner" id="heroOverlayInner"></div>
+          </div>
 
           <!-- 上部のコピー -->
           <div class="hero-overlay hero-quote">「道徳、とは」</div>
@@ -510,7 +456,7 @@
           <p class="timeline-text"></p>
         </section>
 
-        <!-- Block 3：縦書きタイピング（演出同じ） -->
+        <!-- Block 3：縦書きタイピング -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 3</div>
           <h3 class="timeline-heading">ここに見出し</h3>
@@ -552,9 +498,61 @@
     </section>
   </div>
 
-<!-- Block2〜5：縦書きタイピング（黒） -->
+<!-- hero：ホワイトオーバーレイ＋問い演出 -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+  const overlay = document.getElementById("heroOverlay");
+  const overlayInner = document.getElementById("heroOverlayInner");
+
+  if (overlay && overlayInner) {
+    // ★ ここに表示したい問い / テキストを好きに並べてOK
+    const steps = [
+      "「善い行い」とは、誰の基準で決まるのだろうか。",
+      "「正しさ」と「優しさ」は、いつも同じだろうか。",
+      "もし心がなくても、正しい行動だけで人は『善い人』になれるのだろうか。",
+      "彼の善良さは、空欄を埋めるだけで生まれている。"
+    ];
+
+    let index = 0;
+    const visibleTime = 1800;   // 1つの問いがはっきり見えている時間
+    const fadeGapTime = 400;    // 消えきってから次が出るまでの間
+
+    function showStep(i) {
+      if (i >= steps.length) {
+        // すべての問いを表示し終えたら、白オーバーレイ自体をフェードアウト
+        overlay.classList.add("hidden");
+        setTimeout(() => {
+          overlay.style.display = "none";   // 完全に消す（任意）
+        }, 1200);
+        return;
+      }
+
+      // テキスト差し替え
+      overlayInner.textContent = steps[i];
+
+      // フェードイン
+      requestAnimationFrame(() => {
+        overlayInner.classList.add("visible");
+      });
+
+      // 一定時間表示 → フェードアウト → 次へ
+      setTimeout(() => {
+        overlayInner.classList.remove("visible");
+
+        setTimeout(() => {
+          showStep(i + 1);
+        }, fadeGapTime);
+      }, visibleTime);
+    }
+
+    // 最初は真っ白だけ少し見せる
+    setTimeout(() => {
+      showStep(0);
+    }, 600);
+  }
+
+  /* ====== ここから下は Block2〜5 の縦書きタイピング ====== */
+
   const block2El = document.getElementById("block2Type");
   const block3El = document.getElementById("block3Type");
   const block4El = document.getElementById("block4Type");
