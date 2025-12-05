@@ -298,7 +298,7 @@
       gap: 16px;
     }
 
-    /* 画像枠（Block1, Block2 共通） */
+    /* 画像枠（2〜5で共通） */
     .timeline-image {
       position: relative;
       width: 100%;
@@ -342,8 +342,11 @@
       }
     }
 
-    /* Block2：画像上の縦書きタイピング（黒） */
-    .block2-type {
+    /* Block2〜5：画像上の縦書きタイピング（黒・共通スタイル） */
+    .block2-type,
+    .block3-type,
+    .block4-type,
+    .block5-type {
       position: absolute;
       top: 8%;
       right: 8%;
@@ -351,7 +354,7 @@
       font-size: 18px;
       letter-spacing: 0.2em;
       line-height: 1.8;
-      color: #000000;
+      color: #000000;   /* ★ 黒で統一 */
       text-shadow: none;
       opacity: 0;
       white-space: pre-wrap;
@@ -466,7 +469,7 @@
             </div>
           </div>
 
-          <!-- 下部の横書きテキスト（青帯から抜き出した文章・黒文字） -->
+          <!-- 下部の横書きテキスト（黒） -->
           <div class="hero-bottom-text">
             彼の中で「道徳的行動」の式が成り立っているだけだった。
           </div>
@@ -483,7 +486,7 @@
               </ruby>
             </div>
             <p class="hero-desc">
-              情動の振れ幅がきわめて小さい青年。他者への共感ではなく、学校で学んだ”道徳の正解”だけを基準に行動するため周囲からは模範的で優しい人間とみなされている。<br>
+              情動の振れ幅が極めて小さい青年。  他者への共感ではなく学校で学んだ“道徳の正解”だけを基準に行動するため周囲からは模範的で優しい人間とみなされている。<br>
               出身：日本<br>
               身分：一般市民<br>
               肩書：高校生
@@ -516,11 +519,11 @@
           </div>
 
           <p class="timeline-text">
-            <!-- 必要があればここに補足テキストを追加してOK -->
+            <!-- 必要があればここに補足テキスト -->
           </p>
         </section>
 
-        <!-- Block 2：縦書きタイピング（黒） -->
+        <!-- Block 2：縦書きタイピング -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 2</div>
           <h3 class="timeline-heading">ここに見出し</h3>
@@ -530,81 +533,58 @@
             <div class="block2-type" id="block2Type"></div>
           </div>
 
-          <p class="timeline-text">
-            <!-- ここは必要ならダイジェストなどを書く -->
-          </p>
+          <p class="timeline-text"></p>
         </section>
 
-        <!-- Block 3 -->
+        <!-- Block 3：縦書きタイピング（演出同じ） -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 3</div>
           <h3 class="timeline-heading">ここに見出し</h3>
-          <p class="timeline-text">
-            有料で手助けを行う支援サービスエリアにいるノニュアがいつもと同じ言葉を繰り返していた。<br>
-            「お手伝いできることはありませんか？」「お困りごとはありませんか？」<br>
-            困ってないよと僕は内心で答えて通り過ぎた。<br>
-            時々、思う。<br>
-            「心とは、一体何なんだろう」
-          </p>
+
+          <div class="timeline-image">
+            <img src="assets/block3_dummy.png" alt="Block3 image">
+            <div class="block3-type" id="block3Type"></div>
+          </div>
+
+          <p class="timeline-text"></p>
         </section>
 
-        <!-- Block 4 -->
+        <!-- Block 4：縦書きタイピング -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 4</div>
           <h3 class="timeline-heading">ここに見出し</h3>
-          <p class="timeline-text">
-            掃除の時間、隣の席の女の子が話しかけてきた。<br><br>
 
-            「わたるくんって優しいよね」<br>
-            「そうかな」<br>
-            「そうだって！今日とかも遅刻したのって交番に落とし物届けてたからでしょ？…私、あれ見て見ぬふりしちゃったから。わたるくんって優しいすごい人だなぁって思った」<br><br>
+          <div class="timeline-image">
+            <img src="assets/block4_dummy.png" alt="Block4 image">
+            <div class="block4-type" id="block4Type"></div>
+          </div>
 
-            僕は三度瞬きをして小学校で習った道徳の一文を思い出した。<br>
-            『落とし物は交番に届けましょう』<br><br>
-
-            「そうかな。普通のことをしただけだよ」<br>
-            「それがすごいんだよ！」<br><br>
-
-            優しいね、と彼女は笑った。<br>
-            僕も笑った。どう返せば良いのか分からない時は微笑むのが一番安全に場を落ち着かせる手段だと知っていた。<br><br>
-
-            ノニュアルが僕と同じ事をしても誰も「優しい」と言わないのに僕は言われる。<br><br>
-
-            僕にはその違いをまだ上手く説明できなかった。
-          </p>
+          <p class="timeline-text"></p>
         </section>
 
-        <!-- Block 5 -->
+        <!-- Block 5：縦書きタイピング -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 5</div>
           <h3 class="timeline-heading">ここに見出し</h3>
-          <p class="timeline-text">
-            僕には何が「良くて」何が「悪い」ことなのかの区別がつかなかった。<br>
-            「自分のしたいことをしていいのよ」「好きなものを選びなさい」<br>
-            言われると困る言葉たち。僕には比較するための基準がなかったから。幼いころは静かすぎて家族を困らせていた。<br>
-            ノニュアル達AIは最初に基準や指標をプログラミングされている。<br>
-            でも僕は人間だから、そういう風にできていない。<br><br>
 
-            困った僕は、小学校で初めて明確な「基準」を知った。<br><br>
+          <div class="timeline-image">
+            <img src="assets/block5_dummy.png" alt="Block5 image">
+            <div class="block5-type" id="block5Type"></div>
+          </div>
 
-            「あいてをこまらせてはいけません」<br>
-            「おじいちゃんに席を譲るのはいいことです」<br><br>
-
-            道徳には正解がある。○☓がある。○を並べることを僕は「良いこと」だと感じた。<br><br>
-
-            「人に優しくできる良い人になりましょうね」<br><br>
-
-            ーーそうしよう。
-          </p>
+          <p class="timeline-text"></p>
         </section>
       </div>
     </section>
   </div>
 
-<!-- Block2：縦書きタイピング（黒） -->
+<!-- Block2〜5：縦書きタイピング（黒） -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const block2El = document.getElementById("block2Type");
+  const block3El = document.getElementById("block3Type");
+  const block4El = document.getElementById("block4Type");
+  const block5El = document.getElementById("block5Type");
 
   const block2Text = `「お困り、ゴト、ハ、あ…ませんか？」
 
@@ -638,6 +618,48 @@ document.addEventListener("DOMContentLoaded", function () {
 でも僕はアンドロイドを助けなかった。
 ノニュアルは助ける必要がないらしい。`;
 
+  const block3Text = `有料で手助けを行う支援サービスエリアにいるノニュアがいつもと同じ言葉を繰り返していた。
+「お手伝いできることはありませんか？」「お困りごとはありませんか？」
+困ってないよと僕は内心で答えて通り過ぎた。
+時々、思う。
+「心とは、一体何なんだろう」`;
+
+  const block4Text = `掃除の時間、隣の席の女の子が話しかけてきた。
+
+「わたるくんって優しいよね」
+「そうかな」
+「そうだって！今日とかも遅刻したのって交番に落とし物届けてたからでしょ？…私、あれ見て見ぬふりしちゃったから。わたるくんって優しいすごい人だなぁって思った」
+
+僕は三度瞬きをして小学校で習った道徳の一文を思い出した。
+『落とし物は交番に届けましょう』
+
+「そうかな。普通のことをしただけだよ」
+「それがすごいんだよ！」
+
+優しいね、と彼女は笑った。
+僕も笑った。どう返せば良いのか分からない時は微笑むのが一番安全に場を落ち着かせる手段だと知っていた。
+
+ノニュアルが僕と同じ事をしても誰も「優しい」と言わないのに僕は言われる。
+
+僕にはその違いをまだ上手く説明できなかった。`;
+
+  const block5Text = `僕には何が「良くて」何が「悪い」ことなのかの区別がつかなかった。
+「自分のしたいことをしていいのよ」「好きなものを選びなさい」
+言われると困る言葉たち。僕には比較するための基準がなかったから。幼いころは静かすぎて家族を困らせていた。
+ノニュアル達AIは最初に基準や指標をプログラミングされている。
+でも僕は人間だから、そういう風にできていない。
+
+困った僕は、小学校で初めて明確な「基準」を知った。
+
+「あいてをこまらせてはいけません」
+「おじいちゃんに席を譲るのはいいことです」
+
+道徳には正解がある。○☓がある。○を並べることを僕は「良いこと」だと感じた。
+
+「人に優しくできる良い人になりましょうね」
+
+ーーそうしよう。`;
+
   function typeVertical(el, text, speed) {
     if (!el) return;
 
@@ -656,8 +678,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (block2El) {
     setTimeout(() => {
-      typeVertical(block2El, block2Text, 60); // 速度は好みで調整OK
+      typeVertical(block2El, block2Text, 60);
     }, 800);
+  }
+
+  if (block3El) {
+    setTimeout(() => {
+      typeVertical(block3El, block3Text, 60);
+    }, 1200);
+  }
+
+  if (block4El) {
+    setTimeout(() => {
+      typeVertical(block4El, block4Text, 60);
+    }, 1600);
+  }
+
+  if (block5El) {
+    setTimeout(() => {
+      typeVertical(block5El, block5Text, 60);
+    }, 2000);
   }
 });
 </script>
