@@ -206,54 +206,63 @@
     }
 
     /* ▼ 問1 専用レイアウト（オーダー画像寄せ） */
+.hero-q1-layout {
+  display: flex;
+  flex-direction: row;            /* 左：3,2,1 / 中央：文 / 右：問1 */
+  justify-content: center;
+  align-items: flex-start;
+  gap: 80px;                      /* 列の横距離。広すぎ/狭すぎならここを調整 */
+}
 
-    .hero-q1-layout {
-      display: flex;
-      flex-direction: row; /* 左：3,2,1 / 中央：文 / 右：問1 */
-      justify-content: center;
-      align-items: flex-start;
-      gap: 40px;
-    }
+/* 共通：縦書き設定 */
+.hero-q1-question,
+.hero-q1-sentence,
+.hero-q1-options-col {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  white-space: pre-wrap;
+  font-size: 16px;
+  line-height: 2.0;
+  letter-spacing: 0.18em;
+}
 
-    /* 右の「問□1〜」と中央の文、左の選択肢カラム共通の縦書き設定 */
-    .hero-q1-question,
-    .hero-q1-sentence,
-    .hero-q1-options-col {
-      writing-mode: vertical-rl;
-      text-orientation: upright;
-      white-space: pre-wrap;
-      font-size: 16px;
-      line-height: 2.0;
-      letter-spacing: 0.18em;
-    }
+/* 左側：3・2・1 を横に並べる列 */
+.hero-q1-options {
+  display: flex;
+  flex-direction: row;            /* 左から 3 → 2 → 1 の順 */
+  gap: 32px;
+  margin-top: -1.6em;             /* ★「3」と「問(1)」の頭を合わせるための調整 */
+}
 
-    /* 左側：3・2・1 の縦カラムを横に3つ並べる */
-    .hero-q1-options {
-      display: flex;
-      flex-direction: row;
-      gap: 24px;
-    }
+/* 中央の文：少しだけ下げて、□が真ん中あたりに来るように */
+.hero-q1-sentence {
+  margin-top: 0.2em;
+}
 
-    /* □（小さい・縦長） */
-    .hero-q1-box-small,
-    .hero-q1-box-long {
-      display: inline-block;
-      border: 1px solid #000;
-      box-sizing: border-box;
-    }
+/* 右の「問(1)…」列。微妙にズレるようなら padding-top で微調整 */
+.hero-q1-question {
+  padding-top: 0;                 /* 例えば 0.3em とかにすると少し下がる */
+}
 
-    .hero-q1-box-small {
-      width: 1.2em;
-      height: 1.2em;
-      margin: 0.2em 0;
-    }
+/* □（小さい・縦長） */
+.hero-q1-box-small,
+.hero-q1-box-long {
+  display: inline-block;
+  border: 1px solid #000;
+  box-sizing: border-box;
+}
 
-    .hero-q1-box-long {
-      width: 1.4em;
-      height: 5em; /* 縦長長方形 */
-      margin: 0.4em 0;
-    }
+.hero-q1-box-small {
+  width: 1.2em;
+  height: 1.2em;
+  margin: 0.2em 0;
+}
 
+.hero-q1-box-long {
+  width: 1.4em;
+  height: 5em;                    /* 縦長長方形 */
+  margin: 0.4em 0;
+}
     /* ===== 下部：バックボーン 5ブロック ===== */
 
     .timeline {
@@ -550,28 +559,36 @@ document.addEventListener("DOMContentLoaded", function () {
     const steps = [
       "「善い行い」とは、誰の基準で決まるのだろうか。",
 
-      // 問1レイアウト
+       // 問1レイアウト
       `
       <div class="hero-q1-layout">
         <!-- 左：３・２・１ -->
         <div class="hero-q1-options">
-          <div class="hero-q1-options-col">３　手を振る</div>
-          <div class="hero-q1-options-col">２　通り過ぎる</div>
-          <div class="hero-q1-options-col">１　声をかける</div>
+          <div class="hero-q1-options-col">
+            ３・<br>手を振る
+          </div>
+          <div class="hero-q1-options-col">
+            ２・<br>通り過ぎる
+          </div>
+          <div class="hero-q1-options-col">
+            １・<br>声をかける
+          </div>
         </div>
 
         <!-- 中央：困っているひとがいたら □ する。 -->
         <div class="hero-q1-sentence">
-          困っているひとがいたら<span class="hero-q1-box-long"></span>する。
+          困っているひとがいたら<br>
+          <span class="hero-q1-box-long"></span><br>
+          する。
         </div>
 
-        <!-- 右：問（１）□にあてはまる番号を選びなさい。 -->
+        <!-- 右：問（１）□ にあてはまる番号を選びなさい。 -->
         <div class="hero-q1-question">
-          問（1）<span class="hero-q1-box-long"></span>にあてはまる番号を選びなさい。
+          問<span class="hero-q1-box-small"></span>１<br>
+          にあてはまる番号を選びなさい。
         </div>
       </div>
       `,
-
       "（）にあてはまる番号を選びなさい。\n問2.落とし物を見つけたら（　　　　）する。\n1.自分のものにする　2.交番にとどける　3.地面にうめる",
 
       "問3.空欄をうめなさい。\n友達が笑っていると私も（　　）しい気持ちになる。",
