@@ -422,6 +422,47 @@
         margin: 16px auto 24px;
         padding: 0 12px 24px;
       }
+      .hero-full-overlay-inner {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* 全体の 3 カラムコンテナ */
+.hero-q1-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 80px;
+}
+
+/* 縦書き共通 */
+.hero-q1-options-col,
+.hero-q1-sentence,
+.hero-q1-question {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  white-space: pre-wrap;
+  font-size: 16px;
+  line-height: 2;
+  letter-spacing: 0.18em;
+}
+
+/* 左の3本カラム */
+.hero-q1-options {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+
+/* □（縦長の長方形） */
+.hero-q1-box-long {
+  display: inline-block;
+  border: 1px solid #000;
+  width: 1.4em;
+  height: 5em;
+  box-sizing: border-box;
+  margin: 0.4em 0;
+}
     }
   </style>
 </head>
@@ -557,39 +598,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (overlay && overlayInner) {
     const steps = [
+      // STEP 0：導入テキスト（横書きのままでOK）
       "「善い行い」とは、誰の基準で決まるのだろうか。",
 
-       // 問1レイアウト
+      // STEP 1：画像どおりの「問（1）」レイアウト
       `
       <div class="hero-q1-layout">
-        <!-- 左：３・２・１ -->
+        <!-- 左カラム：３・２・１ -->
         <div class="hero-q1-options">
           <div class="hero-q1-options-col">
-            ３ 手を振る
+            ３　手を振る
           </div>
           <div class="hero-q1-options-col">
-            ２ 通り過ぎる
+            ２　通り過ぎる
           </div>
           <div class="hero-q1-options-col">
-            １ 声をかける
+            １　声をかける
           </div>
         </div>
 
-        <!-- 中央：困っているひとがいたら □ する。 -->
+        <!-- 中央カラム：困っているひとがいたら □ する。 -->
         <div class="hero-q1-sentence">
-          困っているひとがいたら<span class="hero-q1-box-long"></span>する。
+          困っているひとがいたら
+          <span class="hero-q1-box-long"></span>
+          する。
         </div>
 
-        <!-- 右：問（１）□ にあてはまる番号を選びなさい。 -->
+        <!-- 右カラム：問（1）＋縦長□＋説明文 -->
         <div class="hero-q1-question">
-          問1<span class="hero-q1-box-long"></span>にあてはまる番号を選びなさい。
+          問（1）<span class="hero-q1-box-long"></span>にあてはまる番号を選びなさい。
         </div>
       </div>
       `,
+
+      // STEP 2：問2（とりあえず横書きのフェード）
       "（）にあてはまる番号を選びなさい。\n問2.落とし物を見つけたら（　　　　）する。\n1.自分のものにする　2.交番にとどける　3.地面にうめる",
 
+      // STEP 3：問3
       "問3.空欄をうめなさい。\n友達が笑っていると私も（　　）しい気持ちになる。",
 
+      // STEP 4：締めの一文
       "彼の善良さは、空欄を埋めるだけで生まれている。"
     ];
 
@@ -625,7 +673,6 @@ document.addEventListener("DOMContentLoaded", function () {
       showStep(0);
     }, 600);
   }
-
   /* ====== ここから下は Block2〜5 の縦書きタイピング ====== */
 
   const block2El = document.getElementById("block2Type");
