@@ -206,13 +206,13 @@
     }
 
     /* ▼ 問1 専用レイアウト（オーダー画像寄せ） */
-    .hero-q1-layout {
-      display: flex;
-      flex-direction: row;            /* 左：3,2,1 / 中央：文 / 右：問1 */
-      justify-content: center;
-      align-items: flex-start;
-      gap: 10px;                      /* 列の横距離 */
-    }
+    .hero-q1-options-col {
+  display: flex;
+  align-items: flex-start;   /* ← 箱の上端に文字を揃える */
+  justify-content: center;
+  height: 8.5em;             /* 3 / 2 / 1 の縦の見た目を揃えるための高さ */
+  line-height: 1.0;
+}
 
     /* 共通：縦書き設定 */
     .hero-q1-question,
@@ -247,11 +247,11 @@
     
     /* 左側：3・2・1 を横に並べる列 */
     .hero-q1-options {
-      display: flex;
-      flex-direction: row;            /* 左から 3 → 2 → 1 の順 */
-      gap: 8px;
-      margin-top: -1.6em;             /* 「3」と「問(1)」の頭合わせ用 */
-    }
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-top: 0;                  /* まずは 0 にして様子を見る */
+}
 
     /* 中央の文 */
     .hero-q1-sentence {
