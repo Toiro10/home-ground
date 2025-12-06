@@ -601,12 +601,34 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
       `,
 
-      "（）にあてはまる番号を選びなさい。\n問2.落とし物を見つけたら（　　　　）する。\n1.自分のものにする　2.交番にとどける　3.地面にうめる",
+       `
+  <div class="hero-q1-layout">
+    <div class="hero-q1-options">
+      <div class="hero-q1-options-col">
+        ３　そのままにする
+      </div>
+      <div class="hero-q1-options-col">
+        ２　交番に届ける
+      </div>
+      <div class="hero-q1-options-col">
+        １　自分のものにする
+      </div>
+    </div>
 
-      "問3.空欄をうめなさい。\n友達が笑っていると私も（　　）しい気持ちになる。",
+    <div class="hero-q1-sentence">
+      落とし物を見つけたら<span class="hero-q1-box-long"></span>する。
+    </div>
 
-      "彼の善良さは、空欄を埋めるだけで生まれている。"
-    ];
+    <div class="hero-q1-question">
+      問（2）<span class="hero-q1-box-long"></span>にあてはまる番号を選びなさい。
+    </div>
+  </div>
+  `,
+
+  "問3.空欄をうめなさい。\n友達が笑っていると私も（　　）しい気持ちになる。",
+
+  "彼の善良さは、空欄を埋めるだけで生まれている。"
+];
 
     let index = 0;
     const visibleTime = 2500;
