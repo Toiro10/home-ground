@@ -206,63 +206,64 @@
     }
 
     /* ▼ 問1 専用レイアウト（オーダー画像寄せ） */
-.hero-q1-layout {
-  display: flex;
-  flex-direction: row;            /* 左：3,2,1 / 中央：文 / 右：問1 */
-  justify-content: center;
-  align-items: flex-start;
-  gap: 80px;                      /* 列の横距離。広すぎ/狭すぎならここを調整 */
-}
+    .hero-q1-layout {
+      display: flex;
+      flex-direction: row;            /* 左：3,2,1 / 中央：文 / 右：問1 */
+      justify-content: center;
+      align-items: flex-start;
+      gap: 80px;                      /* 列の横距離 */
+    }
 
-/* 共通：縦書き設定 */
-.hero-q1-question,
-.hero-q1-sentence,
-.hero-q1-options-col {
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  white-space: pre-wrap;
-  font-size: 16px;
-  line-height: 2.0;
-  letter-spacing: 0.18em;
-}
+    /* 共通：縦書き設定 */
+    .hero-q1-question,
+    .hero-q1-sentence,
+    .hero-q1-options-col {
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      white-space: pre-wrap;
+      font-size: 16px;
+      line-height: 2.0;
+      letter-spacing: 0.18em;
+    }
 
-/* 左側：3・2・1 を横に並べる列 */
-.hero-q1-options {
-  display: flex;
-  flex-direction: row;            /* 左から 3 → 2 → 1 の順 */
-  gap: 10px;
-  margin-top: -1.6em;             /* ★「3」と「問(1)」の頭を合わせるための調整 */
-}
+    /* 左側：3・2・1 を横に並べる列 */
+    .hero-q1-options {
+      display: flex;
+      flex-direction: row;            /* 左から 3 → 2 → 1 の順 */
+      gap: 10px;
+      margin-top: -1.6em;             /* 「3」と「問(1)」の頭合わせ用 */
+    }
 
-/* 中央の文：少しだけ下げて、□が真ん中あたりに来るように */
-.hero-q1-sentence {
-  margin-top: 0.2em;
-}
+    /* 中央の文 */
+    .hero-q1-sentence {
+      margin-top: 0.2em;
+    }
 
-/* 右の「問(1)…」列。微妙にズレるようなら padding-top で微調整 */
-.hero-q1-question {
-  padding-top: 0;                 /* 例えば 0.3em とかにすると少し下がる */
-}
+    /* 右の「問(1)…」列 */
+    .hero-q1-question {
+      padding-top: 0;
+    }
 
-/* □（小さい・縦長） */
-.hero-q1-box-small,
-.hero-q1-box-long {
-  display: inline-block;
-  border: 1px solid #000;
-  box-sizing: border-box;
-}
+    /* □（小さい・縦長） */
+    .hero-q1-box-small,
+    .hero-q1-box-long {
+      display: inline-block;
+      border: 1px solid #000;
+      box-sizing: border-box;
+    }
 
-.hero-q1-box-small {
-  width: 1.2em;
-  height: 1.2em;
-  margin: 0.2em 0;
-}
+    .hero-q1-box-small {
+      width: 1.2em;
+      height: 1.2em;
+      margin: 0.2em 0;
+    }
 
-.hero-q1-box-long {
-  width: 1.4em;
-  height: 5em;                    /* 縦長長方形 */
-  margin: 0.4em 0;
-}
+    .hero-q1-box-long {
+      width: 1.4em;
+      height: 5em;                    /* 縦長長方形 */
+      margin: 0.4em 0;
+    }
+
     /* ===== 下部：バックボーン 5ブロック ===== */
 
     .timeline {
@@ -381,7 +382,7 @@
       100% { opacity: 1; }
     }
 
-    /* レスポンシブ */
+    /* レスポンシブ（※hero-q1 系はここから削除済み） */
 
     @media (max-width: 900px) {
       .layout {
@@ -422,47 +423,6 @@
         margin: 16px auto 24px;
         padding: 0 12px 24px;
       }
-      .hero-full-overlay-inner {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-/* 全体の 3 カラムコンテナ */
-.hero-q1-layout {
-  display: flex;
-  flex-direction: row;
-  gap: 80px;
-}
-
-/* 縦書き共通 */
-.hero-q1-options-col,
-.hero-q1-sentence,
-.hero-q1-question {
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  white-space: pre-wrap;
-  font-size: 16px;
-  line-height: 2;
-  letter-spacing: 0.18em;
-}
-
-/* 左の3本カラム */
-.hero-q1-options {
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
-}
-
-/* □（縦長の長方形） */
-.hero-q1-box-long {
-  display: inline-block;
-  border: 1px solid #000;
-  width: 1.4em;
-  height: 5em;
-  box-sizing: border-box;
-  margin: 0.4em 0;
-}
     }
   </style>
 </head>
@@ -598,10 +558,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (overlay && overlayInner) {
     const steps = [
-      // STEP 0：導入テキスト（横書きのままでOK）
       "「善い行い」とは、誰の基準で決まるのだろうか。",
 
-      // STEP 1：画像どおりの「問（1）」レイアウト
       `
       <div class="hero-q1-layout">
         <!-- 左カラム：３・２・１ -->
@@ -629,13 +587,10 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
       `,
 
-      // STEP 2：問2（とりあえず横書きのフェード）
       "（）にあてはまる番号を選びなさい。\n問2.落とし物を見つけたら（　　　　）する。\n1.自分のものにする　2.交番にとどける　3.地面にうめる",
 
-      // STEP 3：問3
       "問3.空欄をうめなさい。\n友達が笑っていると私も（　　）しい気持ちになる。",
 
-      // STEP 4：締めの一文
       "彼の善良さは、空欄を埋めるだけで生まれている。"
     ];
 
@@ -671,7 +626,6 @@ document.addEventListener("DOMContentLoaded", function () {
       showStep(0);
     }, 600);
   }
-  /* ====== ここから下は Block2〜5 の縦書きタイピング ====== */
 
   const block2El = document.getElementById("block2Type");
   const block3El = document.getElementById("block3Type");
@@ -837,16 +791,16 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("mouseup", function (e) {
     if (startX === null) return;
 
-      const endX = e.clientX;
-      const diffX = endX - startX;
+    const endX = e.clientX;
+    const diffX = endX - startX;
 
-      if (diffX > threshold) {
-        goPrev();
-      } else if (diffX < -threshold) {
-        goNext();
-      }
+    if (diffX > threshold) {
+      goPrev();
+    } else if (diffX < -threshold) {
+      goNext();
+    }
 
-      startX = null;
+    startX = null;
   });
 
   // PC（キーボード）
