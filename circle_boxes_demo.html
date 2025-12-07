@@ -2,77 +2,175 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>Circle & Box Demo</title>
+  <title>Circle Row Demo</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
       margin: 0;
       background: #ffffff;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    /* 画面全体のステージ */
-    .stage {
+    /* オーバーレイ全体 */
+    .row-wrapper {
+      position: relative;
       width: 100vw;
-      height: 100vh;
-      padding-top: 40px;   /* 上から少し下げる */
-      padding-left: 20px;  /* 左から少し右へ */
+      height: 180px;
+      overflow: hidden;
+      background: #ffffff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
     }
 
-    /* □＋◯ を横一列に並べる行 */
-    .judge-row {
-      display: flex;
-      gap: 40px;           /* それぞれの間隔 */
-    }
-
-    /* 小さな四角 */
-    .box-small {
-      width: 46px;
-      height: 46px;
-      border: 2px solid #000;
-      position: relative;  /* 中の ◯ を重ねるため */
-    }
-
-    /* 赤い ◯（擬似要素で描画） */
-    .box-small::before {
-      content: "";
+    /* 流れていく横一列 */
+    .circle-row {
       position: absolute;
-      width: 88px;          /* ◯の直径 */
-      height: 88px;
+      top: 60px;
+      right: -400px; /* 画面の外からスタート */
+      display: flex;
+      gap: 40px;
+      will-change: transform;
+    }
+
+    /* ひとつ分の □＋○ セット */
+    .cell {
+      position: relative;
+      width: 60px;
+      height: 60px;
+    }
+
+    .cell-box {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #000;
+      background: transparent;
+    }
+
+    .cell-circle {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
-      border: 6px solid #ff0000;
-      /* 四角の左上に少し被るような位置にする */
-      top: -46px;
-      left: -20px;
+      border: 4px solid red;
+      box-sizing: border-box;
+      opacity: 0;
+      transform: scale(0.7);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .cell.active .cell-circle {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* 右→左に流れるアニメーション */
+    .circle-row.animate {
+      animation: slide-left 4s linear forwards;
+    }
+
+    @keyframes slide-left {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-800px); /* ここで流れる距離を調整 */
+      }
+    }
+
+    /* 最後にかぶさるホワイトフェード */
+    .white-cover {
+      position: absolute;
+      inset: 0;
+      background: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease;
+    }
+
+    .white-cover.show {
+      opacity: 1;
+    }
+
+    /* デバッグ用：中央に「彼の善良さは〜」を表示（本番ではhero側で出す想定） */
+    .caption {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.8s ease 0.4s;
+      font-size: 20px;
+    }
+
+    .caption.show {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
-  <div class="stage">
-    <div class="judge-row">
-      <div class="box-small"></div>
-      <div class="box-small"></div>
-      <div class="box-small"></div>
-      <div class="box-small"></div>
-      <div class="box-small"></div>
-      <div class="box-small"></div>
-      <div class="box-small"></div>
-      <div class="box-small"></div>
-      <div class="box-small"></div>
-      <div class="box-small"></div>
-      <div class="box-small"></div>
-      <div class="box-small"></div>
+  <div class="row-wrapper">
+    <div class="circle-row" id="circleRow">
+      <!-- □＋○ を好きな数だけ並べる -->
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+    </div>
+
+    <div class="white-cover" id="whiteCover"></div>
+
+    <div class="caption" id="caption">
+      彼の善良さは、空欄を埋めるだけで生まれている。
     </div>
   </div>
 
-  <!-- 今はアニメーションなし。後でここに JS を足していく想定 -->
   <script>
-    // ここにフェーズ1〜3用のスクリプトを後で追加していく
+    document.addEventListener("DOMContentLoaded", () => {
+      const row = document.getElementById("circleRow");
+      const cells = Array.from(document.querySelectorAll(".cell"));
+      const cover = document.getElementById("whiteCover");
+      const caption = document.getElementById("caption");
+
+      // 右→左へのスライド開始
+      row.classList.add("animate");
+
+      // ○ を一つずつ出していく
+      let index = 0;
+      let interval = 450; // 最初の間隔（ms）
+
+      function step() {
+        if (index < cells.length) {
+          cells[index].classList.add("active");
+          index++;
+
+          // だんだん速くする（下限80ms）
+          interval = Math.max(80, interval * 0.8);
+          setTimeout(step, interval);
+        } else {
+          // 全部に○がついたら白フェード
+          cover.classList.add("show");
+
+          // その後にテキストを出す（ここは本番側でコールバックにしてOK）
+          setTimeout(() => {
+            caption.classList.add("show");
+          }, 900);
+        }
+      }
+
+      // 少し溜めてからスタート
+      setTimeout(step, 600);
+    });
   </script>
 </body>
 </html>
