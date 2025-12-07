@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Circle & Box Demo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      background: #ffffff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    /* 画面全体のステージ */
+    .stage {
+      width: 100vw;
+      height: 100vh;
+      padding-top: 40px;   /* 上から少し下げる */
+      padding-left: 20px;  /* 左から少し右へ */
+    }
+
+    /* □＋◯ を横一列に並べる行 */
+    .judge-row {
+      display: flex;
+      gap: 40px;           /* それぞれの間隔 */
+    }
+
+    /* 小さな四角 */
+    .box-small {
+      width: 46px;
+      height: 46px;
+      border: 2px solid #000;
+      position: relative;  /* 中の ◯ を重ねるため */
+    }
+
+    /* 赤い ◯（擬似要素で描画） */
+    .box-small::before {
+      content: "";
+      position: absolute;
+      width: 88px;          /* ◯の直径 */
+      height: 88px;
+      border-radius: 50%;
+      border: 6px solid #ff0000;
+      /* 四角の左上に少し被るような位置にする */
+      top: -46px;
+      left: -20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="judge-row">
+      <div class="box-small"></div>
+      <div class="box-small"></div>
+      <div class="box-small"></div>
+      <div class="box-small"></div>
+      <div class="box-small"></div>
+      <div class="box-small"></div>
+      <div class="box-small"></div>
+      <div class="box-small"></div>
+      <div class="box-small"></div>
+      <div class="box-small"></div>
+      <div class="box-small"></div>
+      <div class="box-small"></div>
+    </div>
+  </div>
+
+  <!-- 今はアニメーションなし。後でここに JS を足していく想定 -->
+  <script>
+    // ここにフェーズ1〜3用のスクリプトを後で追加していく
+  </script>
+</body>
+</html>
