@@ -19,12 +19,11 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
     }
 
-    /* 流れていく横一列 */
+    /* 流れていく横一列（最初は画面右の“外”に待機） */
     .circle-row {
       position: absolute;
       top: 60px;
-      right: -400px; /* 画面の外からスタート */
-      left: 100vw;
+      left: 100vw; /* ← ここだけ。right は消す */
       display: flex;
       gap: 40px;
       will-change: transform;
@@ -66,19 +65,19 @@
       transform: scale(1);
     }
 
-    /* 右→左に流れるアニメーション */
+    /* 右→左に流れるアニメーション（★ フェーズ3でだけ付与） */
     .circle-row.animate {
       animation: slide-left 4s linear forwards;
     }
 
     @keyframes slide-left {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-1800px); /* 必要に応じて増やす */
-  }
-}
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-1800px); /* 必要に応じて調整 */
+      }
+    }
 
     /* 最後にかぶさるホワイトフェード */
     .white-cover {
@@ -94,7 +93,7 @@
       opacity: 1;
     }
 
-    /* デバッグ用：中央に「彼の善良さは〜」を表示（本番ではhero側で出す想定） */
+    /* 中央のテキスト（デモ用） */
     .caption {
       position: absolute;
       inset: 0;
@@ -127,42 +126,7 @@
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <!-- 数はお好みで増やしてOK -->
     </div>
 
     <div class="white-cover" id="whiteCover"></div>
@@ -175,14 +139,12 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const row = document.getElementById("circleRow");
+      // ★ 右端 → 左端の順で ○ が付くよう reverse()
       const cells = Array.from(document.querySelectorAll(".cell")).reverse();
       const cover = document.getElementById("whiteCover");
       const caption = document.getElementById("caption");
 
-      // 右→左へのスライド開始
-      row.classList.add("animate");
-
-      // ○ を一つずつ出していく
+      // ○ を一つずつ出していく（フェーズ2）
       let index = 0;
       let interval = 450; // 最初の間隔（ms）
 
@@ -195,20 +157,26 @@
           interval = Math.max(80, interval * 0.8);
           setTimeout(step, interval);
         } else {
-          // 全部に○がついたら白フェード
-          cover.classList.add("show");
+          // ★ ここからフェーズ3：列全体を左に流す
+          row.classList.add("animate");
 
-          // その後にテキストを出す（ここは本番側でコールバックにしてOK）
+          // 列が流れきる少し前に白フェード
+          setTimeout(() => {
+            cover.classList.add("show");
+          }, 3200); // slide-left 4s に対するタイミング
+
+          // その後にテキストを出す（デモ用）
           setTimeout(() => {
             caption.classList.add("show");
-          }, 900);
+          }, 4000);
         }
       }
 
-      // 少し溜めてからスタート
+      // 少し溜めてから ○ 出現をスタート（フェーズ1→2 への“タメ”）
       setTimeout(step, 600);
     });
   </script>
+
   <a href="character_b.html"
    style="
      position: fixed;
@@ -219,7 +187,7 @@
      text-decoration: underline;
      z-index: 1000;
    ">
-  ← キャラクターBに戻る
-</a>
+    ← キャラクターBに戻る
+  </a>
 </body>
 </html>
