@@ -9,7 +9,7 @@
       background: #ffffff;
     }
 
-    /* オーバーレイ全体 */
+    /* オーバーレイ全体（カメラ枠） */
     .row-wrapper {
       position: relative;
       width: 100vw;
@@ -19,15 +19,15 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
     }
 
-    /* 流れていく横一列（カメラ＝viewportは固定、列が右→左へ動く） */
+    /* 流れていく横一列（列自体はJSで translateX 制御） */
     .circle-row {
       position: absolute;
       top: 60px;
-      left: 100%; /* 画面の右の外からスタート */
-      display: flex;
-      flex-direction: row-reverse; /* DOMの先頭セルが「右端」に来るようにする */
+      left: 0;
+      display: flex; /* 左→右にセルを並べる（JSでカメラを右側から追う） */
       gap: 40px;
       will-change: transform;
+      transform: translateX(100vw); /* 最初は画面外（右）に寄せておく */
     }
 
     /* ひとつ分の □＋○ セット */
@@ -58,26 +58,12 @@
       box-sizing: border-box;
       opacity: 0;
       transform: scale(0.7);
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      transition: opacity 0.25s ease, transform 0.25s ease;
     }
 
     .cell.active .cell-circle {
       opacity: 1;
       transform: scale(1);
-    }
-
-    /* 右→左に流れるアニメーション（列そのものが動く） */
-    .circle-row.animate {
-      animation: slide-left 6s linear forwards;
-    }
-
-    @keyframes slide-left {
-      0% {
-        transform: translateX(0); /* 画面右の外 */
-      }
-      100% {
-        transform: translateX(-2600px); /* 充分左に抜けるくらいまで */
-      }
     }
 
     /* 最後にかぶさるホワイトフェード */
@@ -114,7 +100,7 @@
 <body>
   <div class="row-wrapper">
     <div class="circle-row" id="circleRow">
-      <!-- □＋○ を好きな数だけ並べる（DOMの先頭が「右端」になる） -->
+      <!-- □＋○ を好きな数だけ並べる -->
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
@@ -147,20 +133,34 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const row = document.getElementById("circleRow");
-      const cells = Array.from(document.querySelectorAll(".cell")); // flex-direction: row-reverse なのでこれで右→左の順
+      const cells = Array.from(document.querySelectorAll(".cell"));
       const cover = document.getElementById("whiteCover");
       const caption = document.getElementById("caption");
 
-      // 列のスライド開始（右→左）
-      row.classList.add("animate");
+      // ○の付く「ヘッド」をどの位置で追いかけるか（画面幅の何％あたりか）
+      const HEAD_RATIO = 0.75; // 0.8 にするともっと右寄り
+      // セル＋隙間のだいたいの幅（px）: デザイン見ながら微調整
+      const STEP_PX = 100;
 
-      // ○ を一つずつ出していく
+      // ヘッド index をもとに、列全体の translateX を計算
+      function updateRowPosition(activeIndex) {
+        const vw = window.innerWidth;
+        const headX = vw * HEAD_RATIO;
+        const offsetX = headX - activeIndex * STEP_PX;
+        row.style.transform = `translateX(${offsetX}px)`;
+      }
+
+      // 最初はまだ何も付いていない状態 → 列全体を右側に寄せておく
+      updateRowPosition(0);
+
+      // ○ を一つずつ出していく（右から左へ「伸びていく」ように見える）
       let index = 0;
       let interval = 450; // 最初の間隔（ms）
 
       function step() {
         if (index < cells.length) {
-          cells[index].classList.add("active"); // ○を表示
+          cells[index].classList.add("active"); // ○を付ける
+          updateRowPosition(index); // カメラ（translateX）をヘッドに合わせて移動
           index++;
 
           // だんだん速くする（下限80ms）
@@ -170,7 +170,7 @@
           // 全部に○がついたら白フェード
           cover.classList.add("show");
 
-          // その後にテキストを出す（本番ではここで hero 側のテキスト表示に切り替えでもOK）
+          // その後テキスト
           setTimeout(() => {
             caption.classList.add("show");
           }, 900);
