@@ -9,7 +9,7 @@
       background: #ffffff;
     }
 
-    /* オーバーレイ全体（カメラはここに固定） */
+    /* オーバーレイ全体 */
     .row-wrapper {
       position: relative;
       width: 100vw;
@@ -19,16 +19,14 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
     }
 
-    /* 右→左に「紙」だけが動く横一列のコンテナ */
+    /* 流れていく横一列（最初は画面右の“外”に待機） */
     .circle-row {
       position: absolute;
       top: 60px;
-      left: 0;
+      left: 100vw; /* ← ここだけ。right は消す */
       display: flex;
       gap: 40px;
       will-change: transform;
-      transform: translateX(0); /* JS でどんどんマイナス方向へ動かす */
-      transition: transform 0.25s linear; /* 一コマごとのスライドを滑らかに */
     }
 
     /* ひとつ分の □＋○ セット */
@@ -36,10 +34,8 @@
       position: relative;
       width: 60px;
       height: 60px;
-      flex: 0 0 auto;
     }
 
-    /* □ */
     .cell-box {
       position: absolute;
       bottom: 0;
@@ -48,10 +44,8 @@
       height: 36px;
       border: 1px solid #000;
       background: transparent;
-      box-sizing: border-box;
     }
 
-    /* ○（最初は非表示、active になったら出す） */
     .cell-circle {
       position: absolute;
       top: 0;
@@ -71,6 +65,20 @@
       transform: scale(1);
     }
 
+    /* 右→左に流れるアニメーション（★ フェーズ3でだけ付与） */
+    .circle-row.animate {
+      animation: slide-left 4s linear forwards;
+    }
+
+    @keyframes slide-left {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-1800px); /* 必要に応じて調整 */
+      }
+    }
+
     /* 最後にかぶさるホワイトフェード */
     .white-cover {
       position: absolute;
@@ -85,7 +93,7 @@
       opacity: 1;
     }
 
-    /* 中央に出すテキスト（本番では hero 側に移す想定） */
+    /* 中央のテキスト（デモ用） */
     .caption {
       position: absolute;
       inset: 0;
@@ -118,41 +126,7 @@
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <!-- 数はお好みで増やしてOK -->
     </div>
 
     <div class="white-cover" id="whiteCover"></div>
@@ -165,66 +139,54 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const row = document.getElementById("circleRow");
-      const cells = Array.from(document.querySelectorAll(".cell"));
+      // ★ 右端 → 左端の順で ○ が付くよう reverse()
+      const cells = Array.from(document.querySelectorAll(".cell")).reverse();
       const cover = document.getElementById("whiteCover");
       const caption = document.getElementById("caption");
-      const wrapper = document.querySelector(".row-wrapper");
 
-      // 1マスぶんの「押し出し量」（□の幅 + 余白）をざっくり指定
-      // 実際の見え方を見ながらここだけ調整すればOK
-      const stepWidth = 80;
-
-      // row を画面の右側の外からスタートさせる
-      let currentX = wrapper.offsetWidth;
-      row.style.transform = `translateX(${currentX}px)`;
-
+      // ○ を一つずつ出していく（フェーズ2）
       let index = 0;
-      let interval = 450; // 最初の○が付くまでの間隔（ms）
+      let interval = 450; // 最初の間隔（ms）
 
       function step() {
         if (index < cells.length) {
-          // 横一列を「左へ」少し送る（紙が送られていくイメージ）
-          currentX -= stepWidth;
-          row.style.transform = `translateX(${currentX}px)`;
-
-          // 画面の右端側に出てきたセルから順番に○を付ける
-          const cell = cells[index];
-          cell.classList.add("active");
-
+          cells[index].classList.add("active");
           index++;
 
-          // だんだんスピードを上げる（下限 80ms）
+          // だんだん速くする（下限80ms）
           interval = Math.max(80, interval * 0.8);
           setTimeout(step, interval);
         } else {
-          // 全部に○が付いたら白フェード
-          cover.classList.add("show");
+          // ★ ここからフェーズ3：列全体を左に流す
+          row.classList.add("animate");
 
-          // その後にテキスト
+          // 列が流れきる少し前に白フェード
+          setTimeout(() => {
+            cover.classList.add("show");
+          }, 3200); // slide-left 4s に対するタイミング
+
+          // その後にテキストを出す（デモ用）
           setTimeout(() => {
             caption.classList.add("show");
-          }, 900);
+          }, 4000);
         }
       }
 
-      // ちょっと「溜め」を置いてから開始
+      // 少し溜めてから ○ 出現をスタート（フェーズ1→2 への“タメ”）
       setTimeout(step, 600);
     });
   </script>
 
-  <!-- 本番では不要。デモ用の戻るリンク -->
-  <a
-    href="character_b.html"
-    style="
-      position: fixed;
-      top: 16px;
-      left: 16px;
-      font-size: 12px;
-      color: #000;
-      text-decoration: underline;
-      z-index: 1000;
-    "
-  >
+  <a href="character_b.html"
+   style="
+     position: fixed;
+     top: 16px;
+     left: 16px;
+     font-size: 12px;
+     color: #000;
+     text-decoration: underline;
+     z-index: 1000;
+   ">
     ← キャラクターBに戻る
   </a>
 </body>
