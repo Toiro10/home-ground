@@ -9,7 +9,7 @@
       background: #ffffff;
     }
 
-    /* オーバーレイ全体（カメラ枠） */
+    /* オーバーレイ全体 */
     .row-wrapper {
       position: relative;
       width: 100vw;
@@ -19,15 +19,15 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
     }
 
-    /* 流れていく横一列（列自体はJSで translateX 制御） */
+    /* 流れていく横一列 */
     .circle-row {
       position: absolute;
       top: 60px;
-      left: 0;
-      display: flex; /* 左→右にセルを並べる（JSでカメラを右側から追う） */
+      right: -400px; /* 画面の外からスタート */
+      left: 100vw;
+      display: flex;
       gap: 40px;
       will-change: transform;
-      transform: translateX(100vw); /* 最初は画面外（右）に寄せておく */
     }
 
     /* ひとつ分の □＋○ セット */
@@ -58,13 +58,27 @@
       box-sizing: border-box;
       opacity: 0;
       transform: scale(0.7);
-      transition: opacity 0.25s ease, transform 0.25s ease;
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
     .cell.active .cell-circle {
       opacity: 1;
       transform: scale(1);
     }
+
+    /* 右→左に流れるアニメーション */
+    .circle-row.animate {
+      animation: slide-left 4s linear forwards;
+    }
+
+    @keyframes slide-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-1800px); /* 必要に応じて増やす */
+  }
+}
 
     /* 最後にかぶさるホワイトフェード */
     .white-cover {
@@ -80,7 +94,7 @@
       opacity: 1;
     }
 
-    /* 中央テキスト（今回はデモ用） */
+    /* デバッグ用：中央に「彼の善良さは〜」を表示（本番ではhero側で出す想定） */
     .caption {
       position: absolute;
       inset: 0;
@@ -121,6 +135,34 @@
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
     </div>
 
     <div class="white-cover" id="whiteCover"></div>
@@ -133,34 +175,20 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const row = document.getElementById("circleRow");
-      const cells = Array.from(document.querySelectorAll(".cell"));
+      const cells = Array.from(document.querySelectorAll(".cell")).reverse();
       const cover = document.getElementById("whiteCover");
       const caption = document.getElementById("caption");
 
-      // ○の付く「ヘッド」をどの位置で追いかけるか（画面幅の何％あたりか）
-      const HEAD_RATIO = 0.75; // 0.8 にするともっと右寄り
-      // セル＋隙間のだいたいの幅（px）: デザイン見ながら微調整
-      const STEP_PX = 100;
+      // 右→左へのスライド開始
+      row.classList.add("animate");
 
-      // ヘッド index をもとに、列全体の translateX を計算
-      function updateRowPosition(activeIndex) {
-        const vw = window.innerWidth;
-        const headX = vw * HEAD_RATIO;
-        const offsetX = headX - activeIndex * STEP_PX;
-        row.style.transform = `translateX(${offsetX}px)`;
-      }
-
-      // 最初はまだ何も付いていない状態 → 列全体を右側に寄せておく
-      updateRowPosition(0);
-
-      // ○ を一つずつ出していく（右から左へ「伸びていく」ように見える）
+      // ○ を一つずつ出していく
       let index = 0;
       let interval = 450; // 最初の間隔（ms）
 
       function step() {
         if (index < cells.length) {
-          cells[index].classList.add("active"); // ○を付ける
-          updateRowPosition(index); // カメラ（translateX）をヘッドに合わせて移動
+          cells[index].classList.add("active");
           index++;
 
           // だんだん速くする（下限80ms）
@@ -170,7 +198,7 @@
           // 全部に○がついたら白フェード
           cover.classList.add("show");
 
-          // その後テキスト
+          // その後にテキストを出す（ここは本番側でコールバックにしてOK）
           setTimeout(() => {
             caption.classList.add("show");
           }, 900);
@@ -181,7 +209,6 @@
       setTimeout(step, 600);
     });
   </script>
-
   <a href="character_b.html"
    style="
      position: fixed;
@@ -192,7 +219,7 @@
      text-decoration: underline;
      z-index: 1000;
    ">
-    ← キャラクターBに戻る
-  </a>
+  ← キャラクターBに戻る
+</a>
 </body>
 </html>
