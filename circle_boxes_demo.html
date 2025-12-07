@@ -19,13 +19,13 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
     }
 
-    /* 流れていく横一列 */
+    /* 流れていく横一列（カメラ＝viewportは固定、列が右→左へ動く） */
     .circle-row {
       position: absolute;
       top: 60px;
-      right: -400px; /* 画面の外からスタート */
-      left: 100vw;
+      left: 100%; /* 画面の右の外からスタート */
       display: flex;
+      flex-direction: row-reverse; /* DOMの先頭セルが「右端」に来るようにする */
       gap: 40px;
       will-change: transform;
     }
@@ -66,19 +66,19 @@
       transform: scale(1);
     }
 
-    /* 右→左に流れるアニメーション */
+    /* 右→左に流れるアニメーション（列そのものが動く） */
     .circle-row.animate {
-      animation: slide-left 4s linear forwards;
+      animation: slide-left 6s linear forwards;
     }
 
     @keyframes slide-left {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-1800px); /* 必要に応じて増やす */
-  }
-}
+      0% {
+        transform: translateX(0); /* 画面右の外 */
+      }
+      100% {
+        transform: translateX(-2600px); /* 充分左に抜けるくらいまで */
+      }
+    }
 
     /* 最後にかぶさるホワイトフェード */
     .white-cover {
@@ -94,7 +94,7 @@
       opacity: 1;
     }
 
-    /* デバッグ用：中央に「彼の善良さは〜」を表示（本番ではhero側で出す想定） */
+    /* 中央テキスト（今回はデモ用） */
     .caption {
       position: absolute;
       inset: 0;
@@ -114,35 +114,7 @@
 <body>
   <div class="row-wrapper">
     <div class="circle-row" id="circleRow">
-      <!-- □＋○ を好きな数だけ並べる -->
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <!-- □＋○ を好きな数だけ並べる（DOMの先頭が「右端」になる） -->
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
@@ -175,11 +147,11 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const row = document.getElementById("circleRow");
-      const cells = Array.from(document.querySelectorAll(".cell")).reverse();
+      const cells = Array.from(document.querySelectorAll(".cell")); // flex-direction: row-reverse なのでこれで右→左の順
       const cover = document.getElementById("whiteCover");
       const caption = document.getElementById("caption");
 
-      // 右→左へのスライド開始
+      // 列のスライド開始（右→左）
       row.classList.add("animate");
 
       // ○ を一つずつ出していく
@@ -188,7 +160,7 @@
 
       function step() {
         if (index < cells.length) {
-          cells[index].classList.add("active");
+          cells[index].classList.add("active"); // ○を表示
           index++;
 
           // だんだん速くする（下限80ms）
@@ -198,7 +170,7 @@
           // 全部に○がついたら白フェード
           cover.classList.add("show");
 
-          // その後にテキストを出す（ここは本番側でコールバックにしてOK）
+          // その後にテキストを出す（本番ではここで hero 側のテキスト表示に切り替えでもOK）
           setTimeout(() => {
             caption.classList.add("show");
           }, 900);
@@ -209,6 +181,7 @@
       setTimeout(step, 600);
     });
   </script>
+
   <a href="character_b.html"
    style="
      position: fixed;
@@ -219,7 +192,7 @@
      text-decoration: underline;
      z-index: 1000;
    ">
-  ← キャラクターBに戻る
-</a>
+    ← キャラクターBに戻る
+  </a>
 </body>
 </html>
