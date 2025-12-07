@@ -208,7 +208,7 @@
     /* ▼ 問1 専用レイアウト（オーダー画像寄せ） */
     .hero-q1-layout {
       display: flex;
-      flex-direction: row;            /* 左：3,2,1 / 中央：文 / 右：問1 */
+      flex-direction: row;            /* 左：3,2,1 / 中央：文 / 右：問 */
       justify-content: center;
       align-items: flex-start;
       gap: 10px;                      /* 列の横距離 */
@@ -227,40 +227,34 @@
     }
 
     .hero-q1-options-col {
-      line-height: 1.0;  /* 1.4〜1.6くらいで好みに調整 */
+      line-height: 1.0;
     }
-
-    /* 右カラム・中央カラムの“箱”を細くするイメージ */
 
     .hero-q1-sentence,
     .hero-q1-question {
-      letter-spacing: 0.08em;  /* 元より少し細め：横幅を減らす */
+      letter-spacing: 0.08em;
     }
 
-    /* 右カラムをさらに中央側へ寄せる（見た目の距離を縮める） */
     .hero-q1-question {
-      margin-left: -1.2em;     /* -0.8〜-1.5em の範囲で好みに調整 */
+      margin-left: -1.2em;
     }
-    
-    /* 左側：3・2・1 を横に並べる列 */
+
     .hero-q1-options {
       display: flex;
-      flex-direction: row;            /* 左から 3 → 2 → 1 の順 */
+      flex-direction: row;
       gap: 8px;
-      margin-top: -1.6em;             /* 「3」と「問(1)」の頭合わせ用 */
+      margin-top: -1.6em;
     }
 
-    /* 中央の文 */
     .hero-q1-sentence {
       margin-top: 0.2em;
     }
 
-    /* 右の「問(1)…」列 */
     .hero-q1-question {
       padding-top: 0;
     }
 
-    /* □（小さい・縦長） */
+    /* □（小さい・縦長）＋問3用中身 */
     .hero-q1-box-small,
     .hero-q1-box-long {
       display: inline-block;
@@ -277,11 +271,10 @@
 
     .hero-q1-box-long {
       width: 1.4em;
-      height: 5em;                    /* 縦長長方形 */
+      height: 5em;
       margin: 0.4em 0;
     }
 
-    /* 問3 専用：□の中の文字＆○× */
     .hero-q3-box {
       display: inline-flex;
       align-items: center;
@@ -299,13 +292,57 @@
 
     .hero-q3-mark {
       position: absolute;
-      font-size: 100px;
-      color: #d00; /* 赤ペン風 */
+      font-size: 100px;  /* ○×の大きさ */
+      color: #d00;
       line-height: 1;
       opacity: 0;
       transition: opacity 0.3s ease;
-      transform: translate(6px, -6px); /* □の右上あたりにずらす */
+      transform: translate(6px, -6px);
       pointer-events: none;
+    }
+
+    /* ===== □＋○ 列のレイアウト（静止） ===== */
+
+    .hero-row-scene {
+      position: relative;
+      width: 100%;
+      height: 260px;
+      overflow: hidden;
+    }
+
+    .hero-row-track {
+      position: absolute;
+      top: 80px;              /* 画面上からの位置 */
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 36px;              /* 各アイテムの間隔 */
+    }
+
+    .hero-row-item {
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+
+    .hero-row-box {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 40px;
+      border: 1px solid #000;
+    }
+
+    .hero-row-circle {
+      position: absolute;
+      top: -10px;
+      left: 10px;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 4px solid #d00;
+      box-sizing: border-box;
     }
 
     /* ===== 下部：バックボーン 5ブロック ===== */
@@ -357,7 +394,6 @@
       display: block;
     }
 
-    /* Block1：横書き・中央揃え、左からスッと出る（黒） */
     .block1-type {
       position: absolute;
       top: 12%;
@@ -384,7 +420,6 @@
       }
     }
 
-    /* Block2〜5：画像上の縦書きタイピング（黒・共通スタイル） */
     .block2-type,
     .block3-type,
     .block4-type,
@@ -425,8 +460,6 @@
       0% { opacity: 0; }
       100% { opacity: 1; }
     }
-
-    /* レスポンシブ（※hero-q1 系はここから削除済み） */
 
     @media (max-width: 900px) {
       .layout {
@@ -484,7 +517,7 @@
       <main class="main-panel">
         <section class="hero-visual">
           <div class="hero-image-layer">
-            <img src="assets/wataru.png" alt="キャラクター画像（仮）" />
+            <img src="assets/DummyHuman.png" alt="キャラクター画像（仮）" />
           </div>
 
           <!-- 白オーバーレイ -->
@@ -611,35 +644,29 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // 1) 「苦」が出る
     setTimeout(() => {
       charEl.textContent = "苦";
       charEl.style.opacity = "1";
     }, 800);
 
-    // 2) 赤い「×」
     setTimeout(() => {
       markXEl.style.opacity = "1";
     }, 1600);
 
-    // 3) 「苦」と「×」フェードアウト
     setTimeout(() => {
       charEl.style.opacity  = "0";
       markXEl.style.opacity = "0";
     }, 2600);
 
-    // 4) 「楽」
     setTimeout(() => {
       charEl.textContent = "楽";
       charEl.style.opacity = "1";
     }, 3400);
 
-    // 5) 赤い「○」
     setTimeout(() => {
       markOEl.style.opacity = "1";
     }, 4200);
 
-    // 6) 終了コールバック（必要なら）
     setTimeout(() => {
       if (onDone) onDone();
     }, 5200);
@@ -653,25 +680,16 @@ document.addEventListener("DOMContentLoaded", function () {
       // STEP1：問1
       `
       <div class="hero-q1-layout">
-        <!-- 左カラム：３・２・１ -->
         <div class="hero-q1-options">
-          <div class="hero-q1-options-col">
-            ３　手を振る
-          </div>
-          <div class="hero-q1-options-col">
-            ２　通り過ぎる
-          </div>
-          <div class="hero-q1-options-col">
-            １　声をかける
-          </div>
+          <div class="hero-q1-options-col">３　手を振る</div>
+          <div class="hero-q1-options-col">２　通り過ぎる</div>
+          <div class="hero-q1-options-col">１　声をかける</div>
         </div>
 
-        <!-- 中央カラム -->
         <div class="hero-q1-sentence">
           困っているひとがいたら<span class="hero-q1-box-long"></span>する。
         </div>
 
-        <!-- 右カラム -->
         <div class="hero-q1-question">
           問（1）<span class="hero-q1-box-long"></span>にあてはまる番号を選びなさい。
         </div>
@@ -682,15 +700,9 @@ document.addEventListener("DOMContentLoaded", function () {
       `
       <div class="hero-q1-layout">
         <div class="hero-q1-options">
-          <div class="hero-q1-options-col">
-            ３　そのままにする
-          </div>
-          <div class="hero-q1-options-col">
-            ２　交番に届ける
-          </div>
-          <div class="hero-q1-options-col">
-            １　自分のものにする
-          </div>
+          <div class="hero-q1-options-col">３　そのままにする</div>
+          <div class="hero-q1-options-col">２　交番に届ける</div>
+          <div class="hero-q1-options-col">１　自分のものにする</div>
         </div>
 
         <div class="hero-q1-sentence">
@@ -703,15 +715,17 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
       `,
 
-      // STEP3：問3（ここで演出をする）
+      // STEP3：問3（苦→楽）
       `
       <div class="hero-q1-layout">
         <div class="hero-q1-sentence">
-          友だちが笑っていると、わたしも<span class="hero-q1-box-small hero-q3-box">
+          友だちが笑っていると、わたしも
+          <span class="hero-q1-box-small hero-q3-box">
             <span id="q3Char"  class="hero-q3-char"></span>
             <span id="q3MarkX" class="hero-q3-mark">×</span>
             <span id="q3MarkO" class="hero-q3-mark">○</span>
-          </span>しい気もちになる。
+          </span>
+          しい気もちになる。
         </div>
 
         <div class="hero-q1-question">
@@ -720,12 +734,60 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
       `,
 
-      // STEP4：締め
+      // STEP4：□と○が横一列（静止）
+      `
+      <div class="hero-row-scene">
+        <div class="hero-row-track">
+          <div class="hero-row-item">
+            <div class="hero-row-box"></div>
+            <div class="hero-row-circle"></div>
+          </div>
+          <div class="hero-row-item">
+            <div class="hero-row-box"></div>
+            <div class="hero-row-circle"></div>
+          </div>
+          <div class="hero-row-item">
+            <div class="hero-row-box"></div>
+            <div class="hero-row-circle"></div>
+          </div>
+          <div class="hero-row-item">
+            <div class="hero-row-box"></div>
+            <div class="hero-row-circle"></div>
+          </div>
+          <div class="hero-row-item">
+            <div class="hero-row-box"></div>
+            <div class="hero-row-circle"></div>
+          </div>
+          <div class="hero-row-item">
+            <div class="hero-row-box"></div>
+            <div class="hero-row-circle"></div>
+          </div>
+          <div class="hero-row-item">
+            <div class="hero-row-box"></div>
+            <div class="hero-row-circle"></div>
+          </div>
+          <div class="hero-row-item">
+            <div class="hero-row-box"></div>
+            <div class="hero-row-circle"></div>
+          </div>
+          <div class="hero-row-item">
+            <div class="hero-row-box"></div>
+            <div class="hero-row-circle"></div>
+          </div>
+          <div class="hero-row-item">
+            <div class="hero-row-box"></div>
+            <div class="hero-row-circle"></div>
+          </div>
+        </div>
+      </div>
+      `,
+
+      // STEP5：締め
       "彼の善良さは、空欄を埋めるだけで生まれている。"
     ];
 
     let index = 0;
-    const baseVisibleTime = 2500;  // 通常ステップ用
+    const baseVisibleTime = 2500;
     const fadeGapTime = 650;
 
     function showStep(i) {
@@ -742,14 +804,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       requestAnimationFrame(() => {
         overlayInner.classList.add("visible");
-
-        // ★ STEP3（問3）のときだけ、□アニメーションを実行
-        if (i === 3) {
+        if (i === 3) { // 問3のときだけ
           runQ3Sequence();
         }
       });
 
-      // 問3のときだけ少し長く表示してアニメーションを完走させる
       const currentVisibleTime = (i === 3) ? 5600 : baseVisibleTime;
 
       setTimeout(() => {
@@ -900,7 +959,6 @@ document.addEventListener("DOMContentLoaded", function () {
     window.location.href = "character_c.html";
   }
 
-  // スマホ（タッチ）
   window.addEventListener("touchstart", function (e) {
     if (e.touches.length > 1) return;
     startX = e.touches[0].clientX;
@@ -921,7 +979,6 @@ document.addEventListener("DOMContentLoaded", function () {
     startX = null;
   });
 
-  // PC（マウスドラッグ）
   window.addEventListener("mousedown", function (e) {
     startX = e.clientX;
   });
@@ -941,7 +998,6 @@ document.addEventListener("DOMContentLoaded", function () {
     startX = null;
   });
 
-  // PC（キーボード）
   window.addEventListener("keydown", function (e) {
     if (e.key === "ArrowLeft") {
       goPrev();
