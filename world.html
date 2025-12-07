@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>世界観</title>
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    /* 画面全体 */
+    .world {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* 背景画像 */
+    .world-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .world-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* 黒フェード（文字を読みやすくする用） */
+    .world-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+
+    /* 世界観テキスト */
+    .world-text {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #ffffff;
+    }
+
+    .world-text-inner {
+      max-width: 720px;
+      padding: 24px;
+      font-size: 16px;
+      line-height: 2.0;
+      letter-spacing: 0.08em;
+    }
+
+    .world-title {
+      font-size: 22px;
+      letter-spacing: 0.2em;
+      margin-bottom: 24px;
+    }
+  </style>
+</head>
+<body>
+  <section class="world">
+    <!-- 背景画像 -->
+    <div class="world-bg">
+      <img src="assets/world_dummy.png" alt="世界観イメージ" />
+    </div>
+
+    <!-- 読みやすくするための暗幕 -->
+    <div class="world-overlay"></div>
+
+    <!-- テキスト -->
+    <div class="world-text">
+      <div class="world-text-inner">
+        <div class="world-title">世界観</div>
+
+        <p>
+          この世界では、「善」と「悪」は数値化されている。<br />
+          人々は正しさを考えることなく、<br />
+          あらかじめ用意された選択肢から行動を選ぶ。
+        </p>
+
+        <p>
+          空欄を埋め、◯を重ね、<br />
+          間違いを×で消すことで、<br />
+          「良い人」は簡単に完成する。
+        </p>
+
+        <p>
+          そこに、心は必要なのだろうか。
+        </p>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
