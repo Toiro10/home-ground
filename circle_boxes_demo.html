@@ -19,14 +19,15 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
     }
 
-    /* 流れていく横一列（最初は画面右の“外”に待機） */
+    /* 横一列（カメラ固定／列は動かさない） */
     .circle-row {
       position: absolute;
       top: 60px;
-      left: 100vw; /* ← ここだけ。right は消す */
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
       gap: 40px;
-      will-change: transform;
+      will-change: opacity, transform;
     }
 
     /* ひとつ分の □＋○ セット */
@@ -60,40 +61,29 @@
       transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
+    /* ○ が付いた状態 */
     .cell.active .cell-circle {
       opacity: 1;
       transform: scale(1);
     }
 
-    /* 右→左に流れるアニメーション（★ フェーズ3でだけ付与） */
-    .circle-row.animate {
-      animation: slide-left 4s linear forwards;
-    }
-
-    @keyframes slide-left {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(-1800px); /* 必要に応じて調整 */
-      }
-    }
-
-    /* 最後にかぶさるホワイトフェード */
+    /* 左側からかぶさるホワイトフェード */
     .white-cover {
       position: absolute;
       inset: 0;
-      background: #ffffff;
-      opacity: 0;
+      /* 左端が完全白 → 右に向かって徐々に透明になるグラデーション */
+      background: linear-gradient(to right, #ffffff 0%, #ffffff 40%, rgba(255,255,255,0) 100%);
+      transform-origin: left center;
+      transform: scaleX(0); /* 最初は見えない（幅0） */
       pointer-events: none;
-      transition: opacity 0.8s ease;
+      transition: transform 0.8s ease;
     }
 
     .white-cover.show {
-      opacity: 1;
+      transform: scaleX(1); /* 左から右へ広がっていく */
     }
 
-    /* 中央のテキスト（デモ用） */
+    /* 中央テキスト（本番では hero 側のテキストに置き換え想定） */
     .caption {
       position: absolute;
       inset: 0;
@@ -101,7 +91,7 @@
       align-items: center;
       justify-content: center;
       opacity: 0;
-      transition: opacity 0.8s ease 0.4s;
+      transition: opacity 0.8s ease 0.2s;
       font-size: 20px;
     }
 
@@ -126,68 +116,11 @@
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <!-- 数はお好みで増やしてOK -->
-    </div>
-
-    <div class="white-cover" id="whiteCover"></div>
-
-    <div class="caption" id="caption">
-      彼の善良さは、空欄を埋めるだけで生まれている。
-    </div>
-  </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const row = document.getElementById("circleRow");
-      // ★ 右端 → 左端の順で ○ が付くよう reverse()
-      const cells = Array.from(document.querySelectorAll(".cell")).reverse();
-      const cover = document.getElementById("whiteCover");
-      const caption = document.getElementById("caption");
-
-      // ○ を一つずつ出していく（フェーズ2）
-      let index = 0;
-      let interval = 450; // 最初の間隔（ms）
-
-      function step() {
-        if (index < cells.length) {
-          cells[index].classList.add("active");
-          index++;
-
-          // だんだん速くする（下限80ms）
-          interval = Math.max(80, interval * 0.8);
-          setTimeout(step, interval);
-        } else {
-          // ★ ここからフェーズ3：列全体を左に流す
-          row.classList.add("animate");
-
-          // 列が流れきる少し前に白フェード
-          setTimeout(() => {
-            cover.classList.add("show");
-          }, 3200); // slide-left 4s に対するタイミング
-
-          // その後にテキストを出す（デモ用）
-          setTimeout(() => {
-            caption.classList.add("show");
-          }, 4000);
-        }
-      }
-
-      // 少し溜めてから ○ 出現をスタート（フェーズ1→2 への“タメ”）
-      setTimeout(step, 600);
-    });
-  </script>
-
-  <a href="character_b.html"
-   style="
-     position: fixed;
-     top: 16px;
-     left: 16px;
-     font-size: 12px;
-     color: #000;
-     text-decoration: underline;
-     z-index: 1000;
-   ">
-    ← キャラクターBに戻る
-  </a>
-</body>
-</html>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></
