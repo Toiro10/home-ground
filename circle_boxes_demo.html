@@ -2,14 +2,14 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>Right-to-Left Check Row</title>
+  <title>Right-to-Left Check Row (fixed)</title>
   <style>
     body {
       margin: 0;
       background: #ffffff;
     }
 
-    /* カメラ（固定） */
+    /* カメラ領域（固定） */
     .row-wrapper {
       position: relative;
       width: 100vw;
@@ -19,13 +19,13 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
     }
 
-    /* □＋○ が並ぶ列 */
+    /* □＋○ が横一列に並ぶレーン */
     .circle-row {
       position: absolute;
       top: 70px;
-      right: 60px; /* 右端を基準にする */
+      right: 40px; /* 右端寄せ（ここが基準） */
       display: flex;
-      flex-direction: row-reverse; /* 右 → 左 に伸びるように見せる */
+      flex-direction: row-reverse; /* 視覚上は右→左に伸びる */
       gap: 40px;
       will-change: transform;
       transform: translateX(0);
@@ -80,7 +80,7 @@
       opacity: 1;
     }
 
-    /* 最後に出すテキスト */
+    /* 最後に出すテキスト（本番では hero 側と連携させる想定） */
     .caption {
       position: absolute;
       inset: 0;
@@ -95,12 +95,23 @@
     .caption.show {
       opacity: 1;
     }
+
+    /* デモ用：戻るリンク */
+    .back-link {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      font-size: 12px;
+      color: #000;
+      text-decoration: underline;
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
   <div class="row-wrapper">
     <div class="circle-row" id="circleRow">
-      <!-- あらかじめ必要な数だけセルを置いておく（右→左に伸びる） -->
+      <!-- 右端 → 左端の順に見えるように row-reverse で並べる -->
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
@@ -129,41 +140,50 @@
     </div>
   </div>
 
+  <a href="character_b.html" class="back-link">← キャラクターBに戻る</a>
+
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const row = document.getElementById("circleRow");
-      const cells = Array.from(document.querySelectorAll(".cell")); // ※ここは reverse しない
+      const allCells = Array.from(document.querySelectorAll(".cell"));
       const cover = document.getElementById("whiteCover");
       const caption = document.getElementById("caption");
 
+      // 見た目上「右端」から順に ○ をつけたいので reverse する
+      const cells = allCells.reverse();
+
       let index = 0;
-      let interval = 500; // ○ が付く間隔（だんだん短くする）
-      let shift = 0; // 列全体を左に動かす量
+      let interval = 500; // ○ の出る間隔（だんだん短くする）
+      let shift = 0; // 列全体を左にずらす量
+      const shiftStep = 40; // 1 ステップごとにどれだけ左へ動かすか
+      const maxShift = 360; // これ以上は左へ動かさない（画面から消えないようにする）
 
       function step() {
         if (index >= cells.length) {
-          // 全部○が付いたら白フェード＆テキスト
+          // すべてのセルが active になったら白フェード
           cover.classList.add("show");
-          setTimeout(() => caption.classList.add("show"), 900);
+          setTimeout(() => {
+            caption.classList.add("show");
+          }, 900);
           return;
         }
 
+        // ○ をつける（右端 → 左端）
         const cell = cells[index];
-        cell.classList.add("active"); // ○ を出す
-
+        cell.classList.add("active");
         index++;
 
-        // 列全体を左へ押し出す（＝右から左へ流れていく）
-        shift += 80; // 1セルぶん弱ずつ動かす
+        // 列全体を少しだけ左に押し出す（でも maxShift 以上は行かない）
+        shift = Math.min(maxShift, shift + shiftStep);
         row.style.transform = `translateX(-${shift}px)`;
 
-        // だんだん速くする
+        // スピードアップ（だんだん早くなる）
         interval = Math.max(80, interval * 0.82);
 
         setTimeout(step, interval);
       }
 
-      // 少し溜めてから開始
+      // 少し溜めてからスタート
       setTimeout(step, 600);
     });
   </script>
