@@ -23,11 +23,12 @@
     .circle-row {
       position: absolute;
       top: 60px;
-      right: -400px; /* 画面の外からスタート */
-      left: 100vw;
+      left: 0; /* 画面左を基準にする */
       display: flex;
       gap: 40px;
       will-change: transform;
+      transform: translateX(100vw); 
+      /* 最初は画面の右側の外にいる状態からスタート */
     }
 
     /* ひとつ分の □＋○ セット */
@@ -72,13 +73,15 @@
     }
 
     @keyframes slide-left {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-1800px); /* 必要に応じて増やす */
-  }
-}
+      0% {
+        /* 画面の右外側（100vw）から入ってくる */
+        transform: translateX(100vw);
+      }
+      100% {
+        /* 十分左の外まで流す（セル数にあわせて調整してOK） */
+        transform: translateX(-2200px);
+      }
+    }
 
     /* 最後にかぶさるホワイトフェード */
     .white-cover {
@@ -160,9 +163,6 @@
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
       <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
-      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
     </div>
 
     <div class="white-cover" id="whiteCover"></div>
@@ -182,7 +182,7 @@
       // 右→左へのスライド開始
       row.classList.add("animate");
 
-      // ○ を一つずつ出していく
+      // ○ を一つずつ出していく（右端から順に）
       let index = 0;
       let interval = 450; // 最初の間隔（ms）
 
@@ -209,6 +209,7 @@
       setTimeout(step, 600);
     });
   </script>
+
   <a href="character_b.html"
    style="
      position: fixed;
@@ -219,7 +220,7 @@
      text-decoration: underline;
      z-index: 1000;
    ">
-  ← キャラクターBに戻る
-</a>
+    ← キャラクターBに戻る
+  </a>
 </body>
 </html>
