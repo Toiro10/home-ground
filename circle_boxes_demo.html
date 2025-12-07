@@ -1,160 +1,171 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>Correct Answer Accumulation</title>
-
-<style>
-  body {
-    margin: 0;
-    background: #fff;
-  }
-
-  /* カメラ（固定） */
-  .row-wrapper {
-    position: relative;
-    width: 100vw;
-    height: 200px;
-    overflow: hidden;
-    background: #fff;
-    font-family: system-ui, sans-serif;
-  }
-
-  /* セルが溜まっていく列 */
-  .circle-row {
-    position: absolute;
-    right: 60px; /* 右端に発生源 */
-    top: 70px;
-    display: flex;
-    gap: 40px;
-    will-change: transform;
-  }
-
-  /* □＋○ セット */
-  .cell {
-    position: relative;
-    width: 60px;
-    height: 60px;
-    flex-shrink: 0;
-  }
-
-  .cell-box {
-    position: absolute;
-    bottom: 0;
-    left: 12px;
-    width: 36px;
-    height: 36px;
-    border: 1.5px solid #000;
-    box-sizing: border-box;
-  }
-
-  .cell-circle {
-    position: absolute;
-    inset: 0;
-    border: 4px solid red;
-    border-radius: 50%;
-    opacity: 0;
-    transform: scale(0.6);
-    transition: opacity 0.25s ease, transform 0.25s ease;
-  }
-
-  .cell.active .cell-circle {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  /* 白フェード */
-  .white-cover {
-    position: absolute;
-    inset: 0;
-    background: #fff;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.8s ease;
-  }
-
-  .white-cover.show {
-    opacity: 1;
-  }
-
-  /* 最後の文章（仮） */
-  .caption {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    opacity: 0;
-    transition: opacity 0.8s ease;
-  }
-
-  .caption.show {
-    opacity: 1;
-  }
-
-</style>
-</head>
-
-<body>
-
-<div class="row-wrapper">
-  <div class="circle-row" id="row"></div>
-  <div class="white-cover" id="cover"></div>
-  <div class="caption" id="caption">
-    彼の善良さは、空欄を埋めるだけで生まれている。
-  </div>
-</div>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const row = document.getElementById("row");
-  const cover = document.getElementById("cover");
-  const caption = document.getElementById("caption");
-
-  let shift = 0;
-  let interval = 500;
-  let count = 0;
-  const maxCells = 40;
-
-  function createCell() {
-    const cell = document.createElement("div");
-    cell.className = "cell";
-    cell.innerHTML = `
-      <div class="cell-box"></div>
-      <div class="cell-circle"></div>
-    `;
-    return cell;
-  }
-
-  function step() {
-    if (count >= maxCells) {
-      cover.classList.add("show");
-      setTimeout(() => caption.classList.add("show"), 900);
-      return;
+  <meta charset="UTF-8" />
+  <title>Right-to-Left Check Row</title>
+  <style>
+    body {
+      margin: 0;
+      background: #ffffff;
     }
 
-    const cell = createCell();
-    row.appendChild(cell);
+    /* カメラ（固定） */
+    .row-wrapper {
+      position: relative;
+      width: 100vw;
+      height: 200px;
+      overflow: hidden;
+      background: #ffffff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    }
 
-    // ○ を付ける
-    setTimeout(() => cell.classList.add("active"), 100);
+    /* □＋○ が並ぶ列 */
+    .circle-row {
+      position: absolute;
+      top: 70px;
+      right: 60px; /* 右端を基準にする */
+      display: flex;
+      flex-direction: row-reverse; /* 右 → 左 に伸びるように見せる */
+      gap: 40px;
+      will-change: transform;
+      transform: translateX(0);
+    }
 
-    // 左に押し出す（カメラは固定）
-    shift += 100;
-    row.style.transform = `translateX(-${shift}px)`;
+    /* ひとつ分の □＋○ セット */
+    .cell {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      flex-shrink: 0;
+    }
 
-    count++;
+    .cell-box {
+      position: absolute;
+      bottom: 0;
+      left: 12px;
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid #000;
+      background: transparent;
+      box-sizing: border-box;
+    }
 
-    // 加速
-    interval = Math.max(70, interval * 0.82);
-    setTimeout(step, interval);
-  }
+    .cell-circle {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 4px solid red;
+      box-sizing: border-box;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
 
-  // 少し溜めて開始
-  setTimeout(step, 600);
-});
-</script>
+    .cell.active .cell-circle {
+      opacity: 1;
+      transform: scale(1);
+    }
 
+    /* 白フェード */
+    .white-cover {
+      position: absolute;
+      inset: 0;
+      background: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease;
+    }
+
+    .white-cover.show {
+      opacity: 1;
+    }
+
+    /* 最後に出すテキスト */
+    .caption {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    .caption.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="row-wrapper">
+    <div class="circle-row" id="circleRow">
+      <!-- あらかじめ必要な数だけセルを置いておく（右→左に伸びる） -->
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+      <div class="cell"><div class="cell-box"></div><div class="cell-circle"></div></div>
+    </div>
+
+    <div class="white-cover" id="whiteCover"></div>
+    <div class="caption" id="caption">
+      彼の善良さは、空欄を埋めるだけで生まれている。
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const row = document.getElementById("circleRow");
+      const cells = Array.from(document.querySelectorAll(".cell")); // ※ここは reverse しない
+      const cover = document.getElementById("whiteCover");
+      const caption = document.getElementById("caption");
+
+      let index = 0;
+      let interval = 500; // ○ が付く間隔（だんだん短くする）
+      let shift = 0; // 列全体を左に動かす量
+
+      function step() {
+        if (index >= cells.length) {
+          // 全部○が付いたら白フェード＆テキスト
+          cover.classList.add("show");
+          setTimeout(() => caption.classList.add("show"), 900);
+          return;
+        }
+
+        const cell = cells[index];
+        cell.classList.add("active"); // ○ を出す
+
+        index++;
+
+        // 列全体を左へ押し出す（＝右から左へ流れていく）
+        shift += 80; // 1セルぶん弱ずつ動かす
+        row.style.transform = `translateX(-${shift}px)`;
+
+        // だんだん速くする
+        interval = Math.max(80, interval * 0.82);
+
+        setTimeout(step, interval);
+      }
+
+      // 少し溜めてから開始
+      setTimeout(step, 600);
+    });
+  </script>
 </body>
 </html>
