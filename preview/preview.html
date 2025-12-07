@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>character</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --panel: #ffffff;
+      --accent: #000000;
+      --text-main: #000000;
+      --text-sub: #444444;
+      --border-soft: rgba(0, 0, 0, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== 上部：メニューバー＋メインビジュアル ===== */
+
+    .layout {
+      display: flex;
+      width: 100%;
+      min-height: 70vh;
+    }
+
+    /* 左の縦メニュー */
+    .side-nav {
+      width: 70px;
+      background: linear-gradient(180deg, #111111, #050505);
+      border-right: 1px solid var(--border-soft);
+      padding: 16px 8px;
+      display: flex;
+      flex-direction: column;
+      : 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      border-radius: 12px;
+      font-size: 11px;
+      text-decoration: none;
+      color: var(--text-sub);
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-item:hover {
+      border-color: var(--border-soft);
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .nav-item-active {
+      border-color: var(--accent);
+      color: #000;
+      background: var(--accent);
+      font-weight: 600;
+    }
+
+    .nav-item-disabled {
+      opacity: 0.35;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* 右側メインビジュアルコンテナ */
+    .main-panel {
+      flex: 1;
+      padding: 24px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .hero-visual {
+      position: relative;
+      border-radius: 18px;
+      border: 1px solid var(--border-soft);
+      overflow: hidden;
+      min-height: 830px;
+      background: radial-gradient(circle at top, #202020, #050505);
+      perspective: 800px;
+    }
+
+    .hero-image-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-image-layer img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.95;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      color: var(--text-main);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      z-index: 5;
+    }
+
+    /* 「道徳、とは」 部分 */
+    .hero-quote {
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, 0);
+      font-size: 58px;
+      letter-spacing: 0.18em;
+      opacity: 0;
+      animation: floatInQuote 1.5s ease-out 0.8s forwards;
+    }
+
+    /* キャラクター名＋説明 部分（右下） */
+    .hero-meta {
+      right: 10%;
+      bottom: 12%;
+      text-align: left;
+    }
+
+    .hero-name {
+      font-size: 20px;
+      margin-bottom: 8px;
+      letter-spacing: 0.18em;
+    }
+
+    .hero-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      max-width: 260px;
+      color: var(--text-sub);
+    }
+
+    .back-link {
+      font-size: 12px;
+      color: var(--text-sub);
+      text-decoration: none;
+      align-self: flex-start;
+      margin-top: 8px;
+    }
+
+    .back-link:hover {
+      color: var(--text-main);
+      text-decoration: underline;
+    }
+
+    /* ===== hero 全面ホワイトオーバーレイ ===== */
+
+    .hero-full-overlay {
+      position: absolute;
+      inset: 0;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      opacity: 1;
+      pointer-events: none;
+      transition: opacity 1s ease;
+    }
+
+    .hero-full-overlay.hidden {
+      opacity: 0;
+    }
+
+    .hero-full-overlay-inner {
+      max-width: 80%;
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.9;
+      color: #000000;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      white-space: pre-wrap;
+    }
+
+    .hero-full-overlay-inner.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ▼ 問1 専用レイアウト（オーダー画像寄せ） */
+    .hero-q1-layout {
+      display: flex;
+      flex-direction: row;            /* 左：3,2,1 / 中央：文 / 右：問1 */
+      justify-content: center;
+      align-items: flex-start;
+      gap: 10px;                      /* 列の横距離 */
+    }
+
+    /* 共通：縦書き設定 */
+    .hero-q1-question,
+    .hero-q1-sentence,
+    .hero-q1-options-col {
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      white-space: pre-wrap;
+      font-size: 16px;
+      line-height: 2.0;
+      letter-spacing: 0.18em;
+    }
+
+    .hero-q1-options-col {
+      line-height: 1.0;  /* 1.4〜1.6くらいで好みに調整 */
+    }
+
+    /* 右カラム・中央カラムの“箱”を細くするイメージ */
+
+    .hero-q1-sentence,
+    .hero-q1-question {
+      letter-spacing: 0.08em;  /* 元より少し細め：横幅を減らす */
+    }
+
+    /* 右カラムをさらに中央側へ寄せる（見た目の距離を縮める） */
+    .hero-q1-question {
+      margin-left: -1.2em;     /* -0.8〜-1.5em の範囲で好みに調整 */
+    }
+    
+    /* 左側：3・2・1 を横に並べる列 */
+    .hero-q1-options {
+      display: flex;
+      flex-direction: row;            /* 左から 3 → 2 → 1 の順 */
+      gap: 8px;
+      margin-top: -1.6em;             /* 「3」と「問(1)」の頭合わせ用 */
+    }
+
+    /* 中央の文 */
+    .hero-q1-sentence {
+      margin-top: 0.2em;
+    }
+
+    /* 右の「問(1)…」列 */
+    .hero-q1-question {
+      padding-top: 0;
+    }
+
+    /* □（小さい・縦長） */
+    .hero-q1-box-small,
+    .hero-q1-box-long {
+      display: inline-block;
+      border: 1px solid #000;
+      box-sizing: border-box;
+      position: relative; /* 問3の中身(苦/楽/×/○)をabsoluteで重ねるため */
+    }
+
+    .hero-q1-box-small {
+      width: 1.2em;
+      height: 1.2em;
+      margin: 0.2em 0;
+    }
+
+    .hero-q1-box-long {
+      width: 1.4em;
+      height: 5em;                    /* 縦長長方形 */
+      margin: 0.4em 0;
+    }
+
+    /* 問3 専用：□の中の文字＆○× */
+    .hero-q3-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-q3-char {
+      position: absolute;
+      font-size: 22px;
+      font-family: "Yuji Boku", "Yuji Syuku", "Hachi Maru Pop", cursive, serif;
+      line-height: 1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .hero-q3-mark {
+      position: absolute;
+      font-size: 100px;
+      color: #d00; /* 赤ペン風 */
+      line-height: 1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      transform: translate(6px, -6px); /* □の右上あたりにずらす */
+      pointer-events: none;
+    }
+
+    /* ===== 下部：バックボーン 5ブロック ===== */
+
+    .timeline {
+      width: calc(100% - 70px);
+      margin-left: 70px;
+      padding: 32px 32px 56px;
+    }
+
+    .timeline-title {
+      font-size: 16px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 16px;
+    }
+
+    .timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .timeline-block {
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background: rgba(255, 255, 255, 0.02);
+      padding: 24px 24px;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .timeline-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-soft);
+    }
+
+    .timeline-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Block1：横書き・中央揃え、左からスッと出る（黒） */
+    .block1-type {
+      position: absolute;
+      top: 12%;
+      left: 50%;
+      transform: translate(-50%, 0) translateX(-80px);
+      max-width: 80%;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.9;
+      color: #000000;
+      opacity: 0;
+      white-space: pre-wrap;
+      animation: block1FloatIn 1.4s ease-out 0.5s forwards;
+    }
+
+    @keyframes block1FloatIn {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 0) translateX(-120px);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, 0) translateX(0);
+      }
+    }
+
+    /* Block2〜5：画像上の縦書きタイピング（黒・共通スタイル） */
+    .block2-type,
+    .block3-type,
+    .block4-type,
+    .block5-type {
+      position: absolute;
+      top: 8%;
+      right: 8%;
+      writing-mode: vertical-rl;
+      font-size: 18px;
+      letter-spacing: 0.2em;
+      line-height: 1.8;
+      color: #000000;
+      text-shadow: none;
+      opacity: 0;
+      white-space: pre-wrap;
+    }
+
+    .timeline-label {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .timeline-heading {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .timeline-text {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-sub);
+    }
+
+    @keyframes floatInQuote {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* レスポンシブ（※hero-q1 系はここから削除済み） */
+
+    @media (max-width: 900px) {
+      .layout {
+        flex-direction: column;
+      }
+
+      .side-nav {
+        flex-direction: row;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-soft);
+        justify-content: center;
+      }
+
+      .nav-item {
+        flex: 1;
+      }
+
+      .main-panel {
+        padding: 16px;
+      }
+
+      .hero-visual {
+        min-height: 260px;
+      }
+
+      .hero-quote {
+        font-size: 20px;
+      }
+
+      .hero-full-overlay-inner {
+        max-width: 90%;
+        font-size: 14px;
+      }
+
+      .timeline {
+        margin: 16px auto 24px;
+        padding: 0 12px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="layout">
+      <aside class="side-nav">
+        <a class="nav-item" href="index.html">TOP</a>
+        <a class="nav-item" href="main.html">メイン</a>
+        <a class="nav-item" href="world.html">世界観</a>
+        <button class="nav-item nav-item-disabled" type="button">ストーリー</button>
+        <button class="nav-item nav-item-active" type="button">キャラ</button>
+        <a class="nav-item" href="circle_boxes_demo.html">デモ</a>
+      </aside>
+
+      <main class="main-panel">
+        <section class="hero-visual">
+          <div class="hero-image-layer">
+            <img src="assets/wataru.png" alt="キャラクター画像（仮）" />
+          </div>
+
+          <!-- 白オーバーレイ -->
+          <div class="hero-full-overlay" id="heroOverlay">
+            <div class="hero-full-overlay-inner" id="heroOverlayInner"></div>
+          </div>
+
+          <!-- 上部コピー -->
+          <div class="hero-overlay hero-quote">「道徳、とは」</div>
+
+          <!-- 右下 キャラ情報 -->
+          <div class="hero-overlay hero-meta">
+            <div class="hero-name">
+              <ruby>
+                【美野 わたる】
+                <rt>Yoshino Wataru</rt>
+              </ruby>
+            </div>
+            <p class="hero-desc">
+              情動の振れ幅が極めて小さい青年。 他者への共感ではなく学校で学んだ“道徳の正解”だけを基準に行動するため周囲からは模範的で優しい人間とみなされている。<br />
+              出身：日本<br />
+              身分：一般市民<br />
+              肩書：高校生
+            </p>
+          </div>
+        </section>
+
+        <a class="back-link" href="main.html">← main に戻る</a>
+      </main>
+    </div>
+
+    <!-- 下：バックボーン 5ブロック -->
+    <section class="timeline">
+      <h2 class="timeline-title">TIMELINE / BACKBONE</h2>
+
+      <div class="timeline-list">
+        <!-- Block 1 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 1</div>
+          <h3 class="timeline-heading">ここに見出し（年齢や年代）</h3>
+
+          <div class="timeline-image">
+            <img src="assets/block1_dummy.png" alt="Block1 image" />
+            <div class="block1-type">
+僕は道徳のテストの点数が良かった。
+けれど、心や道徳がなんであるかはいまも分からないままだ。
+
+それでも、僕のしていることは正解なんだと思う。なぜなら道徳のテストで○を貰えるから。
+            </div>
+          </div>
+
+          <p class="timeline-text"></p>
+        </section>
+
+        <!-- Block 2 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 2</div>
+          <h3 class="timeline-heading">ここに見出し</h3>
+
+          <div class="timeline-image">
+            <img src="assets/block2_dummy.png" alt="Block2 image" />
+            <div class="block2-type" id="block2Type"></div>
+          </div>
+
+          <p class="timeline-text"></p>
+        </section>
+
+        <!-- Block 3 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 3</div>
+          <h3 class="timeline-heading">ここに見出し</h3>
+
+          <div class="timeline-image">
+            <img src="assets/block3_dummy.png" alt="Block3 image" />
+            <div class="block3-type" id="block3Type"></div>
+          </div>
+
+          <p class="timeline-text"></p>
+        </section>
+
+        <!-- Block 4 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 4</div>
+          <h3 class="timeline-heading">ここに見出し</h3>
+
+          <div class="timeline-image">
+            <img src="assets/block4_dummy.png" alt="Block4 image" />
+            <div class="block4-type" id="block4Type"></div>
+          </div>
+
+          <p class="timeline-text"></p>
+        </section>
+
+        <!-- Block 5 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 5</div>
+          <h3 class="timeline-heading">ここに見出し</h3>
+
+          <div class="timeline-image">
+            <img src="assets/block5_dummy.png" alt="Block5 image" />
+            <div class="block5-type" id="block5Type"></div>
+          </div>
+
+          <p class="timeline-text"></p>
+        </section>
+      </div>
+    </section>
+  </div>
+
+<!-- hero：ホワイトオーバーレイ＋問い演出 ＆ Block2〜5：縦書きタイピング -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const overlay = document.getElementById("heroOverlay");
+  const overlayInner = document.getElementById("heroOverlayInner");
+
+  // 問3：□の中で「苦」→×→フェードアウト→「楽」→○ の演出
+  function runQ3Sequence(onDone) {
+    const charEl  = document.getElementById("q3Char");
+    const markXEl = document.getElementById("q3MarkX");
+    const markOEl = document.getElementById("q3MarkO");
+
+    if (!charEl || !markXEl || !markOEl) {
+      if (onDone) onDone();
+      return;
+    }
+
+    // 1) 「苦」が出る
+    setTimeout(() => {
+      charEl.textContent = "苦";
+      charEl.style.opacity = "1";
+    }, 800);
+
+    // 2) 赤い「×」
+    setTimeout(() => {
+      markXEl.style.opacity = "1";
+    }, 1600);
+
+    // 3) 「苦」と「×」フェードアウト
+    setTimeout(() => {
+      charEl.style.opacity  = "0";
+      markXEl.style.opacity = "0";
+    }, 2600);
+
+    // 4) 「楽」
+    setTimeout(() => {
+      charEl.textContent = "楽";
+      charEl.style.opacity = "1";
+    }, 3400);
+
+    // 5) 赤い「○」
+    setTimeout(() => {
+      markOEl.style.opacity = "1";
+    }, 4200);
+
+    // 6) 終了コールバック（必要なら）
+    setTimeout(() => {
+      if (onDone) onDone();
+    }, 5200);
+  }
+
+  if (overlay && overlayInner) {
+    const steps = [
+      // STEP0：導入
+      "「善い行い」とは、誰の基準で決まるのだろうか。",
+
+      // STEP1：問1
+      `
+      <div class="hero-q1-layout">
+        <!-- 左カラム：３・２・１ -->
+        <div class="hero-q1-options">
+          <div class="hero-q1-options-col">
+            ３　手を振る
+          </div>
+          <div class="hero-q1-options-col">
+            ２　通り過ぎる
+          </div>
+          <div class="hero-q1-options-col">
+            １　声をかける
+          </div>
+        </div>
+
+        <!-- 中央カラム -->
+        <div class="hero-q1-sentence">
+          困っているひとがいたら<span class="hero-q1-box-long"></span>する。
+        </div>
+
+        <!-- 右カラム -->
+        <div class="hero-q1-question">
+          問（1）<span class="hero-q1-box-long"></span>にあてはまる番号を選びなさい。
+        </div>
+      </div>
+      `,
+
+      // STEP2：問2
+      `
+      <div class="hero-q1-layout">
+        <div class="hero-q1-options">
+          <div class="hero-q1-options-col">
+            ３　そのままにする
+          </div>
+          <div class="hero-q1-options-col">
+            ２　交番に届ける
+          </div>
+          <div class="hero-q1-options-col">
+            １　自分のものにする
+          </div>
+        </div>
+
+        <div class="hero-q1-sentence">
+          落とし物を見つけたら<span class="hero-q1-box-long"></span>する。
+        </div>
+
+        <div class="hero-q1-question">
+          問（2）<span class="hero-q1-box-long"></span>にあてはまる番号を選びなさい。
+        </div>
+      </div>
+      `,
+
+      // STEP3：問3（ここで演出をする）
+      `
+      <div class="hero-q1-layout">
+        <div class="hero-q1-sentence">
+          友だちが笑っていると、わたしも<span class="hero-q1-box-small hero-q3-box">
+            <span id="q3Char"  class="hero-q3-char"></span>
+            <span id="q3MarkX" class="hero-q3-mark">×</span>
+            <span id="q3MarkO" class="hero-q3-mark">○</span>
+          </span>しい気もちになる。
+        </div>
+
+        <div class="hero-q1-question">
+          問（3）空欄にあてはまる文字をうめなさい。
+        </div>
+      </div>
+      `,
+
+      // STEP4：締め
+      "彼の善良さは、空欄を埋めるだけで生まれている。"
+    ];
+
+    let index = 0;
+    const baseVisibleTime = 2500;  // 通常ステップ用
+    const fadeGapTime = 650;
+
+    function showStep(i) {
+      if (i >= steps.length) {
+        overlay.classList.add("hidden");
+        setTimeout(() => {
+          overlay.style.display = "none";
+        }, 1200);
+        return;
+      }
+
+      overlayInner.classList.remove("visible");
+      overlayInner.innerHTML = steps[i];
+
+      requestAnimationFrame(() => {
+        overlayInner.classList.add("visible");
+
+        // ★ STEP3（問3）のときだけ、□アニメーションを実行
+        if (i === 3) {
+          runQ3Sequence();
+        }
+      });
+
+      // 問3のときだけ少し長く表示してアニメーションを完走させる
+      const currentVisibleTime = (i === 3) ? 5600 : baseVisibleTime;
+
+      setTimeout(() => {
+        overlayInner.classList.remove("visible");
+        setTimeout(() => {
+          showStep(i + 1);
+        }, fadeGapTime);
+      }, currentVisibleTime);
+    }
+
+    setTimeout(() => {
+      showStep(0);
+    }, 600);
+  }
+
+  const block2El = document.getElementById("block2Type");
+  const block3El = document.getElementById("block3Type");
+  const block4El = document.getElementById("block4Type");
+  const block5El = document.getElementById("block5Type");
+
+  const block2Text = `「お困り、ゴト、ハ、あ…ませんか？」
+
+学校の帰り道。
+有料支援サービスエリアから少し離れた道路脇で今朝見たものと同じ型のノニュアルが体のあちこちを傷つけられ故障して倒れていた。
+金属の棒のようなもので殴打したような凹みだ。オイルが漏れ、ぱちぱちとむき出しになったケーブルから火花が散っている。
+
+困ったな。
+人間が怪我をしていたら手を差し伸べ治療するべきと学校の道徳では習ったけれどノニュアルのようなアンドロイドに対しても『道徳』は適用すべきなんだろうか。
+ノニュアルは社会を補助のための「道具」であり「物」だ。
+けれど最近ノニュアル社員というものも出来たとニュースで見た。
+今の社会で、今現在取るべき道徳的正解はなんだろう。
+僕はこのパターンを習ってない。
+
+道徳には正解がある。僕は学校でそう習った。
+ビニール傘を左に持ち直しスマートデバイスを取り出してこの場に適した正解行動を検索しようとすると赤い傘を差した中年の女性が僕に声をかけてきた。
+
+「その子を助けようとしてるの？最近の若い子って優しいのねぇ。放っておけばいいのよそんなの」
+
+「こんにちわ」
+僕は挨拶を返した。
+挨拶を返すことは人間の基本的な作法だ。あと挨拶は時間に合わせて言うべきだと学校で習った。あと三分遅ければ「こんばんは」だった。
+
+「放っておいてもいいんでしょうか？」
+「だって、そいつらのせいで私仕事の給料安くなっちゃったのよ。嫌いだわ。全部スクラップになっちゃえばいいのに。あなたも放っておいたほうがいいわよ。将来のためにもね」
+
+僕は黙って頷いてスマートデバイスを仕舞ってその場を立ち去った。
+
+自分が壊れていながら、相手に対して「困っていませんか」と力になろうとしていた。
+あのアンドロイドは道徳的に「善い」とされる行動をしていた。
+でも僕はアンドロイドを助けなかった。
+ノニュアルは助ける必要がないらしい。`;
+
+  const block3Text = `有料で手助けを行う支援サービスエリアにいるノニュアがいつもと同じ言葉を繰り返していた。
+「お手伝いできることはありませんか？」「お困りごとはありませんか？」
+困ってないよと僕は内心で答えて通り過ぎた。
+時々、思う。
+「心とは、一体何なんだろう」`;
+
+  const block4Text = `掃除の時間、隣の席の女の子が話しかけてきた。
+
+「わたるくんって優しいよね」
+「そうかな」
+「そうだって！今日とかも遅刻したのって交番に落とし物届けてたからでしょ？…私、あれ見て見ぬふりしちゃったから。わたるくんって優しいすごい人だなぁって思った」
+
+僕は三度瞬きをして小学校で習った道徳の一文を思い出した。
+『落とし物は交番に届けましょう』
+
+「そうかな。普通のことをしただけだよ」
+「それがすごいんだよ！」
+
+優しいね、と彼女は笑った。
+僕も笑った。どう返せば良いのか分からない時は微笑むのが一番安全に場を落ち着かせる手段だと知っていた。
+
+ノニュアルが僕と同じ事をしても誰も「優しい」と言わないのに僕は言われる。
+
+僕にはその違いをまだ上手く説明できなかった。`;
+
+  const block5Text = `僕には何が「良くて」何が「悪い」ことなのかの区別がつかなかった。
+「自分のしたいことをしていいのよ」「好きなものを選びなさい」
+言われると困る言葉たち。僕には比較するための基準がなかったから。幼いころは静かすぎて家族を困らせていた。
+ノニュアル達AIは最初に基準や指標をプログラミングされている。
+でも僕は人間だから、そういう風にできていない。
+
+困った僕は、小学校で初めて明確な「基準」を知った。
+
+「あいてをこまらせてはいけません」
+「おじいちゃんに席を譲るのはいいことです」
+
+道徳には正解がある。○☓がある。○を並べることを僕は「良いこと」だと感じた。
+
+「人に優しくできる良い人になりましょうね」
+
+ーーそうしよう。`;
+
+  function typeVertical(el, text, speed) {
+    if (!el) return;
+
+    let index = 0;
+    el.style.opacity = 1;
+
+    const timer = setInterval(() => {
+      el.textContent = text.slice(0, index + 1);
+      index++;
+
+      if (index >= text.length) {
+        clearInterval(timer);
+      }
+    }, speed);
+  }
+
+  if (block2El) {
+    setTimeout(() => {
+      typeVertical(block2El, block2Text, 60);
+    }, 800);
+  }
+
+  if (block3El) {
+    setTimeout(() => {
+      typeVertical(block3El, block3Text, 60);
+    }, 1200);
+  }
+
+  if (block4El) {
+    setTimeout(() => {
+      typeVertical(block4El, block4Text, 60);
+    }, 1600);
+  }
+
+  if (block5El) {
+    setTimeout(() => {
+      typeVertical(block5El, block5Text, 60);
+    }, 2000);
+  }
+});
+</script>
+
+<!-- B：フリック／ドラッグ／キーで A / C に遷移 -->
+<script>
+(function () {
+  let startX = null;
+  const threshold = 60;
+
+  function goPrev() {
+    window.location.href = "character.html";
+  }
+
+  function goNext() {
+    window.location.href = "character_c.html";
+  }
+
+  // スマホ（タッチ）
+  window.addEventListener("touchstart", function (e) {
+    if (e.touches.length > 1) return;
+    startX = e.touches[0].clientX;
+  });
+
+  window.addEventListener("touchend", function (e) {
+    if (startX === null) return;
+
+    const endX = e.changedTouches[0].clientX;
+    const diffX = endX - startX;
+
+    if (diffX > threshold) {
+      goPrev();
+    } else if (diffX < -threshold) {
+      goNext();
+    }
+
+    startX = null;
+  });
+
+  // PC（マウスドラッグ）
+  window.addEventListener("mousedown", function (e) {
+    startX = e.clientX;
+  });
+
+  window.addEventListener("mouseup", function (e) {
+    if (startX === null) return;
+
+    const endX = e.clientX;
+    const diffX = endX - startX;
+
+    if (diffX > threshold) {
+      goPrev();
+    } else if (diffX < -threshold) {
+      goNext();
+    }
+
+    startX = null;
+  });
+
+  // PC（キーボード）
+  window.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowLeft") {
+      goPrev();
+    } else if (e.key === "ArrowRight") {
+      goNext();
+    }
+  });
+})();
+</script>
+</body>
+</html>
