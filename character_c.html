@@ -245,23 +245,25 @@
       }
     }
 
-    /* Block2〜5：画像上の縦書きタイピング（黒・共通スタイル） */
-    .block2-type,
-    .block3-type,
-    .block4-type,
-    .block5-type {
-      position: absolute;
-      top: 8%;
-      right: 8%;
-      writing-mode: vertical-rl;
-      font-size: 18px;
-      letter-spacing: 0.2em;
-      line-height: 1.8;
-      color: #000000;
-      text-shadow: none;
-      opacity: 0;
-      white-space: pre-wrap;
-    }
+   /* Block2〜5：画像上の横書きタイピング（黒・共通スタイル） */
+.block2-type,
+.block3-type,
+.block4-type,
+.block5-type {
+  position: absolute;
+  top: 10%;
+  left: 8%;
+  right: 8%;
+  /* writing-mode: vertical-rl; ← 縦書き指定を削除 */
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  line-height: 1.9;
+  color: #000000;
+  text-shadow: none;
+  opacity: 0;
+  white-space: pre-wrap;
+  max-width: 80%;
+}
 
     .timeline-label {
       font-size: 12px;
