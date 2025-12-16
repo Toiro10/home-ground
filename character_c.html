@@ -244,7 +244,30 @@
         transform: translate(-50%, 0) translateX(0);
       }
     }
+/* Block2〜5：+X からスッと出る（横書き・フェードイン） */
+.block2-type,
+.block3-type,
+.block4-type,
+.block5-type {
+  opacity: 0;
+  transform: translateX(40px); /* ← +X（右にずらして待機） */
+}
 
+/* JSでこのクラスを付けるとアニメーション開始 */
+.block-slide-in {
+  animation: blockSlideIn 1.2s ease-out forwards;
+}
+
+@keyframes blockSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
    /* Block2〜5：画像上の横書きタイピング（黒・共通スタイル） */
 .block2-type,
 .block3-type,
@@ -475,8 +498,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const block4Text = `あと数秒逃げるのが遅ければ死んでいた。
 そんな思いが、神に祈るような信仰文化を生む。
 スラムではあちこちで何かに祈る人を見かけた。
-  
-  「ディーも祈る？」
+
+「ディーも祈る？」
 アリーシャに聞かれて首を横に振った。
 アリーシャは手を膝に置いてしゃがみこみ、また立ち上がる動作を何度か繰り返した。そのあと胸に手を置いて目を瞑る。
 「私のお母さんとお祖母ちゃんがやってたの」
@@ -486,51 +509,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
 神に祈ったことはあるが、どの神に祈ったかは忘れた。結局その祈りは叶わなかったことだけは覚えてる。
 
-アリーシャにあの時、お祈りのやり方を聞いていれば良かったと思った。
-`;
+アリーシャにあの時、お祈りのやり方を聞いていれば良かったと思った。`;
 
   const block5Text = `スープの話`;
 
-  function typeVertical(el, text, speed) {
+  function showBlock(el, text, delayMs) {
     if (!el) return;
 
-    let index = 0;
-    el.style.opacity = 1;
-
-    const timer = setInterval(() => {
-      el.textContent = text.slice(0, index + 1);
-      index++;
-
-      if (index >= text.length) {
-        clearInterval(timer);
-      }
-    }, speed);
-  }
-
-  if (block2El) {
     setTimeout(() => {
-      typeVertical(block2El, block2Text, 60);
-    }, 800);
+      el.textContent = text;               // 文章を一括表示
+      el.classList.add("block-slide-in");  // スライドイン開始
+    }, delayMs);
   }
 
-  if (block3El) {
-    setTimeout(() => {
-      typeVertical(block3El, block3Text, 60);
-    }, 1200);
-  }
-
-  if (block4El) {
-    setTimeout(() => {
-      typeVertical(block4El, block4Text, 60);
-    }, 1600);
-  }
-
-  if (block5El) {
-    setTimeout(() => {
-      typeVertical(block5El, block5Text, 60);
-    }, 2000);
-  }
+  showBlock(block2El, block2Text, 800);
+  showBlock(block3El, block3Text, 1200);
+  showBlock(block4El, block4Text, 1600);
+  showBlock(block5El, block5Text, 2000);
 });
+
 </script>
 
 <!-- B：フリック／ドラッグ／キーで A / C に遷移 -->
