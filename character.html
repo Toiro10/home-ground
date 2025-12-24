@@ -436,12 +436,7 @@
         <!-- Block 2 -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 2</div>
-          <h3 class="timeline-heading">開かれたホムンクルスの目を見て、僕はまた失敗したことを理解した。
-
-「ありがとう」
-微笑むホムンクルスと、ホムンクルスを拒む世界との断絶に、僕は自分よりも深い孤独を作ってしまったと気が付いた。
-
-「なぜ心って必要なの？私、かなしくなると心が痛くなるの。なぜ、人間の心をあなたは求めたの?」
+          <h3 class="timeline-heading">
 </h3>
 
           <div class="timeline-image">
@@ -455,13 +450,7 @@
         <!-- Block 3 -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 3</div>
-          <h3 class="timeline-heading">【心を持つ構造を人為的に産み出すことは罪か？】
-7つ目の失敗は、心をもつ知性体の創造。
-僕が求めていたのは人の心。
-鳥でも、豚でも、羊でもない。草花や、蝶々でもない。
-隣で笑ってくれる人が欲しくて、笑いあえる人が欲しくて、僕はホムンクルスを創造した。
-ニトラは人の心を持てなかった。
-なら初めから人の心が発生する構造をもつものを造ればいいと思った。
+          <h3 class="timeline-heading">
 </h3>
 
           <div class="timeline-image">
@@ -475,14 +464,7 @@
         <!-- Block 4 -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 4</div>
-          <h3 class="timeline-heading">【機械に人の心は宿るのか？】
-僕の手を離れ、高度三万六千キロに打ち上げられた、最も合理的な判断を最も速く下せる知性。
-機体名はNitor-1A。
-ニトラは人類との会話を「不要」だと判断し、一切の言葉に応じなかった。
-
-「あれはただの卓上計算機と同じような物だった。机の上にあるか軌道衛星上にあるかだけの違いしかない」
-
-いつか宇宙デブリになる、機械の神と呼ばれている、僕の6つ目の失敗作。</h3>
+          <h3 class="timeline-heading"></h3>
 
           <div class="timeline-image">
             <img src="assets/block4_dummy.png" alt="Block4 image">
@@ -495,10 +477,7 @@
         <!-- Block 5 -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 5</div>
-          <h3 class="timeline-heading">天才なんて白々しい言葉を鼻で笑う。
-僕の孤独が天の才だというのなら与えた神にそれを突き返したい。
-僕は明日、世界一愚かになって構わない。
-それで誰かと、隣で笑い合えるのなら。</h3>
+          <h3 class="timeline-heading"></h3>
 
           <div class="timeline-image">
             <img src="assets/block5_dummy.png" alt="Block5 image">
@@ -566,10 +545,31 @@
       const block5El = document.getElementById("block5Type");
 
       // ここを好きな文章に差し替えてOK
-      const block2Text = `ここにブロック2のテキストを書く（まとめて表示）`;
-      const block3Text = `ここにブロック3のテキストを書く（まとめて表示）`;
-      const block4Text = `ここにブロック4のテキストを書く（まとめて表示）`;
-      const block5Text = `ここにブロック5のテキストを書く（まとめて表示）`;
+      const block2Text = `開かれたホムンクルスの目を見て、僕はまた失敗したことを理解した。
+
+「ありがとう」
+微笑むホムンクルスと、ホムンクルスを拒む世界との断絶に、僕は自分よりも深い孤独を作ってしまったと気が付いた。
+
+「なぜ心って必要なの？私、かなしくなると心が痛くなるの。なぜ、人間の心をあなたは求めたの?」`;
+      const block3Text = `【心を持つ構造を人為的に産み出すことは罪か？】
+7つ目の失敗は、心をもつ知性体の創造。
+僕が求めていたのは人の心。
+鳥でも、豚でも、羊でもない。草花や、蝶々でもない。
+隣で笑ってくれる人が欲しくて、笑いあえる人が欲しくて、僕はホムンクルスを創造した。
+ニトラは人の心を持てなかった。
+なら初めから人の心が発生する構造をもつものを造ればいいと思った。`;
+      const block4Text = `【機械に人の心は宿るのか？】
+僕の手を離れ、高度三万六千キロに打ち上げられた、最も合理的な判断を最も速く下せる知性。
+機体名はNitor-1A。
+ニトラは人類との会話を「不要」だと判断し、一切の言葉に応じなかった。
+
+「あれはただの卓上計算機と同じような物だった。机の上にあるか軌道衛星上にあるかだけの違いしかない」
+
+いつか宇宙デブリになる、機械の神と呼ばれている、僕の6つ目の失敗作。`;
+      const block5Text = `天才なんて白々しい言葉を鼻で笑う。
+僕の孤独が天の才だというのなら与えた神にそれを突き返したい。
+僕は明日、世界一愚かになって構わない。
+それで誰かと、隣で笑い合えるのなら。`;
 
       function showBlock(el, text, delayMs) {
         if (!el) return;
