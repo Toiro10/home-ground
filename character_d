@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>character</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --panel: #ffffff;
+      --accent: #000000;
+      --text-main: #000000;
+      --text-sub: #444444;
+      --border-soft: rgba(0, 0, 0, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== 上部：メニューバー＋メインビジュアル ===== */
+
+    .layout {
+      display: flex;
+      width: 100%;
+      min-height: 70vh;
+    }
+
+    /* 左の縦メニュー */
+    .side-nav {
+      width: 70px;
+      background: linear-gradient(180deg, #111111, #050505);
+      border-right: 1px solid var(--border-soft);
+      padding: 16px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px; /* ← 元コードが ": 8px;" になっていたので、意図通り gap に修正 */
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      border-radius: 12px;
+      font-size: 11px;
+      text-decoration: none;
+      color: var(--text-sub);
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-item:hover {
+      border-color: var(--border-soft);
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .nav-item-active {
+      border-color: var(--accent);
+      color: #000;
+      background: var(--accent);
+      font-weight: 600;
+    }
+
+    .nav-item-disabled {
+      opacity: 0.35;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* 右側メインビジュアルコンテナ */
+    .main-panel {
+      flex: 1;
+      padding: 24px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .hero-visual {
+      position: relative;
+      border-radius: 18px;
+      border: 1px solid var(--border-soft);
+      overflow: hidden;
+      min-height: 830px;
+      background: radial-gradient(circle at top, #202020, #050505);
+      perspective: 800px;
+    }
+
+    .hero-image-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-image-layer img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.95;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      color: var(--text-main);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      z-index: 5;
+    }
+
+    /* 「道徳、とは」 部分 */
+    .hero-quote {
+      top: 20%;
+      left: 40%;
+      transform: translate(-50%, 0);
+      font-size: 58px;
+      letter-spacing: 0.18em;
+      opacity: 0;
+      animation: floatInQuote 1.5s ease-out 0.8s forwards;
+    }
+
+    /* キャラクター名＋説明 部分（右下） */
+    .hero-meta {
+      right: 10%;
+      bottom: 12%;
+      text-align: left;
+    }
+
+    .hero-name {
+      font-size: 20px;
+      margin-bottom: 8px;
+      letter-spacing: 0.18em;
+    }
+
+    .hero-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      max-width: 260px;
+      color: var(--text-sub);
+    }
+
+    .back-link {
+      font-size: 12px;
+      color: var(--text-sub);
+      text-decoration: none;
+      align-self: flex-start;
+      margin-top: 8px;
+    }
+
+    .back-link:hover {
+      color: var(--text-main);
+      text-decoration: underline;
+    }
+
+    /* ===== 下部：バックボーン 5ブロック ===== */
+
+    .timeline {
+      width: calc(100% - 70px);
+      margin-left: 70px;
+      padding: 32px 32px 56px;
+    }
+
+    .timeline-title {
+      font-size: 16px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 16px;
+    }
+
+    .timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .timeline-block {
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background: rgba(255, 255, 255, 0.02);
+      padding: 24px 24px;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .timeline-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-soft);
+    }
+
+    .timeline-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Block1：横書き・中央揃え、左からスッと出る（黒） */
+    .block1-type {
+      position: absolute;
+      top: 12%;
+      left: 50%;
+      transform: translate(-50%, 0) translateX(-80px);
+      max-width: 80%;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.9;
+      color: #000000;
+      opacity: 0;
+      white-space: pre-wrap;
+      animation: block1FloatIn 1.4s ease-out 0.5s forwards;
+    }
+
+    @keyframes block1FloatIn {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 0) translateX(-120px);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, 0) translateX(0);
+      }
+    }
+/* Block2〜5：+X からスッと出る（横書き・フェードイン） */
+.block2-type,
+.block3-type,
+.block4-type,
+.block5-type {
+  opacity: 0;
+  transform: translateX(40px); /* ← +X（右にずらして待機） */
+}
+
+/* JSでこのクラスを付けるとアニメーション開始 */
+.block-slide-in {
+  animation: blockSlideIn 1.2s ease-out forwards;
+}
+
+@keyframes blockSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+   /* Block2〜5：画像上の横書きタイピング（黒・共通スタイル） */
+.block2-type,
+.block3-type,
+.block4-type,
+.block5-type {
+  position: absolute;
+  top: 10%;
+  left: 8%;
+  right: 8%;
+  /* writing-mode: vertical-rl; ← 縦書き指定を削除 */
+  font-size: 17px;
+  letter-spacing: 0.04em;
+  line-height: 1.9;
+  color: #000000;
+  text-shadow: none;
+  opacity: 0;
+  white-space: pre-wrap;
+  max-width: 80%;
+}
+
+    .timeline-label {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .timeline-heading {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .timeline-text {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-sub);
+    }
+
+    @keyframes floatInQuote {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* レスポンシブ */
+
+    @media (max-width: 900px) {
+      .layout {
+        flex-direction: column;
+      }
+
+      .side-nav {
+        flex-direction: row;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-soft);
+        justify-content: center;
+      }
+
+      .nav-item {
+        flex: 1;
+      }
+
+      .main-panel {
+        padding: 16px;
+      }
+
+      .hero-visual {
+        min-height: 260px;
+      }
+
+      .hero-quote {
+        font-size: 20px;
+      }
+
+      .timeline {
+        margin: 16px auto 24px;
+        padding: 0 12px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="layout">
+      <aside class="side-nav">
+        <a class="nav-item" href="index.html">TOP</a>
+        <a class="nav-item" href="main.html">メイン</a>
+        <a class="nav-item" href="world.html">世界観</a>
+        <button class="nav-item nav-item-disabled" type="button">ストーリー</button>
+        <button class="nav-item nav-item-active" type="button">キャラ</button>
+        <a class="nav-item" href="circle_boxes_demo.html">デモ</a>
+      </aside>
+
+      <main class="main-panel">
+        <section class="hero-visual">
+          <div class="hero-image-layer">
+            <img src="assets/DummyHuman.png" alt="キャラクター画像（仮）" />
+          </div>
+
+          <!-- 上部コピー -->
+          <div class="hero-overlay hero-quote">「正義とは」</div>
+
+          <!-- 右下 キャラ情報 -->
+          <div class="hero-overlay hero-meta">
+            <div class="hero-name">
+              <ruby>
+                【D.black】
+                <rt>ディー・ブラック</rt>
+              </ruby>
+            </div>
+            <p class="hero-desc">
+              クルディスタン地下13層スラム出身の技術屋。家族愛が強い青年。Dレベルに分類される亜機能障害者。<br />
+              出身：クルディスタン　地下１３層アーコロジー<br />
+              身分：非国籍スラム民<br />
+              肩書：情報屋
+            </p>
+          </div>
+        </section>
+
+        <a class="back-link" href="main.html">← main に戻る</a>
+      </main>
+    </div>
+
+    <!-- 下：バックボーン 5ブロック -->
+    <section class="timeline">
+      <h2 class="timeline-title">TIMELINE / BACKBONE</h2>
+
+      <div class="timeline-list">
+        <!-- Block 1 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 1</div>
+          <h3 class="timeline-heading">ここに見出し（年齢や年代）</h3>
+
+          <div class="timeline-image">
+            <img src="assets/block1_dummy.png" alt="Block1 image" />
+            <div class="block1-type">
+正義とは不都合なことを隠すための目眩ましに過ぎない
+法の正義が届かない場所で、強い組織の正義が正しいとされる世界で、突然自分こそが真の正義だという顔をして人から生活を奪う。
+俺を囲う「正義」の檻。
+            </div>
+          </div>
+
+          <p class="timeline-text"></p>
+        </section>
+
+        <!-- Block 2 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 2</div>
+          <h3 class="timeline-heading">ここに見出し</h3>
+
+          <div class="timeline-image">
+            <img src="assets/block2_dummy.png" alt="Block2 image" />
+            <div class="block2-type" id="block2Type"></div>
+          </div>
+
+          <p class="timeline-text"></p>
+        </section>
+
+        <!-- Block 3 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 3</div>
+          <h3 class="timeline-heading">ここに見出し</h3>
+
+          <div class="timeline-image">
+            <img src="assets/block3_dummy.png" alt="Block3 image" />
+            <div class="block3-type" id="block3Type"></div>
+          </div>
+
+          <p class="timeline-text"></p>
+        </section>
+
+        <!-- Block 4 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 4</div>
+          <h3 class="timeline-heading">ここに見出し</h3>
+
+          <div class="timeline-image">
+            <img src="assets/block4_dummy.png" alt="Block4 image" />
+            <div class="block4-type" id="block4Type"></div>
+          </div>
+
+          <p class="timeline-text"></p>
+        </section>
+
+        <!-- Block 5 -->
+        <section class="timeline-block">
+          <div class="timeline-label">BLOCK 5</div>
+          <h3 class="timeline-heading">ここに見出し</h3>
+
+          <div class="timeline-image">
+            <img src="assets/block5_dummy.png" alt="Block5 image" />
+            <div class="block5-type" id="block5Type"></div>
+          </div>
+
+          <p class="timeline-text"></p>
+        </section>
+      </div>
+    </section>
+  </div>
+
+<!-- Block2〜5：縦書きタイピング（heroオーバーレイ演出は削除） -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const block2El = document.getElementById("block2Type");
+  const block3El = document.getElementById("block3Type");
+  const block4El = document.getElementById("block4Type");
+  const block5El = document.getElementById("block5Type");
+
+  const block2Text = `何かに心打たれた時、家族にも目の前の出来事を分け与えたいと思う時、ディーは自然と胸に手を当て、胸にあてた手を軽く握った。
+自然とそのようなジェスチャーが出るようになった。彼の生活で染み付いた仕草だった。
+なぜそうするかと聞かれるとディーは上手く説明出来なかった。
+
+「アリーシャ」
+
+神に祈らない代わりに神に祈っていた姉の名前を口にする。別の日は違う兄弟の名前を口にした。
+祈りが叶うか叶わないかは関係なかった。
+ただ胸に手を当て兄弟達の名前を口に出す。
+`;
+
+  const block3Text = `「下層に家族がいるんだ。皆賢い、皆で勉強するのは、駄目?」
+「それは出来ない。社会更生プログラムはスラム全員を救う措置ではないからね」
+「じゃあ、帰りたい」
+管理者は一拍おいてから優しい顔で笑った
+「下層にいる家族のことは忘れたほうが良い。それでも会いたいというのなら、もっと勉強して仕事をするんだね」
+
+管理者はそれだけ言うと部屋から出て行った。
+格子の嵌った小窓がひとつある無機質な勉強部屋に他のプログラム生と共に押し込まれて五日がたっていた。
+
+「地上には青空が広がり、太陽が輝き、風が歌う…」
+
+かすれた声で小さく口ずさむ。
+
+「やつらの地面が俺達の天井。水は赤く、ランプは緑」`;
+
+  const block4Text = `正規シャフトは信じられないほど滑らかに動いた。だが、大人たちに囲まれ腕を掴まれたまま身動きがとれなかった。
+  生きた心地がしなかった。
+生まれてはじめて地上にでて、明るさに目が開けられなかった。ほとんど目を瞑ったまま背中を強く押されて歩いた。
+わけのわからない言葉を並べたてられ言葉の通じないエイリアンに囲まれた気分だった。
+空調がしっかりきいているのに寒気がずっとしていた。
+
+「ごめんなさい。家族に、家族に会いたい」
+「君は市民権を得ていい暮らしが出来る」
+
+本気で殺されるかと思っていた。けどそこで下されたのは罰ではなかった。
+管理者の話を黙って必死になって聞いて、内容は詳しく良くわからなかったがスラム民に市民権を与える「社会更生プログラム」の対象に選ばれたらしい。
+ひたすら怖いだけで、全く嬉しくなかった。今すぐ帰らせてくれとずっと心のなかで繰り返し祈っていた。
+
+分かったのはこれから沢山勉強して、国にそれを返還する技術者になれということだ。
+兄のトーマが話していた「学校」の話と違うと思った。`;
+
+  const block5Text = `パイプの中を水が流れる音がいつもしていた。
+9層ではそれが日常の音だった。
+ある日点検のための巡回していたら、いつもと音が違う箇所を見つけた。
+慌てて制御盤に駆け寄って制御を止め、カバーを外して中を確認した。
+原因になっていた制御の設定を直し、ついでにコードの一部も調整した。
+当時の俺は兄や技師たちから修理方法や機械工学の知識を習っていて筋が良いと褒められていた。
+コードは触るなと言われていたけど、見た限り直せる余地があった。
+ただ、良くなればと思ってやったことだった。
+本当に、やってはいけないことだったと知ったのは、それから少ししてからだ。管理者が警備隊を引き連れてやってくるまでは。
+
+あの日コードを直さなければ別の道があったんだと思う。
+今でも、たまに、やらなければよかったと後悔する。`;
+
+  function showBlock(el, text, delayMs) {
+    if (!el) return;
+
+    setTimeout(() => {
+      el.textContent = text;               // 文章を一括表示
+      el.classList.add("block-slide-in");  // スライドイン開始
+    }, delayMs);
+  }
+
+  showBlock(block2El, block2Text, 800);
+  showBlock(block3El, block3Text, 1200);
+  showBlock(block4El, block4Text, 1600);
+  showBlock(block5El, block5Text, 2000);
+});
+
+</script>
+
+<!-- B：フリック／ドラッグ／キーで A / C に遷移 -->
+<script>
+(function () {
+  let startX = null;
+  const threshold = 60;
+
+  function goPrev() {
+    window.location.href = "character_b";
+  }
+
+
+  // スマホ（タッチ）
+  window.addEventListener("touchstart", function (e) {
+    if (e.touches.length > 1) return;
+    startX = e.touches[0].clientX;
+  });
+
+  window.addEventListener("touchend", function (e) {
+    if (startX === null) return;
+
+    const endX = e.changedTouches[0].clientX;
+    const diffX = endX - startX;
+
+    if (diffX > threshold) {
+      goPrev();
+    } else if (diffX < -threshold) {
+      goNext();
+    }
+
+    startX = null;
+  });
+
+  // PC（マウスドラッグ）
+  window.addEventListener("mousedown", function (e) {
+    startX = e.clientX;
+  });
+
+  window.addEventListener("mouseup", function (e) {
+    if (startX === null) return;
+
+    const endX = e.clientX;
+    const diffX = endX - startX;
+
+    if (diffX > threshold) {
+      goPrev();
+    } else if (diffX < -threshold) {
+      goNext();
+    }
+
+    startX = null;
+  });
+
+  // PC（キーボード）
+  window.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowLeft") {
+      goPrev();
+    } else if (e.key === "ArrowRight") {
+      goNext();
+    }
+  });
+})();
+</script>
+</body>
+</html>
