@@ -550,16 +550,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </script>
 
-<!-- B：フリック／ドラッグ／キーで A / C に遷移 -->
+<!-- C：フリック／ドラッグ／キーで B / D に遷移（右でDへ） -->
 <script>
 (function () {
   let startX = null;
   const threshold = 60;
 
+  // 左へ（前のキャラ）
   function goPrev() {
-    window.location.href = "character_b";
+    window.location.href = "character_b.html";
   }
 
+  // 右へ（次のキャラ）
+  function goNext() {
+    window.location.href = "character_d.html";
+  }
 
   // スマホ（タッチ）
   window.addEventListener("touchstart", function (e) {
@@ -573,10 +578,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const endX = e.changedTouches[0].clientX;
     const diffX = endX - startX;
 
+    // 右にドラッグ → Dへ
     if (diffX > threshold) {
-      goPrev();
-    } else if (diffX < -threshold) {
       goNext();
+    }
+    // 左にドラッグ → Bへ
+    else if (diffX < -threshold) {
+      goPrev();
     }
 
     startX = null;
@@ -593,10 +601,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const endX = e.clientX;
     const diffX = endX - startX;
 
+    // 右にドラッグ → Dへ
     if (diffX > threshold) {
-      goPrev();
-    } else if (diffX < -threshold) {
       goNext();
+    }
+    // 左にドラッグ → Bへ
+    else if (diffX < -threshold) {
+      goPrev();
     }
 
     startX = null;
@@ -612,5 +623,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 })();
 </script>
+
 </body>
 </html>
