@@ -123,9 +123,9 @@
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
-    /* 縦書きタイピング用カラム */
+    /* 縦書きタイピング用カラム（hero はそのまま） */
     .type-column {
-      writing-mode: vertical-rl;   /* 縦書き */
+      writing-mode: vertical-rl;
       font-size: 24px;
       letter-spacing: 0.2em;
       line-height: 1.8;
@@ -133,13 +133,11 @@
       white-space: pre-wrap;
     }
 
-    /* 左の縦カラムの位置（あとで数値調整OK） */
     .type-left {
       top: 12%;
       left: 8%;
     }
 
-    /* 右の縦カラムの位置 */
     .type-right {
       top: 12%;
       right: 8%;
@@ -191,11 +189,11 @@
 
     /* ===== 下部：バックボーン 5ブロック ===== */
 
- .timeline {
-  width: calc(100% - 70px);   /* ← side-nav 分を引く */
-  margin-left: 70px;         /* ← side-nav の幅と同じ */
-  padding: 32px 32px 56px;
-}
+    .timeline {
+      width: calc(100% - 70px);
+      margin-left: 70px;
+      padding: 32px 32px 56px;
+    }
 
     .timeline-title {
       font-size: 16px;
@@ -211,17 +209,98 @@
       gap: 16px;
     }
 
-   .timeline-block {
-  border-radius: 16px;
-  border: 1px solid var(--border-soft);
-  background: rgba(255, 255, 255, 0.02);
-  padding: 24px 24px;
+    .timeline-block {
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background: rgba(255, 255, 255, 0.02);
+      padding: 24px 24px;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-  min-height: 480px;        /* ← 全ブロック共通の高さ */
-  display: flex;           /* 中身を縦レイアウトにする */
-  flex-direction: column;
-  gap: 16px;
-}
+    /* ★ディーと同じ「画像枠」 */
+    .timeline-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-soft);
+    }
+
+    .timeline-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Block1：横書き・中央揃え、左からスッと出る（黒） */
+    .block1-type {
+      position: absolute;
+      top: 12%;
+      left: 50%;
+      transform: translate(-50%, 0) translateX(-80px);
+      max-width: 80%;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.9;
+      color: #000000;
+      opacity: 0;
+      white-space: pre-wrap;
+      animation: block1FloatIn 1.4s ease-out 0.5s forwards;
+    }
+
+    @keyframes block1FloatIn {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 0) translateX(-120px);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, 0) translateX(0);
+      }
+    }
+
+    /* ===== Block2〜5：+X からスッと出る（フェードイン） ===== */
+    .block2-type,
+    .block3-type,
+    .block4-type,
+    .block5-type {
+      position: absolute;
+      top: 10%;
+      left: 8%;
+      right: 8%;
+      font-size: 17px;
+      letter-spacing: 0.04em;
+      line-height: 1.9;
+      color: #000000;
+      text-shadow: none;
+      white-space: pre-wrap;
+      max-width: 80%;
+
+      /* 初期状態（待機） */
+      opacity: 0;
+      transform: translateX(40px); /* +X（右から） */
+    }
+
+    /* JSで付与 → アニメ開始 */
+    .block-slide-in {
+      animation: blockSlideIn 1.2s ease-out forwards;
+    }
+
+    @keyframes blockSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
 
     .timeline-label {
       font-size: 12px;
@@ -270,17 +349,17 @@
       }
 
       .hero-visual {
-    min-height: 260px;       /* ← スマホでは少し低めに */
-  }
+        min-height: 260px;
+      }
 
       .hero-quote {
         font-size: 20px;
       }
 
       .timeline {
-    margin: 16px auto 24px;  /* 上下の余白を減らす */
-    padding: 0 12px 24px;
-  }
+        margin: 16px auto 24px;
+        padding: 0 12px 24px;
+      }
     }
   </style>
 </head>
@@ -297,7 +376,7 @@
         <button class="nav-item nav-item-active" type="button">キャラ</button>
       </aside>
 
-      <!-- 右：キャラ1メインビジュアル -->
+      <!-- 右：キャラ1メインビジュアル（★ここは一切変更なし） -->
       <main class="main-panel">
         <section class="hero-visual">
           <div class="hero-image-layer">
@@ -314,11 +393,11 @@
           <!-- 右下のキャラ名＋説明 -->
           <div class="hero-overlay hero-meta">
             <div class="hero-name">
-  <ruby>
-    【エウメル・ダーヴィン】
-    <rt>Eumel=Darwin</rt>
-  </ruby>
-</div>
+              <ruby>
+                【エウメル・ダーヴィン】
+                <rt>Eumel=Darwin</rt>
+              </ruby>
+            </div>
             <p class="hero-desc">
               天才。構造心性論を提唱し、ホムンクルスを創造した歴史上最大の倫理犯罪者。<br>
               出身：イギリス　ダーリントン<br>
@@ -332,7 +411,7 @@
       </main>
     </div>
 
-    <!-- 下：バックボーン 5ブロック（ひな形） -->
+    <!-- 下：バックボーン 5ブロック（★ここをディー形式に変更） -->
     <section class="timeline">
       <h2 class="timeline-title">TIMELINE / BACKBONE</h2>
 
@@ -341,58 +420,79 @@
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 1</div>
           <h3 class="timeline-heading">ここに見出し（年齢や年代）</h3>
-          <p class="timeline-text">
-            ここにブロック1のテキストを書きます。<br>
-            例えば「10歳 / 小学校時代」の出来事など。
-          </p>
+
+          <div class="timeline-image">
+            <img src="assets/block1_dummy.png" alt="Block1 image">
+            <div class="block1-type">
+ここにブロック1のテキストを書きます。
+（Block1は元からの「左からスッ」演出のまま）
+            </div>
+          </div>
+
+          <p class="timeline-text"></p>
         </section>
 
         <!-- Block 2 -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 2</div>
           <h3 class="timeline-heading">ここに見出し</h3>
-          <p class="timeline-text">
-            ここにブロック2のテキストを書きます。
-          </p>
+
+          <div class="timeline-image">
+            <img src="assets/block2_dummy.png" alt="Block2 image">
+            <div class="block2-type" id="block2Type"></div>
+          </div>
+
+          <p class="timeline-text"></p>
         </section>
 
         <!-- Block 3 -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 3</div>
           <h3 class="timeline-heading">ここに見出し</h3>
-          <p class="timeline-text">
-            ここにブロック3のテキストを書きます。
-          </p>
+
+          <div class="timeline-image">
+            <img src="assets/block3_dummy.png" alt="Block3 image">
+            <div class="block3-type" id="block3Type"></div>
+          </div>
+
+          <p class="timeline-text"></p>
         </section>
 
         <!-- Block 4 -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 4</div>
           <h3 class="timeline-heading">ここに見出し</h3>
-          <p class="timeline-text">
-            ここにブロック4のテキストを書きます。
-          </p>
+
+          <div class="timeline-image">
+            <img src="assets/block4_dummy.png" alt="Block4 image">
+            <div class="block4-type" id="block4Type"></div>
+          </div>
+
+          <p class="timeline-text"></p>
         </section>
 
         <!-- Block 5 -->
         <section class="timeline-block">
           <div class="timeline-label">BLOCK 5</div>
           <h3 class="timeline-heading">ここに見出し</h3>
-          <p class="timeline-text">
-            ここにブロック5のテキストを書きます。
-          </p>
+
+          <div class="timeline-image">
+            <img src="assets/block5_dummy.png" alt="Block5 image">
+            <div class="block5-type" id="block5Type"></div>
+          </div>
+
+          <p class="timeline-text"></p>
         </section>
       </div>
     </section>
   </div>
 
-  <!-- 縦書きタイピング演出 -->
+  <!-- hero：縦書きタイピング演出（★そのまま） -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const leftEl  = document.getElementById("typeLeft");
       const rightEl = document.getElementById("typeRight");
 
-      // 表示したい文章（ここは好きな文章に差し替えてOK）
       const leftText = `犬には犬の心があり、人には人の心がある。\n心は宿るものではなく、構造から生まれる。\nしたがって機械が心を持ったとしてもそれは“機械の心”であって“人の心”ではない。\n人間の心を再現したければ、人間の構造を再現しなければならない。`;
 
       const rightText = "「なぜ心って必要なの？私、かなしくなると心が痛くなるの」\n「なぜ、人間の心をあなたは求めたの?」";
@@ -400,7 +500,7 @@
       function typeVertical(el, text, speed, clearDelay) {
         if (!el) return;
         let index = 0;
-        el.style.opacity = 1; // 表示開始
+        el.style.opacity = 1;
 
         const timer = setInterval(() => {
           el.textContent = text.slice(0, index + 1);
@@ -423,7 +523,6 @@
         }, speed);
       }
 
-      // 左右の開始タイミングを少しずらす（ms）
       setTimeout(() => {
         typeVertical(leftEl, leftText, 50, 1500);
       }, 500);
@@ -434,13 +533,41 @@
     });
   </script>
 
-  <!-- フリック／ドラッグ／キーでキャラBへ -->
+  <!-- ★Block2〜5：タイプライター廃止 → 一括表示＋スライドイン -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const block2El = document.getElementById("block2Type");
+      const block3El = document.getElementById("block3Type");
+      const block4El = document.getElementById("block4Type");
+      const block5El = document.getElementById("block5Type");
+
+      // ここを好きな文章に差し替えてOK
+      const block2Text = `ここにブロック2のテキストを書く（まとめて表示）`;
+      const block3Text = `ここにブロック3のテキストを書く（まとめて表示）`;
+      const block4Text = `ここにブロック4のテキストを書く（まとめて表示）`;
+      const block5Text = `ここにブロック5のテキストを書く（まとめて表示）`;
+
+      function showBlock(el, text, delayMs) {
+        if (!el) return;
+        setTimeout(() => {
+          el.textContent = text;              // 文章を一括表示
+          el.classList.add("block-slide-in"); // スライドイン開始
+        }, delayMs);
+      }
+
+      showBlock(block2El, block2Text, 800);
+      showBlock(block3El, block3Text, 1200);
+      showBlock(block4El, block4Text, 1600);
+      showBlock(block5El, block5Text, 2000);
+    });
+  </script>
+
+  <!-- フリック／ドラッグ／キーでキャラBへ（★そのまま） -->
   <script>
   (function () {
     let startX = null;
     const threshold = 60;
 
-    /* ===== スマホ（タッチ） ===== */
     window.addEventListener("touchstart", function (e) {
       if (e.touches.length > 1) return;
       startX = e.touches[0].clientX;
@@ -448,42 +575,35 @@
 
     window.addEventListener("touchend", function (e) {
       if (startX === null) return;
-
       const endX = e.changedTouches[0].clientX;
       const diffX = endX - startX;
 
       if (diffX < -threshold) {
         window.location.href = "character_b.html";
       }
-
       startX = null;
     });
 
-    /* ===== PC（マウスドラッグ） ===== */
     window.addEventListener("mousedown", function (e) {
       startX = e.clientX;
     });
 
     window.addEventListener("mouseup", function (e) {
       if (startX === null) return;
-
       const endX = e.clientX;
       const diffX = endX - startX;
 
       if (diffX < -threshold) {
         window.location.href = "character_b.html";
       }
-
       startX = null;
     });
 
-    /* ===== PC（キーボード → キー） ===== */
     window.addEventListener("keydown", function (e) {
       if (e.key === "ArrowRight") {
         window.location.href = "character_b.html";
       }
     });
-
   })();
   </script>
 
