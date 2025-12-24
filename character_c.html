@@ -550,70 +550,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </script>
 
-<!-- C：フリック／ドラッグ／キーで B / D に遷移（右でDへ） -->
+<!-- C：ドラッグ／スワイプ／キーで B / D に遷移（右でDへ）※安定版 -->
 <script>
 (function () {
   let startX = null;
   const threshold = 60;
 
-  // 左へ（前のキャラ）
   function goPrev() {
     window.location.href = "character_b.html";
   }
 
-  // 右へ（次のキャラ）
   function goNext() {
     window.location.href = "character_d.html";
   }
 
-  // スマホ（タッチ）
-  window.addEventListener("touchstart", function (e) {
-    if (e.touches.length > 1) return;
-    startX = e.touches[0].clientX;
+  // 画像の「ドラッグしてファイルを引っ張る」挙動などを抑止（PCで逆判定になりやすい原因の一つ）
+  document.addEventListener("dragstart", function (e) {
+    e.preventDefault();
   });
 
-  window.addEventListener("touchend", function (e) {
-    if (startX === null) return;
+  // pointer events で統一（PC/スマホ両対応）
+  window.addEventListener("pointerdown", function (e) {
+    // 右クリック等は無視
+    if (e.button !== undefined && e.button !== 0) return;
 
-    const endX = e.changedTouches[0].clientX;
-    const diffX = endX - startX;
-
-    // 右にドラッグ → Dへ
-    if (diffX > threshold) {
-      goNext();
-    }
-    // 左にドラッグ → Bへ
-    else if (diffX < -threshold) {
-      goPrev();
-    }
-
-    startX = null;
-  });
-
-  // PC（マウスドラッグ）
-  window.addEventListener("mousedown", function (e) {
     startX = e.clientX;
-  });
 
-  window.addEventListener("mouseup", function (e) {
+    // テキスト選択が起きると挙動が不安定になるので抑止
+    // ※ pointerdown の時点で止めるのが効きやすい
+    e.preventDefault();
+  }, { passive: false });
+
+  window.addEventListener("pointerup", function (e) {
     if (startX === null) return;
 
     const endX = e.clientX;
     const diffX = endX - startX;
 
-    // 右にドラッグ → Dへ
     if (diffX > threshold) {
+      // 右にドラッグ → Dへ
       goNext();
-    }
-    // 左にドラッグ → Bへ
-    else if (diffX < -threshold) {
+    } else if (diffX < -threshold) {
+      // 左にドラッグ → Bへ
       goPrev();
     }
 
     startX = null;
   });
 
-  // PC（キーボード）
+  // キーボード
   window.addEventListener("keydown", function (e) {
     if (e.key === "ArrowLeft") {
       goPrev();
