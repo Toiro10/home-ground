@@ -550,7 +550,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </script>
 
-<!-- C：ドラッグ／スワイプ／キーで B / D に遷移（右でDへ）※安定版（スマホ版のフリック感度を下げるためY方向の移動も考慮） -->
+<!-- C：ドラッグ／スワイプ／キーで B / D に遷移（左でDへ、右でBへ）※安定版（スマホ版のフリック感度を下げるためY方向の移動も考慮） -->
 <script>
 (function () {
   let startX = null;
@@ -589,11 +589,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const absDiffX = Math.abs(diffX);
     const absDiffY = Math.abs(diffY);
     if (absDiffX > threshold && absDiffX > absDiffY * 1.5) {
-      if (diffX > 0) {
-        // 右にフリック → Dへ
+      if (diffX < 0) {
+        // 左にフリック → Dへ
         goNext();
-      } else if (diffX < 0) {
-        // 左にフリック → Bへ
+      } else if (diffX > 0) {
+        // 右にフリック → Bへ
         goPrev();
       }
     }
@@ -620,11 +620,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const absDiffX = Math.abs(diffX);
     const absDiffY = Math.abs(diffY);
     if (absDiffX > threshold && absDiffX > absDiffY * 1.5) {
-      if (diffX > 0) {
-        // 右にドラッグ → Dへ
+      if (diffX < 0) {
+        // 左にドラッグ → Dへ
         goNext();
-      } else if (diffX < 0) {
-        // 左にドラッグ → Bへ
+      } else if (diffX > 0) {
+        // 右にドラッグ → Bへ
         goPrev();
       }
     }
