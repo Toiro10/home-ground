@@ -550,11 +550,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </script>
 
-<!-- C：ドラッグ／スワイプ／キーで B / D に遷移（右でDへ）※安定版 -->
+<!-- C：ドラッグ／スワイプ／キーで B / D に遷移（右でDへ）※安定版（スマホ版のフリック感度を下げるためY方向の移動も考慮） -->
 <script>
 (function () {
   let startX = null;
-  const threshold = 60;
+  let startY = null;
+  const threshold = 80; // 60から80に上げて感度を下げる
 
   function goPrev() {
     window.location.href = "character_b.html";
@@ -569,33 +570,81 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault();
   });
 
-  // pointer events で統一（PC/スマホ両対応）
-  window.addEventListener("pointerdown", function (e) {
-    // 右クリック等は無視
-    if (e.button !== undefined && e.button !== 0) return;
+  // スマホ（タッチ）
+  window.addEventListener("touchstart", function (e) {
+    if (e.touches.length > 1) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  });
 
-    startX = e.clientX;
+  window.addEventListener("touchend", function (e) {
+    if (startX === null || startY === null) return;
 
-    // テキスト選択が起きると挙動が不安定になるので抑止
-    // ※ pointerdown の時点で止めるのが効きやすい
-    e.preventDefault();
-  }, { passive: false });
-
-  window.addEventListener("pointerup", function (e) {
-    if (startX === null) return;
-
-    const endX = e.clientX;
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
     const diffX = endX - startX;
+    const diffY = endY - startY;
 
-    if (diffX > threshold) {
-      // 右にドラッグ → Dへ
-      goNext();
-    } else if (diffX < -threshold) {
-      // 左にドラッグ → Bへ
-      goPrev();
+    // 横方向の移動が縦方向の移動よりも十分大きい場合のみページ遷移
+    const absDiffX = Math.abs(diffX);
+    const absDiffY = Math.abs(diffY);
+    if (absDiffX > threshold && absDiffX > absDiffY * 1.5) {
+      if (diffX > 0) {
+        // 右にフリック → Dへ
+        goNext();
+      } else if (diffX < 0) {
+        // 左にフリック → Bへ
+        goPrev();
+      }
     }
 
     startX = null;
+    startY = null;
+  });
+
+  // PC（マウスドラッグ）
+  window.addEventListener("mousedown", function (e) {
+    // 右クリックや中クリックは無視
+    if (e.button !== 0) return;
+    startX = e.clientX;
+    startY = e.clientY;
+  });
+
+  window.addEventListener("mouseup", function (e) {
+    // 右クリックや中クリックは無視
+    if (e.button !== 0) {
+      startX = null;
+      startY = null;
+      return;
+    }
+    if (startX === null || startY === null) return;
+
+    const endX = e.clientX;
+    const endY = e.clientY;
+    const diffX = endX - startX;
+    const diffY = endY - startY;
+
+    // 横方向の移動が縦方向の移動よりも十分大きい場合のみページ遷移
+    const absDiffX = Math.abs(diffX);
+    const absDiffY = Math.abs(diffY);
+    if (absDiffX > threshold && absDiffX > absDiffY * 1.5) {
+      if (diffX > 0) {
+        // 右にドラッグ → Dへ
+        goNext();
+      } else if (diffX < 0) {
+        // 左にドラッグ → Bへ
+        goPrev();
+      }
+    }
+
+    startX = null;
+    startY = null;
+  });
+
+  // マウスがウィンドウの外に出た場合のリセット
+  window.addEventListener("mouseleave", function (e) {
+    startX = null;
+    startY = null;
   });
 
   // キーボード

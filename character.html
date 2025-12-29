@@ -586,41 +586,60 @@
     });
   </script>
 
-  <!-- フリック／ドラッグ／キーでキャラBへ（★そのまま） -->
+  <!-- フリック／ドラッグ／キーでキャラBへ（スマホ版のフリック感度を下げるためY方向の移動も考慮） -->
   <script>
   (function () {
     let startX = null;
-    const threshold = 60;
+    let startY = null;
+    const threshold = 80; // 60から80に上げて感度を下げる
 
     window.addEventListener("touchstart", function (e) {
       if (e.touches.length > 1) return;
       startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
     });
 
     window.addEventListener("touchend", function (e) {
-      if (startX === null) return;
+      if (startX === null || startY === null) return;
       const endX = e.changedTouches[0].clientX;
+      const endY = e.changedTouches[0].clientY;
       const diffX = endX - startX;
+      const diffY = endY - startY;
 
-      if (diffX < -threshold) {
-        window.location.href = "character_b.html";
+      // 横方向の移動が縦方向の移動よりも十分大きい場合のみページ遷移
+      const absDiffX = Math.abs(diffX);
+      const absDiffY = Math.abs(diffY);
+      if (absDiffX > threshold && absDiffX > absDiffY * 1.5) {
+        if (diffX < 0) {
+          window.location.href = "character_b.html";
+        }
       }
       startX = null;
+      startY = null;
     });
 
     window.addEventListener("mousedown", function (e) {
       startX = e.clientX;
+      startY = e.clientY;
     });
 
     window.addEventListener("mouseup", function (e) {
-      if (startX === null) return;
+      if (startX === null || startY === null) return;
       const endX = e.clientX;
+      const endY = e.clientY;
       const diffX = endX - startX;
+      const diffY = endY - startY;
 
-      if (diffX < -threshold) {
-        window.location.href = "character_b.html";
+      // 横方向の移動が縦方向の移動よりも十分大きい場合のみページ遷移
+      const absDiffX = Math.abs(diffX);
+      const absDiffY = Math.abs(diffY);
+      if (absDiffX > threshold && absDiffX > absDiffY * 1.5) {
+        if (diffX < 0) {
+          window.location.href = "character_b.html";
+        }
       }
       startX = null;
+      startY = null;
     });
 
     window.addEventListener("keydown", function (e) {
