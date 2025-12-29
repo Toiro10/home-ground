@@ -604,19 +604,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // PC（マウスドラッグ）
   window.addEventListener("mousedown", function (e) {
-    // 右クリックや中クリックは無視
-    if (e.button !== 0) return;
     startX = e.clientX;
     startY = e.clientY;
   });
 
   window.addEventListener("mouseup", function (e) {
-    // 右クリックや中クリックは無視
-    if (e.button !== 0) {
-      startX = null;
-      startY = null;
-      return;
-    }
     if (startX === null || startY === null) return;
 
     const endX = e.clientX;
@@ -637,12 +629,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    startX = null;
-    startY = null;
-  });
-
-  // マウスがウィンドウの外に出た場合のリセット
-  window.addEventListener("mouseleave", function (e) {
     startX = null;
     startY = null;
   });
