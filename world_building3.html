@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>建物3</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --panel: #ffffff;
+      --accent: #000000;
+      --text-main: #000000;
+      --text-sub: #444444;
+      --border-soft: rgba(0, 0, 0, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      background: #000;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    /* 画面全体 */
+    .world {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* 背景画像 */
+    .world-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .world-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* 黒フェード（文字を読みやすくする用） */
+    .world-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+
+    /* 世界観テキスト */
+    .world-text {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      color: #ffffff;
+      overflow-y: auto;
+      padding: 32px 24px 100px;
+    }
+
+    .world-text-inner {
+      max-width: 720px;
+      padding: 24px;
+      font-size: 16px;
+      line-height: 2.0;
+      letter-spacing: 0.08em;
+    }
+
+    .world-building-title {
+      font-size: 35.2px;
+      letter-spacing: 0.2em;
+      margin-bottom: 24px;
+      display: block;
+      font-weight: normal;
+    }
+
+    .world-title {
+      font-size: 22px;
+      letter-spacing: 0.2em;
+      margin-bottom: 24px;
+    }
+
+    /* ページネーション（丸いアイコン） */
+    .world-pagination {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 32px;
+      padding-bottom: 32px;
+    }
+
+    .pagination-dot {
+      display: block;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .pagination-dot:hover {
+      background: rgba(255, 255, 255, 0.8);
+      transform: scale(1.2);
+    }
+
+    .pagination-dot.active {
+      background: rgba(255, 255, 255, 1);
+      border-color: rgba(255, 255, 255, 1);
+    }
+
+    /* 左の縦メニュー */
+    .side-nav {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 70px;
+      height: 100vh;
+      background: linear-gradient(180deg, #111111, #050505);
+      border-right: 1px solid var(--border-soft);
+      padding: 16px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      border-radius: 12px;
+      font-size: 11px;
+      text-decoration: none;
+      color: var(--text-sub);
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-item:hover {
+      border-color: var(--border-soft);
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .nav-item-active {
+      border-color: var(--accent);
+      color: #000;
+      background: var(--accent);
+      font-weight: 600;
+    }
+
+    .nav-item-disabled {
+      opacity: 0.35;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* メニューがある場合のレイアウト調整 */
+    .world-content {
+      margin-left: 70px;
+      width: calc(100% - 70px);
+      height: 100vh;
+    }
+
+    @media (max-width: 900px) {
+      .side-nav {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        border-right: none;
+        border-bottom: 1px solid var(--border-soft);
+        justify-content: center;
+      }
+
+      .world-content {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .world-pagination {
+        gap: 10px;
+        margin-top: 24px;
+        padding-bottom: 24px;
+      }
+
+      .pagination-dot {
+        width: 30px;
+        height: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 左メニュー -->
+  <aside class="side-nav">
+    <a class="nav-item" href="index.html">TOP</a>
+    <a class="nav-item" href="main.html">メイン</a>
+    <a class="nav-item" href="world.html">世界観</a>
+    <button class="nav-item nav-item-disabled" type="button">ストーリー</button>
+    <a class="nav-item" href="character.html">キャラ</a>
+  </aside>
+
+  <div class="world-content">
+    <section class="world">
+    <!-- 背景画像 -->
+    <div class="world-bg">
+      <img src="assets/build_arc.jpg" alt="世界観イメージ" />
+    </div>
+
+    <!-- 読みやすくするための暗幕 -->
+    <div class="world-overlay"></div>
+
+    <!-- テキスト -->
+    <div class="world-text">
+      <div class="world-text-inner"><span class="world-building-title">地下１３層スラム</span><div class="world-title">
+
+        <p>
+          クルディスタン・アーコロジーは、ガラン・シティ開発区域の外縁に位置し、空港方面へ向かう幹線軸上、外周バイパスに接続する地点に建設された。 <br />
+建設当時、この一帯は将来的な都市拡張を想定した空白地帯であり、国家規模の用地確保が可能な数少ない地域だった。 <br />
+アーコロジー完成当時、イラクではすでに数十年にわたって断続的な紛争が続いていた。 <br />
+終わりの見えない状況から逃げるように、人々は「安全な地下都市」に居住を求めた。 <br />
+           <br />
+          2064年、11階層で化学物質の汚染事故が発生し数千人の死者が出た。11層全体が自動封鎖された。
+アーコロジー全域に避難命令が出され、当時住んでいた約13万人避難キャンプに移動した。 <br />
+アーコロジー完成から11層の事故発生までは9年程であった。 <br />
+クルディスタン地域政府は、アーコロジー都市に機能ごとに分断された運用を前提とした現実的な避難都市設計を選択した。 <br />
+国はクルディスタン・アーコロジーを公式には「廃棄済み都市」と位置づけ、居住を認めていない。 <br />
+しかし事故後も下層部には数万規模の人間が残留・流入しており、これを強制的に排除することは困難であった。 <br />
+ <br />
+          政府は上層階に治安管理・監視施設を設置し、クルディスタン・アーコロジー全体を「管理可能な危険区域」として封じ込めている。 <br />
+またB1〜B3階は観光・遊楽施設として再利用されているが、これらは復興事業ではなく、維持費を回収するための二次利用と位置づけられている。 <br />
+13層スラムでは、住民たちが自分たちの生活を少しでも良くするために、住民組織を創った。組織の名前は「技師会」。 <br />
+11層事故で職を失った工具屋や建築関係者、技術者が集まってできた団体組織。 <br />
+彼らは廃棄されたアーコロジーの各層に人が住めるように少しずつ直していった。 <br />
+手動のメンテナンス文化はその後スラム化したクルディスタンアーコロジーに深く根付き、外の世界ではヒューマノイドが発展し自動化が進む一方、クルディスタンアーコロジーは人間達の手で延命して生き続ける都市となった。
+
+          <br />
+        </p>
+
+        <!-- ページネーション（丸いアイコン） -->
+        <div class="world-pagination">
+          <a href="world_building1.html" class="pagination-dot" title="建物1"></a>
+          <a href="world_building2.html" class="pagination-dot" title="建物2"></a>
+          <a href="world_building3.html" class="pagination-dot active" title="建物3"></a>
+          <a href="world_building4.html" class="pagination-dot" title="建物4"></a>
+          <a href="world_building5.html" class="pagination-dot" title="建物5"></a>
+        </div>
+      </div>
+    </div>
+
+    
+    </section>
+  </div>
+</body>
+</html>
+
