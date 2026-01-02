@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>ムービー</title>
+  <style>
+    :root {
+      --bg: #000000;
+      --text-main: #ffffff;
+      --text-sub: #cccccc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .movie-container {
+      width: 100%;
+      max-width: 1200px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .movie-title {
+      font-size: 24px;
+      letter-spacing: 0.2em;
+      text-align: center;
+    }
+
+    .movie-player {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      aspect-ratio: 16 / 9;
+      background: #111111;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .movie-player video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .movie-placeholder {
+      color: var(--text-sub);
+      font-size: 16px;
+      text-align: center;
+      padding: 48px;
+    }
+
+    .back-link {
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .back-link a {
+      color: var(--text-sub);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .back-link a:hover {
+      color: var(--text-main);
+    }
+
+    @media (max-width: 900px) {
+      .movie-container {
+        padding: 16px;
+      }
+
+      .movie-title {
+        font-size: 20px;
+      }
+
+      .movie-player {
+        aspect-ratio: 16 / 9;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="movie-container">
+    <h1 class="movie-title">ムービー</h1>
+
+    <div class="movie-player">
+      <!-- 動画プレーヤーをここに配置します -->
+      <div class="movie-placeholder">
+        動画をここに配置します
+      </div>
+      <!-- 動画ファイルを追加する場合は、以下のコメントを外して使用してください -->
+      <!--
+      <video controls>
+        <source src="assets/movie.mp4" type="video/mp4">
+        お使いのブラウザは動画タグをサポートしていません。
+      </video>
+      -->
+    </div>
+
+    <div class="back-link">
+      <a href="main.html">← メインページに戻る</a>
+    </div>
+  </div>
+</body>
+</html>
+
