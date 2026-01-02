@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>建物1</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --panel: #ffffff;
+      --accent: #000000;
+      --text-main: #000000;
+      --text-sub: #444444;
+      --border-soft: rgba(0, 0, 0, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      background: #000;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    /* 画面全体 */
+    .world {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* 背景画像 */
+    .world-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .world-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* 黒フェード（文字を読みやすくする用） */
+    .world-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+
+    /* 世界観テキスト */
+    .world-text {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #ffffff;
+    }
+
+    .world-text-inner {
+      max-width: 720px;
+      padding: 24px;
+      font-size: 16px;
+      line-height: 2.0;
+      letter-spacing: 0.08em;
+    }
+
+    .world-title {
+      font-size: 22px;
+      letter-spacing: 0.2em;
+      margin-bottom: 24px;
+    }
+
+    /* ページネーション（丸いアイコン） */
+    .world-pagination {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      z-index: 3;
+    }
+
+    .pagination-dot {
+      display: block;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .pagination-dot:hover {
+      background: rgba(255, 255, 255, 0.8);
+      transform: scale(1.2);
+    }
+
+    .pagination-dot.active {
+      background: rgba(255, 255, 255, 1);
+      border-color: rgba(255, 255, 255, 1);
+    }
+
+    /* 左の縦メニュー */
+    .side-nav {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 70px;
+      height: 100vh;
+      background: linear-gradient(180deg, #111111, #050505);
+      border-right: 1px solid var(--border-soft);
+      padding: 16px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      border-radius: 12px;
+      font-size: 11px;
+      text-decoration: none;
+      color: var(--text-sub);
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-item:hover {
+      border-color: var(--border-soft);
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .nav-item-active {
+      border-color: var(--accent);
+      color: #000;
+      background: var(--accent);
+      font-weight: 600;
+    }
+
+    .nav-item-disabled {
+      opacity: 0.35;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* メニューがある場合のレイアウト調整 */
+    .world-content {
+      margin-left: 70px;
+      width: calc(100% - 70px);
+      height: 100vh;
+    }
+
+    @media (max-width: 900px) {
+      .side-nav {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        border-right: none;
+        border-bottom: 1px solid var(--border-soft);
+        justify-content: center;
+      }
+
+      .world-content {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .world-pagination {
+        bottom: 24px;
+        gap: 10px;
+      }
+
+      .pagination-dot {
+        width: 30px;
+        height: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 左メニュー -->
+  <aside class="side-nav">
+    <a class="nav-item" href="index.html">TOP</a>
+    <a class="nav-item" href="main.html">メイン</a>
+    <a class="nav-item" href="world.html">世界観</a>
+    <button class="nav-item nav-item-disabled" type="button">ストーリー</button>
+    <a class="nav-item" href="character.html">キャラ</a>
+  </aside>
+
+  <div class="world-content">
+    <section class="world">
+    <!-- 背景画像 -->
+    <div class="world-bg">
+      <img src="assets/ferris wheel.png" alt="世界観イメージ" />
+    </div>
+
+    <!-- 読みやすくするための暗幕 -->
+    <div class="world-overlay"></div>
+
+    <!-- テキスト -->
+    <div class="world-text">
+      <div class="world-text-inner">
+        <div class="world-title">世界観</div>
+
+        <p>
+          舞台は2088年。
+生体チップが普及し人間がアンドロイドに寄ったことで多くの恩恵を得ている時代。<br />
+日本の高校、イギリスのホムンクルス実験場、廃棄されスラム化したクルディスタン地下アーコロジー、軍用犬育成施設。<br />
+4つの「檻」から彼らは「脱走」し、やがて1つの物語へと収束する。<br />
+        </p>
+      </div>
+
+      <!-- ページネーション（丸いアイコン） -->
+      <div class="world-pagination">
+        <a href="world_building1.html" class="pagination-dot active" title="建物1"></a>
+        <a href="world_building2.html" class="pagination-dot" title="建物2"></a>
+        <a href="world_building3.html" class="pagination-dot" title="建物3"></a>
+        <a href="world_building4.html" class="pagination-dot" title="建物4"></a>
+        <a href="world_building5.html" class="pagination-dot" title="建物5"></a>
+      </div>
+    </div>
+
+    
+    </section>
+  </div>
+</body>
+</html>
+
