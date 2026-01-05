@@ -93,12 +93,19 @@
     }
 
     /* ページネーション（丸いアイコン） */
+    .world-pagination-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin-top: 32px;
+      padding-bottom: 32px;
+    }
+
     .world-pagination {
       display: flex;
       gap: 12px;
       justify-content: center;
-      margin-top: 32px;
-      padding-bottom: 32px;
     }
 
     .pagination-dot {
@@ -119,6 +126,29 @@
     }
 
     .pagination-dot.active {
+      background: rgba(255, 255, 255, 1);
+      border-color: rgba(255, 255, 255, 1);
+    }
+
+    .pagination-star {
+      display: block;
+      width: 36px;
+      height: 36px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.2s ease;
+      clip-path: polygon(50% 0%, 70% 30%, 100% 50%, 70% 70%, 50% 100%, 30% 70%, 0% 50%, 30% 30%);
+      -webkit-clip-path: polygon(50% 0%, 70% 30%, 100% 50%, 70% 70%, 50% 100%, 30% 70%, 0% 50%, 30% 30%);
+    }
+
+    .pagination-star:hover {
+      background: rgba(255, 255, 255, 0.8);
+      transform: scale(1.2);
+    }
+
+    .pagination-star.active {
       background: rgba(255, 255, 255, 1);
       border-color: rgba(255, 255, 255, 1);
     }
@@ -196,13 +226,22 @@
         width: 100%;
       }
 
-      .world-pagination {
-        gap: 10px;
+      .world-pagination-wrapper {
+        gap: 12px;
         margin-top: 24px;
         padding-bottom: 24px;
       }
 
+      .world-pagination {
+        gap: 10px;
+      }
+
       .pagination-dot {
+        width: 30px;
+        height: 30px;
+      }
+
+      .pagination-star {
         width: 30px;
         height: 30px;
       }
@@ -249,12 +288,21 @@
         </p>
 
         <!-- ページネーション（丸いアイコン） -->
-        <div class="world-pagination">
-          <a href="world_building1.html" class="pagination-dot" title="建物1"></a>
-          <a href="world_building2.html" class="pagination-dot active" title="建物2"></a>
-          <a href="world_building3.html" class="pagination-dot" title="建物3"></a>
-          <a href="world_building4.html" class="pagination-dot" title="建物4"></a>
-          <a href="world_building5.html" class="pagination-dot" title="建物5"></a>
+        <div class="world-pagination-wrapper">
+          <div class="world-pagination">
+            <a href="world_building1.html" class="pagination-dot" title="建物1"></a>
+            <a href="world_building2.html" class="pagination-dot active" title="建物2"></a>
+            <a href="world_building3.html" class="pagination-dot" title="建物3"></a>
+            <a href="world_building4.html" class="pagination-dot" title="建物4"></a>
+            <a href="world_building5.html" class="pagination-dot" title="建物5"></a>
+          </div>
+          <div class="world-pagination">
+            <a href="world_setting1.html" class="pagination-star" title="用語設定1"></a>
+            <a href="world_setting2.html" class="pagination-star" title="用語設定2"></a>
+            <a href="world_setting3.html" class="pagination-star" title="用語設定3"></a>
+            <a href="world_setting4.html" class="pagination-star" title="用語設定4"></a>
+            <a href="world_setting5.html" class="pagination-star" title="用語設定5"></a>
+          </div>
         </div>
       </div>
     </div>
