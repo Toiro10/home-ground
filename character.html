@@ -405,10 +405,6 @@
             <img src="assets/AI_L.jpg" alt="キャラクター画像（仮）">
           </div>
 
-          <!-- 縦書きタイピング用カラム -->
-          <div class="hero-overlay type-column type-left" id="typeLeft"></div>
-          <div class="hero-overlay type-column type-right" id="typeRight"></div>
-
           <!-- 上部のコピー -->
           <div class="hero-overlay hero-quote">「心とは、」</div>
 
@@ -493,51 +489,6 @@
     </section>
   </div>
 
-  <!-- hero：縦書きタイピング演出（★そのまま） -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const leftEl  = document.getElementById("typeLeft");
-      const rightEl = document.getElementById("typeRight");
-
-      const leftText = `犬には犬の心があり、人には人の心がある。\n心は宿るものではなく、構造から生まれる。\nしたがって機械が心を持ったとしてもそれは“機械の心”であって“人の心”ではない。\n人間の心を再現したければ、人間の構造を再現しなければならない。\nそれがホムンクルスの原理の一歩目であり、人間という式を描いた試みである。`;
-
-      const rightText = "「なぜ心って必要なの？私、かなしくなると心が痛くなるの」\n「なぜ、人間の心をあなたは求めたの?」";
-
-      function typeVertical(el, text, speed, clearDelay) {
-        if (!el) return;
-        let index = 0;
-        el.style.opacity = 1;
-
-        const timer = setInterval(() => {
-          el.textContent = text.slice(0, index + 1);
-          index++;
-
-          if (index >= text.length) {
-            clearInterval(timer);
-
-            if (clearDelay) {
-              setTimeout(() => {
-                el.style.transition = "opacity 0.8s ease";
-                el.style.opacity = 0;
-
-                setTimeout(() => {
-                  el.textContent = "";
-                }, 900);
-              }, clearDelay);
-            }
-          }
-        }, speed);
-      }
-
-      setTimeout(() => {
-        typeVertical(leftEl, leftText, 50, 1500);
-      }, 500);
-
-      setTimeout(() => {
-        typeVertical(rightEl, rightText, 120, 1000);
-      }, 500);
-    });
-  </script>
 
   <!-- ★Block2〜5：タイプライター廃止 → 一括表示＋スライドイン -->
   <script>
