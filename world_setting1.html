@@ -306,6 +306,11 @@
       margin: 0;
     }
 
+    /* 選択後の吹き出しテキストを大きく */
+    .speech-bubble-text.large {
+      font-size: 24px;
+    }
+
     /* 選択肢ボタン */
     .choice-buttons {
       display: none;
@@ -495,16 +500,17 @@
       // 会話文を表示
       speechText.style.display = 'block';
       speechText.textContent = "いくら払う？何層に行く？…分かった。中の取手に掴まれ。";
+      speechText.classList.add('large'); // フォントサイズを大きく
       
       // フェードアウト→フェードインのアニメーション
       speechBubble.style.opacity = '0';
       setTimeout(() => {
         speechBubble.style.opacity = '1';
         
-        // 2秒後にページ遷移（最下部にスクロールするためのパラメータを追加）
+        // 3秒後にページ遷移（最下部にスクロールするためのパラメータを追加）
         setTimeout(() => {
           window.location.href = 'manhole_ride.html?scroll=bottom';
-        }, 2000);
+        }, 3000);
       }, 200);
     });
 
@@ -518,13 +524,14 @@
       // 会話文を表示
       speechText.style.display = 'block';
       speechText.textContent = "チッ、冷やかしか";
+      speechText.classList.add('large'); // フォントサイズを大きく
       
       // フェードアウト→フェードインのアニメーション
       speechBubble.style.opacity = '0';
       setTimeout(() => {
         speechBubble.style.opacity = '1';
         
-        // 2秒後に吹き出しが消える
+        // 3秒後に吹き出しが消える
         setTimeout(() => {
           speechBubbleContainer.style.opacity = '0';
           speechBubbleContainer.style.transform = 'translateX(100px) translateY(50px)';
@@ -534,7 +541,7 @@
           setTimeout(() => {
             speechBubbleContainer.style.display = 'none';
           }, 500);
-        }, 2000);
+        }, 3000);
       }, 200);
     });
   </script>
