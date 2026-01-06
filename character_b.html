@@ -88,20 +88,23 @@
     /* 右側メインビジュアルコンテナ */
     .main-panel {
       flex: 1;
-      padding: 24px 32px;
+      padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 0;
     }
 
     .hero-visual {
       position: relative;
-      border-radius: 18px;
-      border: 1px solid var(--border-soft);
+      width: 100%;
+      min-height: 100vh;
       overflow: hidden;
-      min-height: 830px;
-      background: radial-gradient(circle at top, #202020, #050505);
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
       perspective: 800px;
+      padding: 80px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .hero-image-layer {
@@ -156,18 +159,6 @@
       color: var(--text-sub);
     }
 
-    .back-link {
-      font-size: 12px;
-      color: var(--text-sub);
-      text-decoration: none;
-      align-self: flex-start;
-      margin-top: 8px;
-    }
-
-    .back-link:hover {
-      color: var(--text-main);
-      text-decoration: underline;
-    }
 
     /* ===== hero 全面ホワイトオーバーレイ ===== */
 
@@ -313,7 +304,7 @@
     .timeline {
       width: calc(100% - 70px);
       margin-left: 70px;
-      padding: 32px 32px 56px;
+      padding: 0;
     }
 
     .timeline-title {
@@ -322,32 +313,53 @@
       text-transform: uppercase;
       color: var(--text-sub);
       margin-bottom: 16px;
+      padding: 32px 32px 16px;
     }
 
     .timeline-list {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 0;
     }
 
     .timeline-block {
-      border-radius: 16px;
-      border: 1px solid var(--border-soft);
-      background: rgba(255, 255, 255, 0.02);
-      padding: 24px 24px;
-      min-height: 480px;
+      width: 100%;
+      min-height: 100vh;
+      padding: 80px 24px;
       display: flex;
       flex-direction: column;
       gap: 16px;
+      position: relative;
+    }
+
+    /* 各ブロックの背景グラデーション */
+    .timeline-block:nth-child(1) {
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    }
+
+    .timeline-block:nth-child(2) {
+      background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+    }
+
+    .timeline-block:nth-child(3) {
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+    }
+
+    .timeline-block:nth-child(4) {
+      background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    }
+
+    .timeline-block:nth-child(5) {
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
     }
 
     .timeline-image {
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
-      border-radius: 12px;
+      border-radius: 0;
       overflow: hidden;
-      border: 1px solid var(--border-soft);
+      border: none;
     }
 
     .timeline-image img {
@@ -447,11 +459,12 @@
       }
 
       .main-panel {
-        padding: 16px;
+        padding: 0;
       }
 
       .hero-visual {
-        min-height: 260px;
+        min-height: 100vh;
+        padding: 60px 20px;
       }
 
       .hero-quote {
@@ -464,8 +477,17 @@
       }
 
       .timeline {
-        margin: 16px auto 24px;
-        padding: 0 12px 24px;
+        margin: 0;
+        padding: 0;
+      }
+
+      .timeline-title {
+        padding: 16px 12px 16px;
+      }
+
+      .timeline-block {
+        padding: 60px 20px;
+        min-height: 100vh;
       }
     }
   </style>
@@ -512,8 +534,6 @@
             </p>
           </div>
         </section>
-
-        <a class="back-link" href="main.html">← main に戻る</a>
       </main>
     </div>
 
@@ -524,9 +544,6 @@
       <div class="timeline-list">
         <!-- Block 1 -->
         <section class="timeline-block">
-          <div class="timeline-label">BLOCK 1</div>
-          <h3 class="timeline-heading">ここに見出し（年齢や年代）</h3>
-
           <div class="timeline-image">
             <img src="assets/block1_dummy.png" alt="Block1 image" />
             <div class="block1-type">
@@ -542,9 +559,6 @@
 
         <!-- Block 2 -->
         <section class="timeline-block">
-          <div class="timeline-label">BLOCK 2</div>
-          <h3 class="timeline-heading">ここに見出し</h3>
-
           <div class="timeline-image">
             <img src="assets/block2_dummy.png" alt="Block2 image" />
             <div class="block2-type" id="block2Type"></div>
@@ -555,9 +569,6 @@
 
         <!-- Block 3 -->
         <section class="timeline-block">
-          <div class="timeline-label">BLOCK 3</div>
-          <h3 class="timeline-heading">ここに見出し</h3>
-
           <div class="timeline-image">
             <img src="assets/block3_dummy.png" alt="Block3 image" />
             <div class="block3-type" id="block3Type"></div>
@@ -568,9 +579,6 @@
 
         <!-- Block 4 -->
         <section class="timeline-block">
-          <div class="timeline-label">BLOCK 4</div>
-          <h3 class="timeline-heading">ここに見出し</h3>
-
           <div class="timeline-image">
             <img src="assets/block4_dummy.png" alt="Block4 image" />
             <div class="block4-type" id="block4Type"></div>
@@ -581,9 +589,6 @@
 
         <!-- Block 5 -->
         <section class="timeline-block">
-          <div class="timeline-label">BLOCK 5</div>
-          <h3 class="timeline-heading">ここに見出し</h3>
-
           <div class="timeline-image">
             <img src="assets/block5_dummy.png" alt="Block5 image" />
             <div class="block5-type" id="block5Type"></div>
