@@ -177,6 +177,76 @@
       color: var(--text-sub);
     }
 
+    /* キャラクターページネーション（左下部） */
+    .hero-pagination {
+      position: absolute;
+      left: 2%;
+      bottom: 12%;
+      display: flex;
+      gap: 12px;
+      z-index: 5;
+    }
+
+    .hero-pagination-dot {
+      display: block;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .hero-pagination-dot:hover {
+      background: rgba(255, 255, 255, 0.8);
+      transform: scale(1.2);
+    }
+
+    .hero-pagination-dot.active {
+      background: rgba(255, 255, 255, 1);
+      border-color: rgba(255, 255, 255, 1);
+    }
+
+    /* 2D/3D切り替えボタン */
+    .view-toggle {
+      margin-top: 16px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .view-toggle-button {
+      flex: 1;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+      color: var(--text-main);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      text-align: center;
+    }
+
+    .view-toggle-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .view-toggle-button.active {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.8);
+      font-weight: 600;
+    }
+
+    .view-toggle-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
 
     /* ===== 下部：バックボーン 5ブロック ===== */
 
@@ -369,6 +439,17 @@
         font-size: 20px;
       }
 
+      .hero-pagination {
+        left: 5%;
+        bottom: 8%;
+        gap: 8px;
+      }
+
+      .hero-pagination-dot {
+        width: 30px;
+        height: 30px;
+      }
+
       .timeline {
         margin: 0;
         padding: 0;
@@ -408,6 +489,14 @@
           <!-- 上部のコピー -->
           <div class="hero-overlay hero-quote">「心とは、」</div>
 
+          <!-- 左下部のページネーション -->
+          <div class="hero-pagination">
+            <a href="character.html" class="hero-pagination-dot active" title="キャラクター1"></a>
+            <a href="character_b.html" class="hero-pagination-dot" title="キャラクター2"></a>
+            <a href="character_c.html" class="hero-pagination-dot" title="キャラクター3"></a>
+            <a href="character_d.html" class="hero-pagination-dot" title="キャラクター4"></a>
+          </div>
+
           <!-- 右下のキャラ名＋説明 -->
           <div class="hero-overlay hero-meta">
             <div class="hero-name">
@@ -422,6 +511,10 @@
               身分：貴族<br>
               肩書：発明家
             </p>
+            <div class="view-toggle">
+              <button class="view-toggle-button active" id="view2D">2D</button>
+              <button class="view-toggle-button" id="view3D" disabled>3D</button>
+            </div>
           </div>
         </section>
       </main>
@@ -552,6 +645,49 @@
       showBlock(block3El, block3Text, 1200);
       showBlock(block4El, block4Text, 1600);
       showBlock(block5El, block5Text, 2000);
+    });
+  </script>
+
+  <!-- 2D/3D切り替え機能 -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const view2DButton = document.getElementById("view2D");
+      const view3DButton = document.getElementById("view3D");
+      const heroImageLayer = document.querySelector(".hero-image-layer");
+      
+      let currentView = "2D"; // 現在のビュー（2D or 3D）
+
+      // 2Dボタンのクリックイベント
+      view2DButton.addEventListener("click", function () {
+        if (currentView === "2D") return; // 既に2Dの場合は何もしない
+        
+        currentView = "2D";
+        view2DButton.classList.add("active");
+        view3DButton.classList.remove("active");
+        
+        // 2D表示に切り替え（画像を表示）
+        // 3D実装時にここで3Dモデルを非表示にする処理を追加
+        if (heroImageLayer) {
+          heroImageLayer.style.display = "block";
+        }
+      });
+
+      // 3Dボタンのクリックイベント（現在は無効化されているが、将来の実装用）
+      view3DButton.addEventListener("click", function () {
+        if (view3DButton.disabled) return; // 無効化されている場合は何もしない
+        if (currentView === "3D") return; // 既に3Dの場合は何もしない
+        
+        currentView = "3D";
+        view2DButton.classList.remove("active");
+        view3DButton.classList.add("active");
+        
+        // 3D表示に切り替え（後で実装）
+        // ここで3Dモデルを表示し、画像を非表示にする処理を追加
+        // 例: 3Dモデルコンテナを表示、画像を非表示
+        if (heroImageLayer) {
+          heroImageLayer.style.display = "none";
+        }
+      });
     });
   </script>
 
