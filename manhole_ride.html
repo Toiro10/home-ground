@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>昇降体験</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --panel: #ffffff;
+      --accent: #000000;
+      --text-main: #000000;
+      --text-sub: #444444;
+      --border-soft: rgba(0, 0, 0, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      background: #000;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+      transition: transform 0.1s ease-out;
+    }
+
+    /* 左の縦メニュー */
+    .side-nav {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 70px;
+      height: 100vh;
+      background: linear-gradient(180deg, #111111, #050505);
+      border-right: 1px solid var(--border-soft);
+      padding: 16px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      border-radius: 12px;
+      font-size: 11px;
+      text-decoration: none;
+      color: var(--text-sub);
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-item:hover {
+      border-color: var(--border-soft);
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .nav-item-active {
+      border-color: var(--accent);
+      color: #000;
+      background: var(--accent);
+      font-weight: 600;
+    }
+
+    .nav-item-disabled {
+      opacity: 0.35;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* メインコンテンツエリア */
+    .main-content {
+      margin-left: 70px;
+      width: calc(100% - 70px);
+      min-height: 100vh;
+    }
+
+    /* スクロール可能なブロックコンテナ */
+    .scroll-container {
+      position: relative;
+      width: 100%;
+    }
+
+    /* 各ブロック */
+    .content-block {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 24px;
+      position: relative;
+    }
+
+    /* 背景（各ブロックで異なる色や画像を設定可能） */
+    .content-block:nth-child(1) {
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    }
+
+    .content-block:nth-child(2) {
+      background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+    }
+
+    .content-block:nth-child(3) {
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+    }
+
+    .content-block:nth-child(4) {
+      background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    }
+
+    .content-block:nth-child(5) {
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    }
+
+    /* ブロック内コンテンツ */
+    .block-content {
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+      color: #ffffff;
+    }
+
+    .block-title {
+      font-size: 32px;
+      letter-spacing: 0.2em;
+      margin-bottom: 32px;
+      font-weight: normal;
+    }
+
+    .block-text {
+      font-size: 18px;
+      line-height: 2.0;
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+    }
+
+    .block-image {
+      width: 100%;
+      max-width: 600px;
+      margin: 32px auto;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .block-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* レスポンシブ対応 */
+    @media (max-width: 900px) {
+      .side-nav {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        border-right: none;
+        border-bottom: 1px solid var(--border-soft);
+        justify-content: center;
+      }
+
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .content-block {
+        padding: 60px 20px;
+      }
+
+      .block-title {
+        font-size: 24px;
+        margin-bottom: 24px;
+      }
+
+      .block-text {
+        font-size: 16px;
+        line-height: 1.8;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 左メニュー -->
+  <aside class="side-nav">
+    <a class="nav-item" href="index.html">TOP</a>
+    <a class="nav-item" href="main.html">メイン</a>
+    <a class="nav-item" href="world.html">世界観</a>
+    <button class="nav-item nav-item-disabled" type="button">ストーリー</button>
+    <a class="nav-item" href="character.html">キャラ</a>
+  </aside>
+
+  <div class="main-content">
+    <div class="scroll-container">
+      <!-- ブロック1 -->
+      <section class="content-block">
+        <div class="block-content">
+          <h1 class="block-title">ブロック1</h1>
+          <p class="block-text">
+            ここにブロック1の内容を記載してください。<br />
+            縦にスクロールして各ブロックを確認できます。
+          </p>
+        </div>
+      </section>
+
+      <!-- ブロック2 -->
+      <section class="content-block">
+        <div class="block-content">
+          <h1 class="block-title">ブロック2</h1>
+          <p class="block-text">
+            ここにブロック2の内容を記載してください。<br />
+            各ブロックは画面の高さ（100vh）を基準にしています。
+          </p>
+        </div>
+      </section>
+
+      <!-- ブロック3 -->
+      <section class="content-block">
+        <div class="block-content">
+          <h1 class="block-title">ブロック3</h1>
+          <p class="block-text">
+            ここにブロック3の内容を記載してください。<br />
+            画像やその他の要素も追加できます。
+          </p>
+        </div>
+      </section>
+
+      <!-- ブロック4 -->
+      <section class="content-block">
+        <div class="block-content">
+          <h1 class="block-title">ブロック4</h1>
+          <p class="block-text">
+            ここにブロック4の内容を記載してください。<br />
+            必要に応じて背景色やスタイルを変更できます。
+          </p>
+        </div>
+      </section>
+
+      <!-- ブロック5 -->
+      <section class="content-block">
+        <div class="block-content">
+          <h1 class="block-title">ブロック5</h1>
+          <p class="block-text">
+            ここにブロック5の内容を記載してください。<br />
+            最後のブロックです。
+          </p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // URLパラメータをチェックして、左右に揺れながら最下部にスクロールする
+    window.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const scrollToBottom = urlParams.get('scroll');
+      
+      if (scrollToBottom === 'bottom') {
+        // ページの読み込みを待ってから実行
+        setTimeout(function() {
+          const body = document.body;
+          const maxScrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+          let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+          let shakeIntensity = 72; // 揺れの強度（ピクセル）- 1.2倍に増加
+          let animationId = null;
+          let lastShakeTime = 0;
+          let currentShakeX = 0;
+          
+          // ランダムな揺れを生成する関数
+          function randomShake() {
+            const now = Date.now();
+            // 約16ms（60fps）ごとに新しい揺れを生成
+            if (now - lastShakeTime > 16) {
+              // ランダムな左右の揺れ（-shakeIntensity から +shakeIntensity まで）
+              currentShakeX = (Math.random() - 0.5) * 2 * shakeIntensity;
+              lastShakeTime = now;
+            }
+            return currentShakeX;
+          }
+          
+          // アニメーション関数
+          function animate() {
+            // 現在のスクロール位置を取得
+            currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // まだ最下部に達していない場合
+            if (currentScroll < maxScrollHeight - 1) {
+              // スクロール位置の割合を計算（0.0 ～ 1.0）
+              const scrollProgress = currentScroll / maxScrollHeight;
+              
+              // スクロール速度を位置に応じて変化させる
+              let scrollSpeed = 50; // デフォルト速度
+              
+              if (scrollProgress < 0.25) {
+                // 最初の25%：遅く（20ピクセル/フレーム）
+                scrollSpeed = 20;
+              } else if (scrollProgress < 0.75) {
+                // 中間の50%：速く（60ピクセル/フレーム）
+                scrollSpeed = 60;
+              } else {
+                // 最後の25%：中間より少し速く（50ピクセル/フレーム）
+                scrollSpeed = 50;
+              }
+              
+              // 下方向にスクロール
+              window.scrollBy(0, scrollSpeed);
+              
+              // 左右の揺れを適用
+              const shakeX = randomShake();
+              body.style.transform = `translateX(${shakeX}px)`;
+              
+              // 次のフレームをリクエスト
+              animationId = requestAnimationFrame(animate);
+            } else {
+              // 最下部に到達したら、揺れを徐々に減らして中央に戻す
+              let fadeShake = shakeIntensity;
+              function fadeOutShake() {
+                if (fadeShake > 0) {
+                  fadeShake -= 0.5;
+                  const finalShake = (Math.random() - 0.5) * 2 * fadeShake;
+                  body.style.transform = `translateX(${finalShake}px)`;
+                  requestAnimationFrame(fadeOutShake);
+                } else {
+                  // 完全に中央に戻す
+                  body.style.transform = 'translateX(0)';
+                  body.style.transition = 'transform 0.3s ease-out';
+                  setTimeout(() => {
+                    body.style.transition = '';
+                  }, 300);
+                }
+              }
+              fadeOutShake();
+            }
+          }
+          
+          // アニメーション開始
+          animationId = requestAnimationFrame(animate);
+        }, 100);
+      }
+    });
+  </script>
+</body>
+</html>
+
