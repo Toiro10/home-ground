@@ -191,6 +191,32 @@
       border-color: rgba(255, 255, 255, 1);
     }
 
+    /* 演出スキップボタン */
+    .hero-skip-button {
+      position: absolute;
+      left: 2%;
+      bottom: 6%;
+      color: #000000;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 20;
+      transition: opacity 0.2s ease;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      background: transparent;
+      border: none;
+      padding: 0;
+    }
+
+    .hero-skip-button:hover {
+      opacity: 0.7;
+    }
+
+    .hero-skip-button.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
 
     /* ===== hero 全面ホワイトオーバーレイ ===== */
 
@@ -499,6 +525,12 @@
         padding: 60px 20px;
       }
 
+      .hero-skip-button {
+        left: 5%;
+        bottom: 4%;
+        font-size: 12px;
+      }
+
       .hero-pagination {
         left: 5%;
         bottom: 8%;
@@ -560,6 +592,9 @@
 
           <!-- 上部コピー -->
           <div class="hero-overlay hero-quote">「道徳、とは」</div>
+
+          <!-- 演出スキップボタン -->
+          <button class="hero-skip-button" id="heroSkipButton">演出スキップ→</button>
 
           <!-- 左下部のページネーション -->
           <div class="hero-pagination">
@@ -656,6 +691,9 @@
 document.addEventListener("DOMContentLoaded", function () {
   const overlay = document.getElementById("heroOverlay");
   const overlayInner = document.getElementById("heroOverlayInner");
+  const skipButton = document.getElementById("heroSkipButton");
+  let isSkipped = false;
+  let stepTimeout = null;
 
   // 問3：□の中で「苦」→×→フェードアウト→「楽」→○ の演出
   function runQ3Sequence(onDone) {
@@ -786,10 +824,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const fadeGapTime = 650;
 
     function showStep(i) {
+      if (isSkipped) {
+        overlay.classList.add("hidden");
+        setTimeout(() => {
+          overlay.style.display = "none";
+          if (skipButton) {
+            skipButton.classList.add("hidden");
+          }
+        }, 300);
+        return;
+      }
+
       if (i >= steps.length) {
         overlay.classList.add("hidden");
         setTimeout(() => {
           overlay.style.display = "none";
+          if (skipButton) {
+            skipButton.classList.add("hidden");
+          }
         }, 1200);
         return;
       }
@@ -809,12 +861,31 @@ document.addEventListener("DOMContentLoaded", function () {
       // 問3のときだけ少し長く表示してアニメーションを完走させる
       const currentVisibleTime = (i === 3) ? 5600 : baseVisibleTime;
 
-      setTimeout(() => {
-        overlayInner.classList.remove("visible");
-        setTimeout(() => {
-          showStep(i + 1);
-        }, fadeGapTime);
+      stepTimeout = setTimeout(() => {
+        if (!isSkipped) {
+          overlayInner.classList.remove("visible");
+          stepTimeout = setTimeout(() => {
+            if (!isSkipped) {
+              showStep(i + 1);
+            }
+          }, fadeGapTime);
+        }
       }, currentVisibleTime);
+    }
+
+    // スキップボタンのクリック処理
+    if (skipButton) {
+      skipButton.addEventListener("click", function() {
+        isSkipped = true;
+        if (stepTimeout) {
+          clearTimeout(stepTimeout);
+        }
+        overlay.classList.add("hidden");
+        setTimeout(() => {
+          overlay.style.display = "none";
+          skipButton.classList.add("hidden");
+        }, 300);
+      });
     }
 
     setTimeout(() => {
