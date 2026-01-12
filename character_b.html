@@ -432,7 +432,7 @@
       position: absolute;
       top: 12%;
       left: 50%;
-      transform: translate(-50%, 0) translateX(-80px);
+      transform: translate(-50%, 0) translateX(-120px);
       max-width: 80%;
       text-align: center;
       font-size: 14px;
@@ -440,7 +440,11 @@
       color: #000000;
       opacity: 0;
       white-space: pre-wrap;
-      animation: block1FloatIn 1.4s ease-out 0.5s forwards;
+    }
+
+    /* JSで付与 → アニメ開始 */
+    .block1-slide-in {
+      animation: block1FloatIn 1.4s ease-out forwards;
     }
 
     @keyframes block1FloatIn {
@@ -686,7 +690,7 @@
     </section>
   </div>
 
-<!-- hero：ホワイトオーバーレイ＋問い演出 ＆ Block2〜5：縦書きタイピング -->
+<!-- hero：ホワイトオーバーレイ＋問い演出 ＆ Block1〜5：スクロールで表示されたときにテキストを表示 -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const overlay = document.getElementById("heroOverlay");
@@ -988,29 +992,58 @@ document.addEventListener("DOMContentLoaded", function () {
     }, speed);
   }
 
-  if (block2El) {
-    setTimeout(() => {
-      typeVertical(block2El, block2Text, 60);
-    }, 800);
-  }
+  // Intersection Observerでスクロール監視
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.3 // ブロックの30%が表示されたら発火
+  };
 
-  if (block3El) {
-    setTimeout(() => {
-      typeVertical(block3El, block3Text, 60);
-    }, 1200);
-  }
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const block = entry.target;
+        const blockIndex = Array.from(document.querySelectorAll('.timeline-block')).indexOf(block);
+        
+        if (blockIndex === 0) {
+          // Block 1
+          const textEl = block.querySelector('.block1-type');
+          if (textEl && !textEl.classList.contains('block1-slide-in')) {
+            textEl.classList.add('block1-slide-in');
+          }
+        } else if (blockIndex === 1) {
+          // Block 2
+          if (block2El && block2El.textContent === '') {
+            typeVertical(block2El, block2Text, 60);
+          }
+        } else if (blockIndex === 2) {
+          // Block 3
+          if (block3El && block3El.textContent === '') {
+            typeVertical(block3El, block3Text, 60);
+          }
+        } else if (blockIndex === 3) {
+          // Block 4
+          if (block4El && block4El.textContent === '') {
+            typeVertical(block4El, block4Text, 60);
+          }
+        } else if (blockIndex === 4) {
+          // Block 5
+          if (block5El && block5El.textContent === '') {
+            typeVertical(block5El, block5Text, 60);
+          }
+        }
+        
+        // 一度表示したら監視を解除
+        observer.unobserve(block);
+      }
+    });
+  }, observerOptions);
 
-  if (block4El) {
-    setTimeout(() => {
-      typeVertical(block4El, block4Text, 60);
-    }, 1600);
-  }
-
-  if (block5El) {
-    setTimeout(() => {
-      typeVertical(block5El, block5Text, 60);
-    }, 2000);
-  }
+  // Block 1～5を監視対象に追加
+  const blocks = document.querySelectorAll('.timeline-block');
+  blocks.forEach(block => {
+    observer.observe(block);
+  });
 });
 </script>
 

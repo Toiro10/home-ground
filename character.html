@@ -324,7 +324,7 @@
       position: absolute;
       top: 12%;
       left: 50%;
-      transform: translate(-50%, 0) translateX(-80px);
+      transform: translate(-50%, 0) translateX(-120px);
       max-width: 80%;
       text-align: center;
       font-size: 14px;
@@ -332,7 +332,11 @@
       color: #000000;
       opacity: 0;
       white-space: pre-wrap;
-      animation: block1FloatIn 1.4s ease-out 0.5s forwards;
+    }
+
+    /* JSで付与 → アニメ開始 */
+    .block1-slide-in {
+      animation: block1FloatIn 1.4s ease-out forwards;
     }
 
     @keyframes block1FloatIn {
@@ -583,7 +587,7 @@
   </div>
 
 
-  <!-- ★Block2〜5：タイプライター廃止 → 一括表示＋スライドイン -->
+  <!-- ★Block1〜5：スクロールで表示されたときにテキストを表示 -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const block2El = document.getElementById("block2Type");
@@ -633,18 +637,49 @@
 
 いつか宇宙デブリになる、機械の神と呼ばれている、僕の6つ目の失敗作。`;
 
-      function showBlock(el, text, delayMs) {
-        if (!el) return;
-        setTimeout(() => {
-          el.textContent = text;              // 文章を一括表示
-          el.classList.add("block-slide-in"); // スライドイン開始
-        }, delayMs);
-      }
+      // テキストを先に設定（非表示状態）
+      if (block2El) block2El.textContent = block2Text;
+      if (block3El) block3El.textContent = block3Text;
+      if (block4El) block4El.textContent = block4Text;
+      if (block5El) block5El.textContent = block5Text;
 
-      showBlock(block2El, block2Text, 800);
-      showBlock(block3El, block3Text, 1200);
-      showBlock(block4El, block4Text, 1600);
-      showBlock(block5El, block5Text, 2000);
+      // Intersection Observerでスクロール監視
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.3 // ブロックの30%が表示されたら発火
+      };
+
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const block = entry.target;
+            const textEl = block.querySelector('.block1-type, .block2-type, .block3-type, .block4-type, .block5-type');
+            if (textEl) {
+              if (textEl.classList.contains('block1-type') && !textEl.classList.contains('block1-slide-in')) {
+                textEl.classList.add('block1-slide-in');
+              } else if (!textEl.classList.contains('block-slide-in')) {
+                textEl.classList.add('block-slide-in');
+              }
+            }
+            // 一度表示したら監視を解除
+            observer.unobserve(block);
+          }
+        });
+      }, observerOptions);
+
+      // Block 1～5を監視対象に追加
+      const block1 = document.querySelector('.timeline-block:nth-child(1)');
+      const block2 = document.querySelector('.timeline-block:nth-child(2)');
+      const block3 = document.querySelector('.timeline-block:nth-child(3)');
+      const block4 = document.querySelector('.timeline-block:nth-child(4)');
+      const block5 = document.querySelector('.timeline-block:nth-child(5)');
+
+      if (block1) observer.observe(block1);
+      if (block2) observer.observe(block2);
+      if (block3) observer.observe(block3);
+      if (block4) observer.observe(block4);
+      if (block5) observer.observe(block5);
     });
   </script>
 
