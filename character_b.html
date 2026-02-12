@@ -36,19 +36,25 @@
 
     .layout {
       display: flex;
-      width: 100%;
+      width: calc(100% - 70px);
+      margin-left: 70px;
       min-height: 70vh;
     }
 
-    /* 左の縦メニュー */
+    /* 左の縦メニュー（スクロール時も左に固定） */
     .side-nav {
+      position: fixed;
+      left: 0;
+      top: 0;
       width: 70px;
+      height: 100vh;
       background: linear-gradient(180deg, #111111, #050505);
       border-right: 1px solid var(--border-soft);
       padding: 16px 8px;
       display: flex;
       flex-direction: column;
-      : 8px;
+      gap: 8px;
+      z-index: 10;
     }
 
     .nav-item {
@@ -505,9 +511,12 @@
     @media (max-width: 900px) {
       .layout {
         flex-direction: column;
+        width: 100%;
+        margin-left: 0;
       }
 
       .side-nav {
+        position: relative;
         flex-direction: row;
         width: 100%;
         height: auto;
